@@ -3,7 +3,7 @@ ROOT=$(TLROOT)\texk\web2c\web2c
 GMP_ROOT=$(TLROOT)\libs\gmp\gmp-src
 
 all:
-  if not exist ($(TLTOOLS)\bin) (md $(TLTOOLS)\bin)
+  if not exist $(TLTOOLS)\bin (md $(TLTOOLS)\bin)
   cl $(CFLAGS) -Fo$(TLBUILD)\web2c-lexer.obj $(ROOT)\web2c-lexer.c
   cl $(CFLAGS) -Fo$(TLBUILD)\web2c-parser.obj $(ROOT)\web2c-parser.c
   cl $(CFLAGS) -Fo$(TLBUILD)\web2c-main.obj $(ROOT)\main.c
