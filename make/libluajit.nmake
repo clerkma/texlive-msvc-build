@@ -1,0 +1,39 @@
+CFLAGS=-nologo -c -O2 -DLUAJIT_ENABLE_LUA52COMPAT -DLUAI_HASHLIMIT=6
+ROOT=$(TLROOT)\libs\luajit\LuaJIT-src\src
+HOST=$(ROOT)\host
+DASM=$(ROOT)\..\dynasm\dynasm.lua
+ALL_LIB=$(ROOT)\lib_base.c $(ROOT)\lib_math.c $(ROOT)\lib_bit.c $(ROOT)\lib_string.c\
+    $(ROOT)\lib_table.c $(ROOT)\lib_io.c $(ROOT)\lib_os.c $(ROOT)\lib_package.c $(ROOT)\lib_debug.c $(ROOT)\lib_jit.c $(ROOT)\lib_ffi.c
+DASC=$(ROOT)\vm_x86.dasc
+
+!if "$(TLARCH)" == "x64"
+DASMFLAGS=-D WIN -D JIT -D FFI -D P64
+!if "$(GC64)" == "yes"
+DASC=$(ROOT)\vm_x64.dasc
+CFLAGS=$(CFLAGS) -DLUAJIT_ENABLE_GC64
+!endif
+!elseif "$(TLARCH)" == "x86"
+DASMFLAGS=-D WIN -D JIT -D FFI
+DASC=$(ROOT)\vm_x86.dasc
+!else
+!error "unsupported arch '$(TLARCH)'"
+!endif
+
+OUT=$(TLBUILD)\$(TLARCH)
+
+all:
+    if not exist $(OUT) (md $(OUT))
+    cl -nologo -c -Fo$(OUT)\minilua.obj $(ROOT)\host\minilua.c
+    link -nologo -out:$(OUT)\minilua.exe $(OUT)\minilua.obj
+    $(OUT)\minilua $(DASM) -LN $(DASMFLAGS) -o $(OUT)\buildvm_arch.h $(DASC)
+    cl $(CFLAGS) -Fo$(OUT)\ -I$(OUT) -I$(ROOT) -I$(ROOT)\host $(HOST)\buildvm*.c
+    link -nologo -out:$(OUT)\buildvm.exe $(OUT)\buildvm*.obj
+    $(OUT)\buildvm -m peobj -o $(OUT)\lj_vm.obj
+    $(OUT)\buildvm -m bcdef -o $(OUT)\lj_bcdef.h $(ALL_LIB)
+    $(OUT)\buildvm -m ffdef -o $(OUT)\lj_ffdef.h $(ALL_LIB)
+    $(OUT)\buildvm -m libdef -o $(OUT)\lj_libdef.h $(ALL_LIB)
+    $(OUT)\buildvm -m recdef -o $(OUT)\lj_recdef.h $(ALL_LIB)
+    $(OUT)\buildvm -m folddef -o $(OUT)\lj_folddef.h $(ROOT)\lj_opt_fold.c
+    cl $(CFLAGS) -Fo$(OUT)\ -I$(OUT) -I$(ROOT) -c $(ROOT)\lj_*.c $(ROOT)\lib_*.c $(ROOT)\luajit.c $(TLROOT)\libs\luajit\lbitlib.c
+    lib -nologo -out:$(TLBUILD)\libluajit.lib $(OUT)\lj_*.obj $(OUT)\lib_*.obj $(OUT)\lbitlib.obj
+    link -nologo -out:$(OUT)\luajit.exe $(OUT)\luajit.obj $(TLBUILD)\libluajit.lib

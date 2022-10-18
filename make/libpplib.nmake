@@ -1,0 +1,25 @@
+ROOT=$(TLROOT)\libs\pplib\pplib-src\src
+CFLAGS=-nologo -c -O2 -Oy -I$(TLROOT)\libs\pplib\pplib-src\src\util -I$(TLROOT)\libs\pplib\pplib-src\src -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppheap.obj $(ROOT)\ppheap.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-pparray.obj $(ROOT)\pparray.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppdict.obj $(ROOT)\ppdict.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppstream.obj $(ROOT)\ppstream.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppcrypt.obj $(ROOT)\ppcrypt.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppxref.obj $(ROOT)\ppxref.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppload.obj $(ROOT)\ppload.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilbasexx.obj $(ROOT)\util/utilbasexx.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilflate.obj $(ROOT)\util/utilflate.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utillzw.obj $(ROOT)\util/utillzw.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilfpred.obj $(ROOT)\util/utilfpred.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utillog.obj $(ROOT)\util/utillog.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilnumber.obj $(ROOT)\util/utilnumber.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utiliof.obj $(ROOT)\util/utiliof.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilmd5.obj $(ROOT)\util/utilmd5.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilsha.obj $(ROOT)\util/utilsha.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilcrypt.obj $(ROOT)\util/utilcrypt.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilmem.obj $(ROOT)\util/utilmem.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilmemheap.obj $(ROOT)\util/utilmemheap.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilmemheapiof.obj $(ROOT)\util/utilmemheapiof.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-utilmeminfo.obj $(ROOT)\util/utilmeminfo.c
+	lib -nologo -out:$(TLBUILD)\libpplib.lib $(TLBUILD)\libpplib-*.obj

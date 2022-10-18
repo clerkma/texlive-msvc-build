@@ -1,0 +1,323 @@
+CFLAGS=-nologo -c -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
+RUNTIME_LIBS=Advapi32.lib Shell32.lib User32.lib Ws2_32.lib Gdi32.lib Rpcrt4.lib
+RUNTIME_LDFLAGS=-libpath:$(TLBUILD) libruntime.lib libkpathsea.lib $(RUNTIME_LIBS)
+
+SYNCTEXROOT=$(WEB2CROOT)\synctexdir
+LUA53_CFLAGS=-DLUA_COMPAT_MODULE -DLUA_COMPAT_5_2 -DLUAI_HASHLIMIT=6 -I$(TLROOT)\libs\lua53\lua53-src\src
+LUAJIT_CFLAGS=-I$(TLROOT)\libs\luajit\LuaJIT-src\src
+KPATHSEA_CFLAGS=-DNO_KPSE_DLL -I$(PREDEF) -I$(TLROOT)\texk
+PPLIB_CFLAGS=-I$(TLROOT)\libs\pplib\pplib-src\src\util -I$(TLROOT)\libs\pplib\pplib-src\src
+ZZLIB_CFLAGS=-I$(PREDEF)\zziplib -I$(TLROOT)\libs\zziplib\zziplib-src
+ZLIB_CFLAGS=-I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+LIBPNG_CFLAGS=-I$(PREDEF)\libpng -I$(TLROOT)\libs\libpng\libpng-src
+LIBHARFBUZZ_CFLAGS=-I$(TLROOT)\libs\harfbuzz\harfbuzz-src\src -I$(PREDEF)\harfbuzz
+
+MPLIBROOT=$(WEB2CROOT)\mplibdir
+WEB2CROOT=$(TLROOT)\texk\web2c
+LUATEXROOT=$(WEB2CROOT)\luatexdir
+UNILIBROOT=$(LUATEXROOT)\unilib
+MD5ROOT=$(WEB2CROOT)\libmd5
+
+!if "$(JIT)" == "1"
+LIBLUA=libluajit
+LUA_CFLAGS=$(LUAJIT_CFLAGS) -DLUAJIT_ENABLE_LUA52COMPAT -DLUAI_HASHLIMIT=6 -DLuajitTeX
+LUA_LDFLAGS=libluajit.lib
+TEXLUAC=texluajitc
+LUATEX=luajittex
+LUAHBTEX=luajithbtex
+!else
+LIBLUA=liblua
+LUA_CFLAGS=$(LUA53_CFLAGS)
+LUA_LDFLAGS=libtexlua53.lib libluaffi.lib
+TEXLUAC=texluac
+LUATEX=luatex
+LUAHBTEX=luahbtex
+!endif
+
+libmd5:
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\libmd5-md5.obj $(MD5ROOT)\md5.c
+  lib -nologo -out:$(TLBUILD)\libmd5.lib $(TLBUILD)\libmd5-md5.obj
+
+LIBUNILIB_CFLAGS=$(CFLAGS) -DHAVE_CONFIG_H -I$(UNILIBROOT) -I$(PREDEF)\w2c -I$(WEB2CROOT)\w2c
+libunilib:
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-ArabicForms.obj $(UNILIBROOT)\ArabicForms.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-alphabet.obj $(UNILIBROOT)\alphabet.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-char.obj $(UNILIBROOT)\char.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-cjk.obj $(UNILIBROOT)\cjk.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-gwwiconv.obj $(UNILIBROOT)\gwwiconv.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-ucharmap.obj $(UNILIBROOT)\ucharmap.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-unialt.obj $(UNILIBROOT)\unialt.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-usprintf.obj $(UNILIBROOT)\usprintf.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-ustring.obj $(UNILIBROOT)\ustring.c
+  $(CC) $(LIBUNILIB_CFLAGS) -Fo$(TLBUILD)\libunilib-utype.obj $(UNILIBROOT)\utype.c
+  lib -nologo -out:$(TLBUILD)\libunilib.lib $(TLBUILD)\libunilib-*.obj
+
+LIBFF_ROOT=$(LUATEXROOT)\luafontloader\fontforge\fontforge
+LIBFF_GUTILS_ROOT=$(LUATEXROOT)\luafontloader\fontforge\gutils
+LIBFF_CFLAGS=$(CFLAGS) -I$(PREDEF)\luatex -I$(LUATEXROOT) -I$(UNILIBROOT) -I$(LUATEXROOT)\luafontloader\fontforge\inc -I$(PREDEF)\kpathsea \
+  -DLUA_FF_LIB=1 -D_NO_PYTHON=1 -DX_DISPLAY_MISSING=1 -DUSE_OUR_MEMORY=1 -Dstrncasecmp=_strnicmp -Dstrcasecmp=_stricmp
+libff:
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-autohint.obj $(LIBFF_ROOT)\autohint.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-clipnoui.obj $(LIBFF_ROOT)\clipnoui.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-cvundoes.obj $(LIBFF_ROOT)\cvundoes.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-dumppfa.obj $(LIBFF_ROOT)\dumppfa.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-encoding.obj $(LIBFF_ROOT)\encoding.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-featurefile.obj $(LIBFF_ROOT)\featurefile.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-fontviewbase.obj $(LIBFF_ROOT)\fontviewbase.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-fvcomposit.obj $(LIBFF_ROOT)\fvcomposit.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-fvfonts.obj $(LIBFF_ROOT)\fvfonts.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-lookups.obj $(LIBFF_ROOT)\lookups.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-macbinary.obj -I$(LIBFF_ROOT) $(PREDEF)\luatex\patch\macbinary.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-macenc.obj $(LIBFF_ROOT)\macenc.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-mathconstants.obj $(LIBFF_ROOT)\mathconstants.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-memory.obj $(LIBFF_ROOT)\memory.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-mm.obj $(LIBFF_ROOT)\mm.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-namelist.obj $(LIBFF_ROOT)\namelist.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-noprefs.obj -I$(LIBFF_ROOT) $(PREDEF)\luatex\patch\noprefs.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-nouiutil.obj $(LIBFF_ROOT)\nouiutil.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-parsepfa.obj $(LIBFF_ROOT)\parsepfa.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-parsettf.obj $(LIBFF_ROOT)\parsettf.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-parsettfatt.obj $(LIBFF_ROOT)\parsettfatt.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-psread.obj $(LIBFF_ROOT)\psread.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-pua.obj $(LIBFF_ROOT)\pua.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-python.obj $(LIBFF_ROOT)\python.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-sfd1.obj $(LIBFF_ROOT)\sfd1.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinechar.obj $(LIBFF_ROOT)\splinechar.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinefill.obj $(LIBFF_ROOT)\splinefill.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinefont.obj -I$(LIBFF_ROOT) $(PREDEF)\luatex\patch\splinefont.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splineorder2.obj $(LIBFF_ROOT)\splineorder2.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splineoverlap.obj $(LIBFF_ROOT)\splineoverlap.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinerefigure.obj $(LIBFF_ROOT)\splinerefigure.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinesave.obj $(LIBFF_ROOT)\splinesave.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinesaveafm.obj $(LIBFF_ROOT)\splinesaveafm.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splinestroke.obj $(LIBFF_ROOT)\splinestroke.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splineutil.obj $(LIBFF_ROOT)\splineutil.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-splineutil2.obj $(LIBFF_ROOT)\splineutil2.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-start.obj -I$(LIBFF_ROOT) $(PREDEF)\luatex\patch\start.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-stemdb.obj $(LIBFF_ROOT)\stemdb.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-tottf.obj $(LIBFF_ROOT)\tottf.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-tottfgpos.obj $(LIBFF_ROOT)\tottfgpos.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-ttfspecial.obj $(LIBFF_ROOT)\ttfspecial.c
+  $(CC) $(LIBFF_CFLAGS) -Fo$(TLBUILD)\libff-fsys.obj $(LIBFF_GUTILS_ROOT)\fsys.c
+  lib -nologo -out:$(TLBUILD)\libff.lib $(TLBUILD)\libff-*.obj
+
+LUASOCKET_ROOT=$(LUATEXROOT)\luasocket
+LUASOCKET_SRC_ROOT=$(LUASOCKET_ROOT)\src
+LUASOCKET_CFLAGS=$(CFLAGS) -DLUASOCKET_DEBUG -I$(LUASOCKET_ROOT) $(LUA_CFLAGS)
+$(LIBLUA)socket:
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-auxiliar.obj $(LUASOCKET_SRC_ROOT)\auxiliar.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-buffer.obj $(LUASOCKET_SRC_ROOT)\buffer.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-compat.obj $(LUASOCKET_SRC_ROOT)\compat.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-except.obj $(LUASOCKET_SRC_ROOT)\except.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-inet.obj $(LUASOCKET_SRC_ROOT)\inet.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-io.obj $(LUASOCKET_SRC_ROOT)\io.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-luasocket.obj $(LUASOCKET_SRC_ROOT)\luasocket.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-lua_preload.obj $(LUASOCKET_SRC_ROOT)\lua_preload.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-mime.obj $(LUASOCKET_SRC_ROOT)\mime.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-options.obj $(LUASOCKET_SRC_ROOT)\options.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-select.obj $(LUASOCKET_SRC_ROOT)\select.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-serial.obj $(LUASOCKET_SRC_ROOT)\serial.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-socket.obj $(LUASOCKET_SRC_ROOT)\socket.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-tcp.obj $(LUASOCKET_SRC_ROOT)\tcp.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-timeout.obj $(LUASOCKET_SRC_ROOT)\timeout.c
+  $(CC) $(LUASOCKET_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)socket-udp.obj $(LUASOCKET_SRC_ROOT)\udp.c
+  lib -nologo -out:$(TLBUILD)\$(LIBLUA)socket.lib $(TLBUILD)\$(LIBLUA)socket-*.obj
+
+LUAFFI_ROOT=$(LUATEXROOT)\luaffi
+LUAFFI_CFLAGS=$(CFLAGS) $(LUA_CFLAGS)
+libluaffi:
+  $(CC) $(LUAFFI_CFLAGS) -Fo$(TLBUILD)\libluaffi-call.obj $(LUAFFI_ROOT)\call.c
+  $(CC) $(LUAFFI_CFLAGS) -Fo$(TLBUILD)\libluaffi-ctype.obj $(LUAFFI_ROOT)\ctype.c
+  $(CC) $(LUAFFI_CFLAGS) -Fo$(TLBUILD)\libluaffi-ffi.obj $(LUAFFI_ROOT)\ffi.c
+  $(CC) $(LUAFFI_CFLAGS) -Fo$(TLBUILD)\libluaffi-parser.obj $(LUAFFI_ROOT)\parser.c
+  lib -nologo -out:$(TLBUILD)\libluaffi.lib $(TLBUILD)\libluaffi-*.obj
+
+LUAMISC_CFLAGS=$(CFLAGS) $(LUA_CFLAGS) -I$(LUATEXROOT) $(ZLIB_CFLAGS) $(ZZLIB_CFLAGS) $(PPLIB_CFLAGS)
+$(LIBLUA)misc:
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-lfs.obj $(LUATEXROOT)\luafilesystem\src\lfs.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-md5.obj $(LUATEXROOT)\luamd5\md5.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-md5lib.obj $(LUATEXROOT)\luamd5\md5lib.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-lpeg.obj $(LUATEXROOT)\luapeg\lpeg.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-luazip.obj $(LUATEXROOT)\luazip\src\luazip.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-lgzip.obj $(LUATEXROOT)\luazlib\lgzip.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-lzlib.obj $(LUATEXROOT)\luazlib\lzlib.c
+  $(CC) $(LUAMISC_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)misc-slnunico.obj $(LUATEXROOT)\slnunicode\slnunico.c
+  lib -nologo -out:$(TLBUILD)\$(LIBLUA)misc.lib $(TLBUILD)\$(LIBLUA)misc-*.obj
+
+LUATEX_CFLAGS=$(CFLAGS) $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS) $(LIBHARFBUZZ_CFLAGS) $(PPLIB_CFLAGS) -I$(MD5ROOT) $(LUA_CFLAGS)\
+  -I$(LUATEXROOT) -I$(LUATEXROOT)\unilib -I$(PREDEF)\luatex -I$(PREDEF)\kpathsea \
+  -I$(LUATEXROOT)\luafontloader\fontforge\inc -I$(LUATEXROOT)\luafontloader\fontforge\fontforge \
+  -I$(SYNCTEXROOT) -DSYNCTEX_ENGINE_H=\"synctex-luatex.h\" \
+  -DpdfTeX -DLUA_FF_LIB=1 -DHAVE_CONFIG_H -Denviron=_environ
+$(LIBLUA)tex:
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lstrlibext.obj $(LUATEXROOT)\lua\lstrlibext.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-helpers.obj $(LUATEXROOT)\lua\helpers.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-$(TEXLUAC).obj $(LUATEXROOT)\lua\$(TEXLUAC).c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-luafontloader-src-ffdummies.obj $(LUATEXROOT)\luafontloader\src\ffdummies.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-luafontloader-src-luafflib.obj $(LUATEXROOT)\luafontloader\src\luafflib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-dvi-dvigen.obj $(LUATEXROOT)\dvi\dvigen.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-dofont.obj $(LUATEXROOT)\font\dofont.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-luafont.obj $(LUATEXROOT)\font\luafont.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-mapfile.obj $(LUATEXROOT)\font\mapfile.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-pkin.obj $(LUATEXROOT)\font\pkin.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-sfnt.obj $(LUATEXROOT)\font\sfnt.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-texfont.obj $(LUATEXROOT)\font\texfont.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-tfmofm.obj $(LUATEXROOT)\font\tfmofm.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-tounicode.obj $(LUATEXROOT)\font\tounicode.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-tt_glyf.obj $(LUATEXROOT)\font\tt_glyf.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-tt_table.obj $(LUATEXROOT)\font\tt_table.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-vfovf.obj $(LUATEXROOT)\font\vfovf.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-vfpacket.obj $(LUATEXROOT)\font\vfpacket.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writecff.obj $(LUATEXROOT)\font\writecff.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writeenc.obj $(LUATEXROOT)\font\writeenc.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writefont.obj $(LUATEXROOT)\font\writefont.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writet1.obj $(LUATEXROOT)\font\writet1.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writet3.obj $(LUATEXROOT)\font\writet3.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writettf.obj $(LUATEXROOT)\font\writettf.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writetype0.obj $(LUATEXROOT)\font\writetype0.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-font-writetype2.obj $(LUATEXROOT)\font\writetype2.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-image-pdftoepdf.obj $(LUATEXROOT)\image\pdftoepdf.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-image-writeimg.obj $(LUATEXROOT)\image\writeimg.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-image-writejbig2.obj $(LUATEXROOT)\image\writejbig2.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-image-writejp2.obj $(LUATEXROOT)\image\writejp2.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-image-writejpg.obj $(LUATEXROOT)\image\writejpg.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-image-writepng.obj $(LUATEXROOT)\image\writepng.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lang-hnjalloc.obj $(LUATEXROOT)\lang\hnjalloc.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lang-hyphen.obj $(LUATEXROOT)\lang\hyphen.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lang-texlang.obj $(LUATEXROOT)\lang\texlang.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lcallbacklib.obj $(LUATEXROOT)\lua\lcallbacklib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lfontlib.obj $(LUATEXROOT)\lua\lfontlib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-limglib.obj $(LUATEXROOT)\lua\limglib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lpdfelib.obj $(LUATEXROOT)\lua\lpdfelib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lpdfscannerlib.obj $(LUATEXROOT)\lua\lpdfscannerlib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lkpselib.obj $(LUATEXROOT)\lua\lkpselib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-llanglib.obj $(LUATEXROOT)\lua\llanglib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-llualib.obj $(LUATEXROOT)\lua\llualib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lnodelib.obj $(LUATEXROOT)\lua\lnodelib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-liolibext.obj $(LUATEXROOT)\lua\liolibext.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lpdflib.obj $(LUATEXROOT)\lua\lpdflib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lstatslib.obj $(LUATEXROOT)\lua\lstatslib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-ltexiolib.obj $(LUATEXROOT)\lua\ltexiolib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-loslibext.obj $(LUATEXROOT)\lua\loslibext.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-ltexlib.obj $(LUATEXROOT)\lua\ltexlib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-lnewtokenlib.obj $(LUATEXROOT)\lua\lnewtokenlib.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-luatex-core.obj $(LUATEXROOT)\lua\luatex-core.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-luanode.obj $(LUATEXROOT)\lua\luanode.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-luatoken.obj $(LUATEXROOT)\lua\luatoken.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lua-mplibstuff.obj $(LUATEXROOT)\lua\mplibstuff.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfaction.obj $(LUATEXROOT)\pdf\pdfaction.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfannot.obj $(LUATEXROOT)\pdf\pdfannot.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfcolorstack.obj $(LUATEXROOT)\pdf\pdfcolorstack.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfdest.obj $(LUATEXROOT)\pdf\pdfdest.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdffont.obj $(LUATEXROOT)\pdf\pdffont.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfgen.obj $(LUATEXROOT)\pdf\pdfgen.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfglyph.obj $(LUATEXROOT)\pdf\pdfglyph.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfimage.obj $(LUATEXROOT)\pdf\pdfimage.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdflink.obj $(LUATEXROOT)\pdf\pdflink.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdflistout.obj $(LUATEXROOT)\pdf\pdflistout.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfliteral.obj $(LUATEXROOT)\pdf\pdfliteral.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfobj.obj $(LUATEXROOT)\pdf\pdfobj.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfoutline.obj $(LUATEXROOT)\pdf\pdfoutline.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfpage.obj $(LUATEXROOT)\pdf\pdfpage.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfpagetree.obj $(LUATEXROOT)\pdf\pdfpagetree.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfrule.obj $(LUATEXROOT)\pdf\pdfrule.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfsaverestore.obj $(LUATEXROOT)\pdf\pdfsaverestore.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfsetmatrix.obj $(LUATEXROOT)\pdf\pdfsetmatrix.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfshipout.obj $(LUATEXROOT)\pdf\pdfshipout.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdftables.obj $(LUATEXROOT)\pdf\pdftables.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfthread.obj $(LUATEXROOT)\pdf\pdfthread.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-pdf-pdfxform.obj $(LUATEXROOT)\pdf\pdfxform.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-backend.obj $(LUATEXROOT)\tex\backend.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-align.obj $(LUATEXROOT)\tex\align.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-arithmetic.obj $(LUATEXROOT)\tex\arithmetic.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-buildpage.obj $(LUATEXROOT)\tex\buildpage.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-commands.obj $(LUATEXROOT)\tex\commands.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-conditional.obj $(LUATEXROOT)\tex\conditional.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-directions.obj $(LUATEXROOT)\tex\directions.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-dumpdata.obj $(LUATEXROOT)\tex\dumpdata.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-equivalents.obj $(LUATEXROOT)\tex\equivalents.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-errors.obj $(LUATEXROOT)\tex\errors.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-expand.obj $(LUATEXROOT)\tex\expand.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-extensions.obj $(LUATEXROOT)\tex\extensions.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-filename.obj $(LUATEXROOT)\tex\filename.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-inputstack.obj $(LUATEXROOT)\tex\inputstack.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-linebreak.obj $(LUATEXROOT)\tex\linebreak.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-mainbody.obj $(LUATEXROOT)\tex\mainbody.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-maincontrol.obj $(LUATEXROOT)\tex\maincontrol.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-mathcodes.obj $(LUATEXROOT)\tex\mathcodes.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-memoryword.obj $(LUATEXROOT)\tex\memoryword.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-mlist.obj $(LUATEXROOT)\tex\mlist.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-nesting.obj $(LUATEXROOT)\tex\nesting.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-packaging.obj $(LUATEXROOT)\tex\packaging.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-postlinebreak.obj $(LUATEXROOT)\tex\postlinebreak.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-primitive.obj $(LUATEXROOT)\tex\primitive.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-scanning.obj $(LUATEXROOT)\tex\scanning.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-stringpool.obj $(LUATEXROOT)\tex\stringpool.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-texdeffont.obj $(LUATEXROOT)\tex\texdeffont.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-texfileio.obj $(LUATEXROOT)\tex\texfileio.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-texmath.obj $(LUATEXROOT)\tex\texmath.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-texnodes.obj $(LUATEXROOT)\tex\texnodes.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-textcodes.obj $(LUATEXROOT)\tex\textcodes.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-tex-textoken.obj $(LUATEXROOT)\tex\textoken.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-utils-avl.obj $(LUATEXROOT)\utils\avl.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-utils-avlstuff.obj $(LUATEXROOT)\utils\avlstuff.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-utils-managed-sa.obj $(LUATEXROOT)\utils\managed-sa.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-utils-unistring.obj $(LUATEXROOT)\utils\unistring.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  lib -nologo -out:$(TLBUILD)\$(LIBLUA)tex.lib $(TLBUILD)\$(LIBLUA)tex-*.obj
+
+$(LIBLUA)texspecific:
+  $(CC) $(LUATEX_CFLAGS) -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)texspecific-utils.obj $(LUATEXROOT)\utils\utils.c
+  $(CC) $(LUATEX_CFLAGS) -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)texspecific-luastuff.obj $(LUATEXROOT)\lua\luastuff.c
+  $(CC) $(LUATEX_CFLAGS) -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)texspecific-luainit.obj $(LUATEXROOT)\lua\luainit.c
+  $(CC) $(LUATEX_CFLAGS) -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)texspecific-printing.obj $(LUATEXROOT)\tex\printing.c
+  lib -nologo -out:$(TLBUILD)\$(LIBLUA)texspecific.lib $(TLBUILD)\$(LIBLUA)texspecific-*.obj
+
+LUATEX_COMMON=libunilib libff $(LIBLUA)socket $(LIBLUA)misc $(LIBLUA)tex libmd5
+!if "$(JIT)" == "1"
+LUATEX_DEP=$(LUATEX_COMMON) $(LIBLUA)texspecific
+LUAHBTEX_DEP=$(LUATEX_COMMON) $(LIBLUA)hbtexspecific $(LIBLUA)harfbuzz
+!else
+LUATEX_DEP=$(LUATEX_COMMON) libluaffi $(LIBLUA)texspecific
+LUAHBTEX_DEP=$(LUATEX_COMMON) libluaffi $(LIBLUA)hbtexspecific $(LIBLUA)harfbuzz
+!endif
+LUATEX_LDFLAGS_COMMON=$(LIBLUA)tex.lib libff.lib $(LIBLUA)misc.lib $(LIBLUA)socket.lib $(LUA_LDFLAGS)\
+  libmplibcore.lib libzzip.lib libpng.lib libpplib.lib libz.lib libmputil.lib libunilib.lib libmd5.lib
+LUATEX_LDFLAGS=-libpath:$(TLBUILD) $(LUATEX_LDFLAGS_COMMON) $(LIBLUA)texspecific.lib $(RUNTIME_LDFLAGS)
+LUAHBTEX_LDFLAGS=-libpath:$(TLBUILD) $(LUATEX_LDFLAGS_COMMON) $(LIBLUA)hbtexspecific.lib $(LIBLUA)harfbuzz.lib libharfbuzz.lib libgraphite2.lib $(RUNTIME_LDFLAGS)
+
+$(LUATEX): $(LUATEX_DEP)
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-luatex.obj -Ddll$(LUATEX)main=main $(LUATEXROOT)\luatex.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lmplib.obj $(MPLIBROOT)\lmplib.c
+  link -nologo -out:$(TLWORKS)\$(LUATEX).exe $(TLBUILD)\$(LIBLUA)tex-*.obj $(LUATEX_LDFLAGS)
+
+$(LIBLUA)hbtexspecific:
+  $(CC) $(LUATEX_CFLAGS) -DLUATEX_HARFBUZZ_ENABLED -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)hbtexspecific-utils.obj $(LUATEXROOT)\utils\utils.c 
+  $(CC) $(LUATEX_CFLAGS) -DLUATEX_HARFBUZZ_ENABLED -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)hbtexspecific-luastuff.obj $(LUATEXROOT)\lua\luastuff.c
+  $(CC) $(LUATEX_CFLAGS) -DLUATEX_HARFBUZZ_ENABLED -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)hbtexspecific-luainit.obj $(LUATEXROOT)\lua\luainit.c
+  $(CC) $(LUATEX_CFLAGS) -DLUATEX_HARFBUZZ_ENABLED -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)hbtexspecific-printing.obj $(LUATEXROOT)\tex\printing.c
+  lib -nologo -out:$(TLBUILD)\$(LIBLUA)hbtexspecific.lib $(TLBUILD)\$(LIBLUA)hbtexspecific-*.obj
+
+LHB_ROOT=$(LUATEXROOT)\luaharfbuzz\src\luaharfbuzz
+$(LIBLUA)harfbuzz:
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-blob.obj $(LHB_ROOT)\blob.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-buffer.obj $(LHB_ROOT)\buffer.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-class_utils.obj $(LHB_ROOT)\class_utils.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-direction.obj $(LHB_ROOT)\direction.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-face.obj $(LHB_ROOT)\face.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-feature.obj $(LHB_ROOT)\feature.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-font.obj $(LHB_ROOT)\font.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-language.obj $(LHB_ROOT)\language.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-luaharfbuzz.obj $(LHB_ROOT)\luaharfbuzz.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-ot.obj $(LHB_ROOT)\ot.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-script.obj $(LHB_ROOT)\script.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-tag.obj $(LHB_ROOT)\tag.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-unicode.obj $(LHB_ROOT)\unicode.c
+  $(CC) $(LUATEX_CFLAGS) -utf-8 -Fo$(TLBUILD)\$(LIBLUA)harfbuzz-variation.obj $(LHB_ROOT)\variation.c
+  lib -nologo -out:$(TLBUILD)\$(LIBLUA)harfbuzz.lib $(TLBUILD)\$(LIBLUA)harfbuzz-*.obj
+
+$(LUAHBTEX): $(LUAHBTEX_DEP)
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)hbtex-luatex.obj -Ddll$(LUATEX)main=main $(LUATEXROOT)\luatex.c
+  $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)hbtex-lmplib.obj $(MPLIBROOT)\lmplib.c
+  link -nologo -out:$(TLWORKS)\$(LUAHBTEX).exe $(TLBUILD)\$(LIBLUA)hbtex-*.obj $(LUAHBTEX_LDFLAGS)
+    

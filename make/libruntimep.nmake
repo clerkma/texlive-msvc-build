@@ -1,0 +1,19 @@
+ROOT=$(TLROOT)\texk\web2c\lib
+CFLAGS=-nologo -utf-8 -c -O2 -Oy -DWIN32 -DNO_KPSE_DLL -DNO_PTENC_DLL -DPTEX -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-basechsuffix.obj $(ROOT)\basechsuffix.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-chartostring.obj $(ROOT)\chartostring.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-coredump.obj $(ROOT)\coredump.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-eofeoln.obj $(ROOT)\eofeoln.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-fprintreal.obj $(ROOT)\fprintreal.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-inputint.obj $(ROOT)\inputint.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-input2int.obj $(ROOT)\input2int.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-main.obj $(ROOT)\main.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-openclose.obj $(ROOT)\openclose.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-printversion.obj $(ROOT)\printversion.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-setupvar.obj $(ROOT)\setupvar.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-uexit.obj $(ROOT)\uexit.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-usage.obj $(ROOT)\usage.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-version.obj $(ROOT)\version.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-zround.obj $(ROOT)\zround.c
+	lib -nologo -out:$(TLBUILD)\libruntimep.lib $(TLBUILD)\libruntimep-*.obj

@@ -1,0 +1,8 @@
+ROOT=$(TLROOT)\libs\teckit\TECkit-src\source
+CFLAGS=-nologo -utf-8 -c -O2 -Oy -EHsc -I$(TLROOT)\libs\teckit\TECkit-src\source\Public-headers -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zlib
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libteckit-Compiler.obj $(ROOT)\Compiler.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libteckit-UnicodeNames.obj $(ROOT)\UnicodeNames.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libteckit-TECkit_Compile.obj $(ROOT)\Sample-tools/TECkit_Compile.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libteckit-Engine.obj $(ROOT)\Engine.cpp
+	lib -nologo -out:$(TLBUILD)\libteckit.lib $(TLBUILD)\libteckit-*.obj

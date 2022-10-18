@@ -1,0 +1,598 @@
+# Makefile for building TeX Live on MSVC
+
+PATH=$(TLTOOLS);$(TLTOOLS)\bin;$(PATH)
+RUNTIME_LIBS=Advapi32.lib Shell32.lib User32.lib Ws2_32.lib Gdi32.lib Rpcrt4.lib
+RUNTIME_LDFLAGS=-libpath:$(TLBUILD) libruntime.lib libkpathsea.lib $(RUNTIME_LIBS)
+
+ZLIB_CFLAGS=-I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+LIBPNG_CFLAGS=-I$(PREDEF)\libpng -I$(TLROOT)\libs\libpng\libpng-src
+LIBMPFR_CFLAGS=-I$(PREDEF)\mpfr -I$(TLROOT)\libs\mpfr\mpfr-src\src
+LIBGMP_CFLAGS=-I$(PREDEF)\gmp -I$(TLROOT)\libs\gmp\gmp-src
+LIBCAIRO_CFLAGS=-DCAIRO_WIN32_STATIC_BUILD -I$(PREDEF)\cairo -I$(TLROOT)\libs\cairo\cairo-src\src
+LIBPIXMAN_CFLAGS=-I$(PREDEF)\pixman -I$(TLROOT)\libs\pixman\pixman-src\pixman
+LIBXPDF_CFLAGS=-DPDF_PARSER_ONLY -I$(PREDEF)\xpdf -I$(TLROOT)\libs\xpdf\xpdf-src -I$(TLROOT)\libs\xpdf\xpdf-src\goo -I$(TLROOT)\libs\xpdf\xpdf-src\xpdf
+LIBICU_CFLAGS=-DU_STATIC_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common
+LIBGRAPHITE2_CFLAGS=-DGRAPHITE2_STATIC -I$(TLROOT)\libs\graphite2\graphite2-src\include
+LIBHARFBUZZ_CFLAGS=-I$(TLROOT)\libs\harfbuzz\harfbuzz-src\src -I$(PREDEF)\harfbuzz
+LIBFREETYPE_CFLAGS=-I$(TLROOT)\libs\freetype2\freetype-src\include
+LIBPPLIB_CFLAGS=-I$(TLROOT)\libs\pplib\pplib-src\src
+PTEXENC_CFLAGS=-DNO_PTENC_DLL -I$(TLROOT)\texk\ptexenc
+KPATHSEA_CFLAGS=-DNO_KPSE_DLL -I$(PREDEF) -I$(TLROOT)\texk
+LUA53_CFLAGS=-DLUA_COMPAT_MODULE -DLUA_COMPAT_5_2 -DLUAI_HASHLIMIT=6 -I$(TLROOT)\libs\lua53\lua53-src\src
+LUAJIT_CFLAGS=-I$(TLROOT)\libs\luajit\LuaJIT-src\src
+ZZLIB_CFLAGS=-I$(PREDEF)\zziplib -I$(TLROOT)\libs\zziplib\zziplib-src
+PPLIB_CFLAGS=-I$(TLROOT)\libs\pplib\pplib-src\src\util -I$(TLROOT)\libs\pplib\pplib-src\src
+POTRACE_CFLAGS=-I$(TLROOT)\libs\potrace\potrace-src\src
+
+WEB2CROOT=$(TLROOT)\texk\web2c
+SYNCTEXROOT=$(WEB2CROOT)\synctexdir
+PDFTEXROOT=$(WEB2CROOT)\pdftexdir
+PTEXROOT=$(WEB2CROOT)\ptexdir
+UPTEXROOT=$(WEB2CROOT)\uptexdir
+ALEPHROOT=$(WEB2CROOT)\alephdir
+OMFONTSROOT=$(WEB2CROOT)\omegafonts
+OTP2OCPROOT=$(WEB2CROOT)\otps
+WINDOWROOT=$(WEB2CROOT)\window
+MD5ROOT=$(WEB2CROOT)\libmd5
+EPTEXROOT=$(WEB2CROOT)\eptexdir
+EUPTEXROOT=$(WEB2CROOT)\euptexdir
+XETEXROOT=$(WEB2CROOT)\xetexdir
+MPLIBROOT=$(WEB2CROOT)\mplibdir
+TIEROOT=$(WEB2CROOT)\tiedir
+LUATEXROOT=$(WEB2CROOT)\luatexdir
+OMEGAWAREROOT=$(WEB2CROOT)\omegaware
+PMPROOT=$(WEB2CROOT)\pmpostdir
+MFLUAROOT=$(WEB2CROOT)\mfluadir
+
+CONVERT=py $(TLTOOLS)\convert.py
+PMPUTIL=py $(TLTOOLS)\pig.py pmp
+CATUTIL=py $(TLTOOLS)\cat.py
+
+CFLAGS=-nologo -c -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
+
+tangle:
+  $(CATUTIL) $(WEB2CROOT)\web2c\common.defines $(WEB2CROOT)\tangleboot.pin | web2c -hcpascal.h -ctangleboot | fixwrites tangleboot > tangleboot.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tangleboot.obj tangleboot.c
+  link -nologo -out:$(TLWORKS)\tangle.exe $(TLBUILD)\tangleboot.obj $(RUNTIME_LDFLAGS)
+
+ctangle:
+  $(CC) -TC $(CFLAGS) -Fo$(TLBUILD)\ctangleboot.obj $(WEB2CROOT)\ctangleboot.cin
+  $(CC) -TC $(CFLAGS) -Fo$(TLBUILD)\cwebroot.obj $(WEB2CROOT)\cwebboot.cin
+  link -nologo -out:$(TLWORKS)\ctangle.exe $(TLBUILD)\ctangleboot.obj $(TLBUILD)\cwebroot.obj $(RUNTIME_LDFLAGS)
+
+tie:
+  set CWEBINPUTS=$(TIEROOT)
+  ctangle tie.w tie-w2c.ch
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tie.obj tie.c
+  link -nologo -out:$(TLWORKS)\tie.exe $(TLBUILD)\tie.obj $(RUNTIME_LDFLAGS)
+
+bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave otangle odvicopy odvitype:
+  set WEBINPUTS=.;$(WEB2CROOT);$(OMEGAWAREROOT)
+  cd $(PREDEF)
+  tangle $@ $@
+  $(CONVERT) $@
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\$@.obj $(PREDEF)\$@.c
+  link -nologo -out:$(TLWORKS)\$@.exe $(TLBUILD)\$@.obj $(RUNTIME_LDFLAGS)
+
+ofm2opl opl2ofm ovf2ovp ovp2ovf:
+  set WEBINPUTS=.;$(OMEGAWAREROOT)
+  cd $(PREDEF)
+  otangle $@ $@
+  $(CONVERT) $@
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\$@.obj $(PREDEF)\$@.c
+  link -nologo -out:$(TLWORKS)\$@.exe $(TLBUILD)\$@.obj $(RUNTIME_LDFLAGS)
+
+twill:
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m twill.web weave.web weave.ch weav-twill.ch
+  tangle twill
+  $(CONVERT) $@
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\$@.obj $(PREDEF)\$@.c
+  link -nologo -out:$(TLWORKS)\$@.exe $(TLBUILD)\$@.obj $(RUNTIME_LDFLAGS)
+
+ALEPH_CFLAGS=$(CFLAGS) -I$(ALEPHROOT)
+aleph:
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m aleph.web tex.web alephdir\om16bit.ch alephdir\omstr.ch alephdir\omfont.ch alephdir\omchar.ch alephdir\omfi.ch alephdir\ompar.ch\
+    alephdir\omocp.ch alephdir\omfilter.ch alephdir\omtrans.ch alephdir\omdir.ch alephdir\eobase.ch alephdir\eofmt.ch alephdir\eomem.ch\
+    alephdir\eo16bit.ch alephdir\eoext.ch alephdir\eoeqtb.ch alephdir\eofix.ch alephdir\eocprt.ch alephdir\eonewdir.ch alephdir\eover.ch\
+    alephdir\eopage.ch alephdir\eochar.ch
+  tie -c aleph.ch aleph.web alephdir\com16bit.ch alephdir\comstr.ch alephdir\comfont.ch alephdir\comchar.ch alephdir\comfi.ch alephdir\compar.ch\
+    alephdir\comocp.ch alephdir\comfilter.ch alephdir\comtrans.ch alephdir\comdir.ch alephdir\comsrcspec.ch alephdir\ceostuff.ch
+  otangle aleph aleph
+  $(CONVERT) aleph
+  cd $(MAKEDIR)
+  $(CC) $(ALEPH_CFLAGS) -Fo$(TLBUILD)\aleph-aleph.obj $(ALEPHROOT)\aleph.c
+  $(CC) $(ALEPH_CFLAGS) -Fo$(TLBUILD)\aleph-alephbis.obj $(ALEPHROOT)\alephbis.c
+  $(CC) $(ALEPH_CFLAGS) -Fo$(TLBUILD)\aleph-alephextra.obj -Ddllalephmain=main $(ALEPHROOT)\alephextra.c
+  $(CC) $(ALEPH_CFLAGS) -Fo$(TLBUILD)\aleph-aleph0.obj $(PREDEF)\aleph0.c
+  $(CC) $(ALEPH_CFLAGS) -Fo$(TLBUILD)\aleph-alephini.obj $(PREDEF)\alephini.c
+  $(CC) $(ALEPH_CFLAGS) -Fo$(TLBUILD)\aleph-pool.obj $(PREDEF)\aleph-pool.c
+  link -nologo -out:$(TLWORKS)\aleph.exe $(TLBUILD)\aleph-*.obj $(RUNTIME_LDFLAGS)
+
+OMFONTS_CFLAGS=$(CFLAGS) -DYY_NO_UNISTD_H
+omfonts:
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-char_routines.obj $(OMFONTSROOT)\char_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-dimen_routines.obj $(OMFONTSROOT)\dimen_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-error_routines.obj $(OMFONTSROOT)\error_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-extra_routines.obj $(OMFONTSROOT)\extra_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-font_routines.obj $(OMFONTSROOT)\font_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-header_routines.obj $(OMFONTSROOT)\header_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-ligkern_routines.obj $(OMFONTSROOT)\ligkern_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-list_routines.obj $(OMFONTSROOT)\list_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-omfonts.obj $(OMFONTSROOT)\omfonts.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-out_ofm.obj $(OMFONTSROOT)\out_ofm.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-out_routines.obj $(OMFONTSROOT)\out_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-param_routines.obj $(OMFONTSROOT)\param_routines.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-parse_ofm.obj $(OMFONTSROOT)\parse_ofm.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-pl-parser.obj $(OMFONTSROOT)\pl-parser.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-pl-lexer.obj $(OMFONTSROOT)\pl-lexer.c
+  $(CC) $(OMFONTS_CFLAGS) -Fo$(TLBUILD)\omfonts-print_routines.obj $(OMFONTSROOT)\print_routines.c
+  link -nologo -out:$(TLWORKS)\omfonts.exe $(TLBUILD)\omfonts-*.obj $(RUNTIME_LDFLAGS)
+
+OTP2OCP_CFLAGS=$(CFLAGS) -DHAVE_CONFIG_H -DYY_NO_UNISTD_H
+otp2ocp:
+  $(CC) $(OTP2OCP_CFLAGS) -Fo$(TLBUILD)\otp2ocp-otp-parser.obj $(OTP2OCPROOT)\otp-parser.c
+  $(CC) $(OTP2OCP_CFLAGS) -Fo$(TLBUILD)\otp2ocp-otp-lexer.obj $(OTP2OCPROOT)\otp-lexer.c
+  $(CC) $(OTP2OCP_CFLAGS) -Fo$(TLBUILD)\otp2ocp-otp2ocp.obj $(OTP2OCPROOT)\otp2ocp.c
+  $(CC) $(OTP2OCP_CFLAGS) -Fo$(TLBUILD)\otp2ocp-routines.obj $(OTP2OCPROOT)\routines.c
+  link -nologo -out:$(TLWORKS)\otp2ocp.exe $(TLBUILD)\otp2ocp-*.obj $(RUNTIME_LDFLAGS)
+
+outocp:
+  $(CC) $(OTP2OCP_CFLAGS) -Fo$(TLBUILD)\outocp-outocp.obj $(OTP2OCPROOT)\outocp.c
+  link -nologo -out:$(TLWORKS)\outocp.exe $(TLBUILD)\outocp-*.obj $(RUNTIME_LDFLAGS)
+
+tex:
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -c tex-final.ch tex.web tex.ch enctexdir\enctex1.ch enctexdir\enctex-tex.ch enctexdir\enctex2.ch tex-binpool.ch
+  tangle tex.web tex-final.ch
+  $(CONVERT) tex
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-texextra.obj -Ddlltexmain=main $(WEB2CROOT)\texextra.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-tex0.obj $(PREDEF)\tex0.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-texini.obj $(PREDEF)\texini.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-pool.obj $(PREDEF)\tex-pool.c
+  link -nologo -out:$(TLWORKS)\tex.exe $(TLBUILD)\tex-*.obj $(RUNTIME_LDFLAGS)
+
+MF_CFLAGS=$(CFLAGS) -I$(WINDOWROOT) -I$(PREDEF)\w2c
+mf:
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -c mf-final.ch mf.web mf.ch mf-binpool.ch
+  tangle mf mf-final
+  $(CONVERT) mf
+  cd $(MAKEDIR)
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\mf-mfextra.obj -Ddllmfmain=main -DNO_MF_ASM $(WEB2CROOT)\mfextra.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\mf-mf0.obj $(PREDEF)\mf0.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\mf-mfini.obj $(PREDEF)\mfini.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\mf-pool.obj $(PREDEF)\mf-pool.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-amiga.obj $(WINDOWROOT)\amiga.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-epsf.obj $(WINDOWROOT)\epsf.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-hp2627.obj $(WINDOWROOT)\hp2627.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-mftalk.obj $(WINDOWROOT)\mftalk.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-next.obj $(WINDOWROOT)\next.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-regis.obj $(WINDOWROOT)\regis.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-suntools.obj $(WINDOWROOT)\suntools.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-tek.obj $(WINDOWROOT)\tek.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-trap.obj $(WINDOWROOT)\trap.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-uniterm.obj $(WINDOWROOT)\uniterm.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-win32.obj $(WINDOWROOT)\win32.c
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-x11.obj $(WINDOWROOT)\x11-Xlib.c
+  lib -nologo -out:$(TLBUILD)\libwindow.lib $(TLBUILD)\libwindow-*.obj
+  link -nologo -out:$(TLWORKS)\mf.exe $(TLBUILD)\mf-*.obj $(RUNTIME_LDFLAGS) libwindow.lib
+  $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\mf-mfextra.obj -Ddllmfmain=main -DNO_MF_ASM -DMFNOWIN $(WEB2CROOT)\mfextra.c
+  link -nologo -out:$(TLWORKS)\mf-nowin.exe $(TLBUILD)\mf-*.obj $(RUNTIME_LDFLAGS) libwindow.lib
+
+MFLUA_CFLAGS=-nologo -c -I. -DMF_LUA -DNO_MF_ASM -I$(WEB2CROOT) $(KPATHSEA_CFLAGS) $(LUA53_CFLAGS) $(POTRACE_CFLAGS)
+mflua: mf
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m mflua.web mf.web mfluadir\mf-lua.ch
+  tie -c mflua.ch mflua.web mf.ch mfluadir\mflua-m.ch mf-binpool.ch
+  tangle mflua mflua
+  $(CONVERT) mflua
+  cd $(MAKEDIR)
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-mfluaextra.obj -Ddllmfluamain=main $(MFLUA_CFLAGS) $(MFLUAROOT)\mfluaextra.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-mflua0.obj $(PREDEF)\mflua0.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-mfluaini.obj $(PREDEF)\mfluaini.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-pool.obj $(PREDEF)\mflua-pool.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-mfluac.obj $(MFLUAROOT)\mfluac.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-lkpselib.obj $(LUATEXROOT)\lua\lkpselib.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-potrace.obj $(MFLUAROOT)\potrace\luafunc.c
+  $(CC) $(MFLUA_CFLAGS) -Fo$(TLBUILD)\mflua-lpeg.obj $(MFLUAROOT)\luapeg\lpeg.c
+  link -nologo -out:$(TLWORKS)\mflua.exe $(TLBUILD)\mflua-*.obj\
+    $(RUNTIME_LDFLAGS) libwindow.lib libtexlua53.lib libpotrace.lib libotfcc.lib
+
+MPOST_CFLAGS=$(CFLAGS) -I$(MPLIBROOT) $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS)
+MPOST_CFLAGS1=$(MPOST_CFLAGS) $(LIBMPFR_CFLAGS) $(LIBGMP_CFLAGS)
+MPOST_CFLAGS2=$(MPOST_CFLAGS1) $(LIBCAIRO_CFLAGS) $(LIBPIXMAN_CFLAGS)
+MPOST_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libmpfr.lib libgmp.lib libcairo.lib libpixman.lib libpng.lib libz.lib $(RUNTIME_LIBS)
+mpost:
+  set CWEBINPUTS=$(MPLIBROOT)
+  cd $(PREDEF)
+  ctangle mpost.w
+  ctangle mpxout.w
+  ctangle mpmathbinary.w
+  ctangle svgout.w
+  ctangle pngout.w
+  ctangle tfmin.w
+  ctangle mp.w
+  ctangle mpmath.w
+  ctangle mpmathdecimal.w
+  ctangle mpmathdouble.w
+  ctangle mpstrings.w
+  ctangle psout.w
+  cd $(MAKEDIR)
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-tfmin.obj $(PREDEF)\tfmin.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mp.obj $(PREDEF)\mp.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpmath.obj $(PREDEF)\mpmath.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpmathdecimal.obj $(PREDEF)\mpmathdecimal.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpmathdouble.obj $(PREDEF)\mpmathdouble.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpstrings.obj $(PREDEF)\mpstrings.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-psout.obj $(PREDEF)\psout.c
+  lib -nologo -out:$(TLBUILD)\libmplibcore.lib $(TLBUILD)\mpost-core-*.obj
+  $(CC) $(MPOST_CFLAGS1) -Fo$(TLBUILD)\mpost-mpmathbinary.obj $(PREDEF)\mpmathbinary.c
+  lib -nologo -out:$(TLBUILD)\libmplibextramath.lib $(TLBUILD)\mpost-mpmathbinary.obj
+  $(CC) $(MPOST_CFLAGS2) -Fo$(TLBUILD)\mpost-backends-pngout.obj $(PREDEF)\pngout.c
+  $(CC) $(MPOST_CFLAGS2) -Fo$(TLBUILD)\mpost-backends-svgout.obj $(PREDEF)\svgout.c
+  lib -nologo -out:$(TLBUILD)\libmplibbackends.lib $(TLBUILD)\mpost-backends-*.obj
+  $(CC) $(MPOST_CFLAGS) -Ddllmpostmain=main -Fo$(TLBUILD)\mpost-exe-mpost.obj $(PREDEF)\mpost.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-exe-mpxout.obj $(PREDEF)\mpxout.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-util-avl.obj $(MPLIBROOT)\avl.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-util-decContext.obj $(MPLIBROOT)\decContext.c
+  $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-util-decNumber.obj $(MPLIBROOT)\decNumber.c
+  lib -nologo -out:$(TLBUILD)\libmputil.lib $(TLBUILD)\mpost-util-*.obj
+  link -nologo -out:$(TLWORKS)\mpost.exe $(TLBUILD)\mpost-exe-*.obj\
+    $(MPOST_LDFLAGS) libmputil.lib libmplibcore.lib libmplibextramath.lib libmplibbackends.lib
+
+PMPOST_CFLAGS=$(MPOST_CFLAGS2) $(PTEXENC_CFLAGS)
+PMPOST_LDFLAGS=$(MPOST_LDFLAGS) libptexenc.lib
+pmpost: mpost
+  set CWEBINPUTS=.;$(PMPROOT)
+  cd $(PREDEF)
+  $(PMPUTIL) $(MPLIBROOT)\mp.w
+  ctangle pmp pmp
+  $(PMPUTIL) mpmath.c
+  $(PMPUTIL) mpmath.h
+  $(PMPUTIL) mpmathbinary.c
+  $(PMPUTIL) mpmathbinary.h
+  $(PMPUTIL) mpmathdecimal.c
+  $(PMPUTIL) mpmathdecimal.h
+  $(PMPUTIL) mpmathdouble.c
+  $(PMPUTIL) mpmathdouble.h
+  $(PMPUTIL) $(MPLIBROOT)\mpost.w
+  ctangle pmpost pmpost
+  $(PMPUTIL) mpstrings.h
+  $(PMPUTIL) mpstrings.c
+  $(PMPUTIL) $(MPLIBROOT)\mpxout.w
+  ctangle pmpxout pmpxout
+  $(PMPUTIL) mplibpng.h
+  $(PMPUTIL) mppngout.h
+  $(PMPUTIL) pngout.c
+  $(PMPUTIL) $(MPLIBROOT)\psout.w
+  ctangle ppsout ppsout
+  $(PMPUTIL) $(MPLIBROOT)\svgout.w
+  ctangle psvgout psvgout
+  $(PMPUTIL) $(MPLIBROOT)\tfmin.w
+  ctangle ptfmin ptfmin
+  cd $(MAKEDIR)
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmp.obj $(PREDEF)\pmp.c
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmath.obj $(PREDEF)\pmpmath.c
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathbinary.obj $(PREDEF)\pmpmathbinary.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathdecimal.obj $(PREDEF)\pmpmathdecimal.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathdouble.obj $(PREDEF)\pmpmathdouble.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpost.obj -Ddllpmpostmain=main $(PREDEF)\pmpost.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpstrings.obj $(PREDEF)\pmpstrings.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpxout.obj $(PREDEF)\pmpxout.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-ppngout.obj $(PREDEF)\ppngout.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-ppsout.obj $(PREDEF)\ppsout.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-psvgout.obj $(PREDEF)\psvgout.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-ptfmin.obj $(PREDEF)\ptfmin.c
+  link -nologo -out:$(TLWORKS)\pmpost.exe $(TLBUILD)\pmpost-*.obj libmputil.lib $(PMPOST_LDFLAGS)
+
+UPMPOST_CFLAGS=$(PMPOST_CFLAGS) -DUPMP
+upmpost: pmpost
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmp.obj $(PREDEF)\pmp.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmp.obj $(PREDEF)\pmp.c
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmath.obj $(PREDEF)\pmpmath.c
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathbinary.obj $(PREDEF)\pmpmathbinary.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathdecimal.obj $(PREDEF)\pmpmathdecimal.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathdouble.obj $(PREDEF)\pmpmathdouble.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpost.obj -Ddllupmpostmain=main $(PREDEF)\pmpost.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpstrings.obj $(PREDEF)\pmpstrings.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpxout.obj $(PREDEF)\pmpxout.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-ppngout.obj $(PREDEF)\ppngout.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-ppsout.obj $(PREDEF)\ppsout.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-psvgout.obj $(PREDEF)\psvgout.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-ptfmin.obj $(PREDEF)\ptfmin.c
+  link -nologo -out:$(TLWORKS)\upmpost.exe $(TLBUILD)\upmpost-*.obj libmputil.lib $(PMPOST_LDFLAGS)
+
+PTEX_CFLAGS =$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-ptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS)
+PTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
+ptex:
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m ptex.web tex.web tex.ch tracingstacklevels.ch partoken.ch zlib-fmt.ch
+  tie -c ptex.ch ptex.web ptexdir\ptex-base.ch synctexdir\synctex-def.ch0 synctexdir\synctex-p-mem.ch0 synctexdir\synctex-mem.ch0 \
+    synctexdir\synctex-p-mem.ch1 synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-rec.ch2\
+    synctexdir\synctex-p-rec.ch1 tex-binpool.ch
+  tangle ptex.web ptex.ch
+  $(CONVERT) ptex
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-ptex0.obj $(PREDEF)\ptex0.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-ptexini.obj $(PREDEF)\ptexini.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-pool.obj $(PREDEF)\ptex-pool.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-kanji.obj $(PTEXROOT)\kanji.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-kanji_dump.obj $(PTEXROOT)\kanji_dump.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-ptexextra.obj -Ddllptexmain=main $(PTEXROOT)\ptexextra.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  link -nologo -out:$(TLWORKS)\ptex.exe $(TLBUILD)\ptex-*.obj $(PTEX_LDFLAGS)
+
+pbibtex:
+  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
+  cd $(PREDEF)
+  tie -m pbibtex.web bibtex.web bibtex.ch
+  tangle pbibtex pbibtex
+  $(CONVERT) pbibtex
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pbibtex-pbibtex.obj $(PREDEF)\pbibtex.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pbibtex-kanji.obj $(PTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\pbibtex.exe $(TLBUILD)\pbibtex-*.obj $(PTEX_LDFLAGS)
+
+pdvitype:
+  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
+  cd $(PREDEF)
+  tie -m pdvitype.web dvitype.web dvitype.ch
+  tangle pdvitype pdvitype
+  $(CONVERT) pdvitype
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pdvitype-pdvitype.obj -DHEX_CHAR_CODE $(PREDEF)\pdvitype.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pdvitype-kanji.obj $(PTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\pdvitype.exe $(TLBUILD)\pdvitype-*.obj $(PTEX_LDFLAGS)
+
+ppltotf:
+  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
+  cd $(PREDEF)
+  tie -m ppltotf.web pltotf.web pltotf.ch
+  tangle ppltotf ppltotf
+  $(CONVERT) ppltotf
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ppltotf-ppltotf.obj -DPRESERVE_PUTC $(PREDEF)\ppltotf.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ppltotf-kanji.obj $(PTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\ppltotf.exe $(TLBUILD)\ppltotf-*.obj $(PTEX_LDFLAGS)
+
+ptftopl:
+  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
+  cd $(PREDEF)
+  tie -m ptftopl.web tftopl.web tftopl.ch
+  tangle ptftopl ptftopl
+  $(CONVERT) ptftopl
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptftopl-ptftopl.obj $(TLBUILD)\ptftopl-ptftopl.obj $(PREDEF)\ptftopl.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptftopl-kanji.obj $(PTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\ptftopl.exe $(TLBUILD)\ptftopl-*.obj $(PTEX_LDFLAGS)
+
+libmd5:
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\libmd5-md5.obj $(MD5ROOT)\md5.c
+  lib -nologo -out:$(TLBUILD)\libmd5.lib $(TLBUILD)\libmd5-md5.obj
+
+EPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-eptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS) -I$(MD5ROOT)
+EPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
+eptex: libmd5
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m eptex.web tex.web etexdir\etex.ch etexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken.ch showstream.ch zlib-fmt.ch etexdir\tex.ech
+  tie -c eptex.ch eptex.web eptexdir\eptex-base.ch eptexdir\etex.ch0 ptexdir\ptex-base.ch eptexdir\eptex.ech eptexdir\etex.ch1 \
+    synctexdir\synctex-def.ch0 synctexdir\synctex-ep-mem.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0 synctexdir\synctex-ep-mem.ch1\
+    synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-ep-rec.ch0 synctexdir\synctex-e-rec.ch0\
+    synctexdir\synctex-p-rec.ch1 eptexdir\fam256.ch eptexdir\pdfutils.ch eptexdir\suppresserrors.ch eptexdir\char-warning-eptex.ch tex-binpool.ch
+  tangle eptex.web eptex.ch
+  $(CONVERT) eptex
+  cd $(MAKEDIR)
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-eptex0.obj $(PREDEF)\eptex0.c
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-eptexini.obj $(PREDEF)\eptexini.c
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-pool.obj $(PREDEF)\eptex-pool.c
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-kanji.obj $(PTEXROOT)\kanji.c
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-kanji_dump.obj $(PTEXROOT)\kanji_dump.c
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-eptexextra.obj -Ddlleptexmain=main $(EPTEXROOT)\eptexextra.c
+  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  link -nologo -out:$(TLWORKS)\eptex.exe $(TLBUILD)\eptex-*.obj libmd5.lib $(EPTEX_LDFLAGS)
+
+UPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-uptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS)
+UPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
+uptex:
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m uptex.web tex.web tex.ch tracingstacklevels.ch partoken.ch zlib-fmt.ch
+  tie -c uptex.ch uptex.web ptexdir\ptex-base.ch uptexdir\uptex-m.ch synctexdir\synctex-def.ch0 synctexdir\synctex-p-mem.ch0 synctexdir\synctex-mem.ch0\
+    synctexdir\synctex-p-mem.ch1 synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-rec.ch2\
+    synctexdir\synctex-p-rec.ch1 tex-binpool.ch
+  tangle uptex.web uptex.ch
+  $(CONVERT) uptex
+  cd $(MAKEDIR)
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-uptex0.obj $(PREDEF)\uptex0.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-uptexini.obj $(PREDEF)\uptexini.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-pool.obj $(PREDEF)\uptex-pool.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-kanji.obj $(UPTEXROOT)\kanji.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-kanji_dump.obj $(UPTEXROOT)\kanji_dump.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-uptexextra.obj -Ddlluptexmain=main $(UPTEXROOT)\uptexextra.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  link -nologo -out:$(TLWORKS)\uptex.exe $(TLBUILD)\uptex-*.obj $(UPTEX_LDFLAGS)
+
+upbibtex:
+  set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
+  cd $(PREDEF)
+  tie -m upbibtex.web bibtex.web bibtex.ch ptexdir\pbibtex.ch
+  tangle upbibtex upbibtex
+  -$(CONVERT) upbibtex
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\upbibtex-upbibtex.obj $(PREDEF)\upbibtex.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\upbibtex-kanji.obj $(UPTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\upbibtex.exe $(TLBUILD)\upbibtex-*.obj $(UPTEX_LDFLAGS)
+
+updvitype:
+  set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
+  cd $(PREDEF)
+  tie -m updvitype.web dvitype.web dvitype.ch ptexdir\pdvitype.ch
+  tangle updvitype updvitype
+  $(CONVERT) updvitype
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\updvitype-updvitype.obj -DHEX_CHAR_CODE $(PREDEF)\updvitype.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\updvitype-kanji.obj $(UPTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\updvitype.exe $(TLBUILD)\updvitype-*.obj $(UPTEX_LDFLAGS)
+
+uppltotf:
+  set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
+  cd $(PREDEF)
+  tie -m uppltotf.web pltotf.web pltotf.ch ptexdir\ppltotf.ch
+  tangle uppltotf uppltotf
+  $(CONVERT) uppltotf
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uppltotf-uppltotf.obj -DPRESERVE_PUTC $(PREDEF)\uppltotf.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uppltotf-kanji.obj $(UPTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\uppltotf.exe $(TLBUILD)\uppltotf-*.obj $(UPTEX_LDFLAGS)
+
+uptftopl:
+  set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
+  cd $(PREDEF)
+  tie -m uptftopl.web tftopl.web tftopl.ch ptexdir\ptftopl.ch
+  tangle uptftopl uptftopl
+  $(CONVERT) uptftopl
+  cd $(MAKEDIR)
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-uptftopl.obj $(PREDEF)\uptftopl.c
+  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-kanji.obj $(UPTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\uptftopl.exe $(TLBUILD)\uptftopl-*.obj $(PTEX_LDFLAGS)
+
+EUPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-euptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS) -I$(MD5ROOT)
+EUPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
+euptex: libmd5
+  set WEBINPUTS=.;$(WEB2CROOT)
+  cd $(PREDEF)
+  tie -m euptex.web tex.web etexdir\etex.ch etexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken.ch showstream.ch zlib-fmt.ch etexdir\tex.ech
+  tie -c euptex.ch euptex.web eptexdir\etex.ch0 ptexdir\ptex-base.ch uptexdir\uptex-m.ch euptexdir\euptex.ch0 eptexdir\eptex.ech eptexdir\etex.ch1\
+    euptexdir\euptex.ch1 synctexdir\synctex-def.ch0 synctexdir\synctex-ep-mem.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0\
+    synctexdir\synctex-ep-mem.ch1 synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-ep-rec.ch0\
+    synctexdir\synctex-e-rec.ch0 synctexdir\synctex-p-rec.ch1 eptexdir\fam256.ch euptexdir\pdfstrcmp-eup-pre.ch eptexdir\pdfutils.ch\
+    euptexdir\pdfstrcmp-eup-post.ch eptexdir\suppresserrors.ch eptexdir\char-warning-eptex.ch tex-binpool.ch
+  tangle euptex.web euptex.ch
+  $(CONVERT) euptex
+  cd $(MAKEDIR)
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-euptex0.obj $(PREDEF)\euptex0.c
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-euptexini.obj $(PREDEF)\euptexini.c
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-pool.obj $(PREDEF)\euptex-pool.c
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-kanji.obj $(UPTEXROOT)\kanji.c
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-kanji_dump.obj $(UPTEXROOT)\kanji_dump.c
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-euptexextra.obj -Ddlleuptexmain=main $(EUPTEXROOT)\euptexextra.c
+  $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  link -nologo -out:$(TLWORKS)\euptex.exe $(TLBUILD)\euptex-*.obj libmd5.lib $(EUPTEX_LDFLAGS)
+
+PDFTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-pdftex.h\"\
+  $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS) $(LIBXPDF_CFLAGS) -I$(PDFTEXROOT) -I$(PDFTEXROOT)\regex -I$(MD5ROOT)
+PDFTEX_LDFLAGS=$(RUNTIME_LDFLAGS) libpng.lib libxpdf.lib libz.lib libmd5.lib
+pdftex: libmd5
+  set WEBINPUTS=.;$(WEB2CROOT);$(PDFTEXROOT)
+  cd $(PREDEF)
+  tie -c pdftex-final.ch pdftexdir\pdftex.web pdftexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken-102.ch partoken.ch showstream.ch zlib-fmt.ch\
+    enctexdir\enctex1.ch enctexdir\enctex-pdftex.ch enctexdir\enctex2.ch\
+    synctexdir\synctex-def.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0 synctexdir\synctex-e-mem.ch1 synctexdir\synctex-rec.ch0\
+    synctexdir\synctex-rec.ch1 synctexdir\synctex-e-rec.ch0 synctexdir\synctex-pdf-rec.ch2 pdftexdir\pdftex.ch pdftexdir\char-warning-pdftex.ch tex-binpool.ch
+  tangle pdftex pdftex-final
+  $(CONVERT) pdftex
+  cd $(MAKEDIR)
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-avl.obj $(PDFTEXROOT)\avl.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-avlstuff.obj $(PDFTEXROOT)\avlstuff.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-epdf.obj $(PDFTEXROOT)\epdf.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-mapfile.obj $(PDFTEXROOT)\mapfile.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-pdftoepdf.obj $(PDFTEXROOT)\pdftoepdf.cc
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-pkin.obj $(PDFTEXROOT)\pkin.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-subfont.obj $(PDFTEXROOT)\subfont.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-tounicode.obj $(PDFTEXROOT)\tounicode.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-utils.obj $(PDFTEXROOT)\utils.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-vfpacket.obj $(PDFTEXROOT)\vfpacket.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writeenc.obj $(PDFTEXROOT)\writeenc.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writefont.obj $(PDFTEXROOT)\writefont.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writeimg.obj $(PDFTEXROOT)\writeimg.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writejbig2.obj $(PDFTEXROOT)\writejbig2.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writejpg.obj $(PDFTEXROOT)\writejpg.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writepng.obj $(PDFTEXROOT)\writepng.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writet1.obj $(PDFTEXROOT)\writet1.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writet2.obj $(PDFTEXROOT)\writet3.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writettf.obj $(PDFTEXROOT)\writettf.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-writezip.obj $(PDFTEXROOT)\writezip.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-regex.obj $(PDFTEXROOT)\regex\regex.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-pdftexextra.obj -Ddllpdftexmain=main $(PDFTEXROOT)\pdftexextra.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-pdftex0.obj $(PREDEF)\pdftex0.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-pdftexini.obj $(PREDEF)\pdftexini.c
+  $(CC) $(PDFTEX_CFLAGS) -Fo$(TLBUILD)\pdftex-pool.obj $(PREDEF)\pdftex-pool.c
+  link -nologo -out:$(TLWORKS)\pdftex.exe $(TLBUILD)\pdftex-*.obj $(PDFTEX_LDFLAGS)
+
+ttf2afm:
+  $(CC) $(CFLAGS) -Fo$(TLWORKS)\ttf2afm.exe $(PDFTEXROOT)\ttf2afm.c
+
+pdftosrc:
+  $(CC) $(CFLAGS) $(LIBXPDF_CFLAGS) -Fo$(TLWORKS)\pdftosrc.exe $(PDFTEXROOT)\pdftosrc.cc
+
+XETEXSP_CFLAGS=-I$(XETEXSP) -I$(XETEXSPROOT) $(CFLAGS) -utf-8 -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-xetex.h\"\
+  $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS) $(LIBICU_CFLAGS) $(LIBGRAPHITE2_CFLAGS) $(LIBHARFBUZZ_CFLAGS)\
+  $(LIBFREETYPE_CFLAGS) $(LIBPPLIB_CFLAGS) -DHAVE_CONFIG_H -DXETEX_SPEC -I$(MD5ROOT)\
+  -I$(SPECIMENROOT)
+XETEX_LDFLAGS=libicuuc.lib libicudata.lib libmd5.lib libpng.lib libpplib.lib \
+  libharfbuzz.lib libteckit.lib libgraphite2.lib libfreetype.lib libz.lib $(RUNTIME_LDFLAGS)
+xetex-specimen: libmd5
+  set WEBINPUTS=.;$(WEB2CROOT);$(XETEXSPROOT)
+  cd $(PREDEF)
+  tie -c xetex-final.ch xetexdir\xetex.web xetexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken-102.ch partoken.ch showstream.ch\
+    synctexdir\synctex-xe-def.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0 synctexdir\synctex-e-mem.ch1 synctexdir\synctex-rec.ch0\
+    synctexdir\synctex-e-rec.ch0 xetexdir\xetex.ch synctexdir\synctex-xe-rec.ch3 xetexdir\char-warning-xetex.ch tex-binpool.ch
+  otangle xetex xetex-final
+  $(CONVERT) xetex
+  cd $(MAKEDIR)
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeXFontInst.obj $(XETEXSPROOT)\XeTeXFontInst.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeXFontMgr.obj $(XETEXSPROOT)\XeTeXFontMgr.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeXLayoutInterface.obj $(XETEXSPROOT)\XeTeXLayoutInterface.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeXOTMath.obj $(XETEXSPROOT)\XeTeXOTMath.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeX_ext.obj $(XETEXSPROOT)\XeTeX_ext.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeX_pic.obj $(XETEXSPROOT)\XeTeX_pic.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-trans.obj $(XETEXSPROOT)\trans.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-hz.obj $(XETEXSPROOT)\hz.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pdfimage.obj $(XETEXSPROOT)\pdfimage.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-bmpimage.obj $(XETEXSPROOT)\image\bmpimage.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-jpegimage.obj $(XETEXSPROOT)\image\jpegimage.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-mfileio.obj $(XETEXSPROOT)\image\mfileio.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-numbers.obj $(XETEXSPROOT)\image\numbers.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pngimage.obj $(XETEXSPROOT)\image\pngimage.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-XeTeXFontMgr_SP.obj $(XETEXSPROOT)\XeTeXFontMgr_SP.cpp
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetexextra.obj -Ddllxetexmain=main $(XETEXSPROOT)\xetexextra.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-synctex.obj $(SYNCTEXROOT)\synctex.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-specimen.obj $(SPECIMENROOT)\libspecimen.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-parson.obj $(SPECIMENROOT)\parson.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetex0.obj xetex0.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetexini.obj xetexini.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj xetex-pool.c
+  link -nologo -out:$(TLWORKS)\xetex.exe $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
+
+all: bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave odvicopy odvitype\
+  ofm2opl opl2ofm ovf2ovp ovp2ovf twill aleph omfonts otp2ocp outocp tex mf\
+  ptex pbibtex pdvitype ppltotf ptftopl eptex\
+  uptex upbibtex updvitype uppltotf uptftopl euptex\
+  pdftex ttf2afm pdftosrc mpost pmpost upmpost
+
+clean:
+  @if exist $(PREDEF)\*.c (del $(PREDEF)\*.c)
+  @if exist $(PREDEF)\*.ch (del $(PREDEF)\*.ch)
+  @if exist $(PREDEF)\*.p (del $(PREDEF)\*.p)
+  @if exist $(PREDEF)\*.pool (del $(PREDEF)\*.pool)
+  @if exist $(PREDEF)\*.h (del $(PREDEF)\*.h)
+  @if exist $(PREDEF)\*.web (del $(PREDEF)\*.web)
+  @if exist $(PREDEF)\*.w (del $(PREDEF)\*.w)
+  @if exist $(TLBUILD)\*.obj (del $(TLBUILD)\*.obj)
+  @if exist $(TLBUILD)\libicudata.c (del $(TLBUILD)\libicudata.c)
+  @if exist $(TLBUILD)\*.lib (del $(TLBUILD)\*.lib)
+  @if exist $(TLBUILD)\*.bat (del $(TLBUILD)\*.bat)

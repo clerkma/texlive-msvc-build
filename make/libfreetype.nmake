@@ -1,0 +1,47 @@
+ROOT=$(TLROOT)\libs\freetype2\freetype-src
+CFLAGS=-nologo -c -utf-8 -O2 -Oy -DFT2_BUILD_LIBRARY -DDLG_API="" -I$(TLROOT)\libs\freetype2\freetype-src\include
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftsystem.obj $(ROOT)\src/base/ftsystem.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftdebug.obj $(ROOT)\src/base/ftdebug.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftinit.obj $(ROOT)\src/base/ftinit.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftbase.obj $(ROOT)\src/base/ftbase.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftbbox.obj $(ROOT)\src/base/ftbbox.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftbdf.obj $(ROOT)\src/base/ftbdf.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftbitmap.obj $(ROOT)\src/base/ftbitmap.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftcid.obj $(ROOT)\src/base/ftcid.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftfstype.obj $(ROOT)\src/base/ftfstype.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftgasp.obj $(ROOT)\src/base/ftgasp.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftglyph.obj $(ROOT)\src/base/ftglyph.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftgxval.obj $(ROOT)\src/base/ftgxval.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftmm.obj $(ROOT)\src/base/ftmm.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftotval.obj $(ROOT)\src/base/ftotval.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftpatent.obj $(ROOT)\src/base/ftpatent.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftpfr.obj $(ROOT)\src/base/ftpfr.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftstroke.obj $(ROOT)\src/base/ftstroke.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftsynth.obj $(ROOT)\src/base/ftsynth.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-fttype1.obj $(ROOT)\src/base/fttype1.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftwinfnt.obj $(ROOT)\src/base/ftwinfnt.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-truetype.obj $(ROOT)\src/truetype/truetype.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-type1.obj $(ROOT)\src/type1/type1.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-cff.obj $(ROOT)\src/cff/cff.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-type1cid.obj $(ROOT)\src/cid/type1cid.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-pfr.obj $(ROOT)\src/pfr/pfr.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-svg.obj $(ROOT)\src/svg/svg.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-type42.obj $(ROOT)\src/type42/type42.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-winfnt.obj $(ROOT)\src/winfonts/winfnt.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-pcf.obj $(ROOT)\src/pcf/pcf.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-bdf.obj $(ROOT)\src/bdf/bdf.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-sfnt.obj $(ROOT)\src/sfnt/sfnt.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-autofit.obj $(ROOT)\src/autofit/autofit.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-pshinter.obj $(ROOT)\src/pshinter/pshinter.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-smooth.obj $(ROOT)\src/smooth/smooth.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-raster.obj $(ROOT)\src/raster/raster.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-sdf.obj $(ROOT)\src/sdf/sdf.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftcache.obj $(ROOT)\src/cache/ftcache.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftgzip.obj $(ROOT)\src/gzip/ftgzip.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftlzw.obj $(ROOT)\src/lzw/ftlzw.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-ftbzip2.obj $(ROOT)\src/bzip2/ftbzip2.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-psaux.obj $(ROOT)\src/psaux/psaux.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-psnames.obj $(ROOT)\src/psnames/psnames.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libfreetype-dlg.obj $(ROOT)\src/dlg/dlg.c
+	lib -nologo -out:$(TLBUILD)\libfreetype.lib $(TLBUILD)\libfreetype-*.obj

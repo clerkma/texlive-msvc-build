@@ -1,0 +1,4 @@
+all:
+	if not exist ($(TLBUILD)\libicudata.c) (py $(TLTOOLS)\gen.py icudata)
+	$(CC) -nologo -c -Fo$(TLBUILD)\libicudata.obj $(TLBUILD)\libicudata.c
+	lib -nologo -out:$(TLBUILD)\libicudata.lib $(TLBUILD)\libicudata.obj

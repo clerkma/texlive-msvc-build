@@ -1,0 +1,19 @@
+ROOT=$(TLROOT)\libs\zlib\zlib-src
+CFLAGS=-nologo -c -O2 -Oy -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zlib
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-adler32.obj $(ROOT)\adler32.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-compress.obj $(ROOT)\compress.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-crc32.obj $(ROOT)\crc32.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-deflate.obj $(ROOT)\deflate.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-infback.obj $(ROOT)\infback.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-gzclose.obj $(ROOT)\gzclose.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-gzlib.obj $(ROOT)\gzlib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-gzread.obj $(ROOT)\gzread.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-gzwrite.obj $(ROOT)\gzwrite.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-inffast.obj $(ROOT)\inffast.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-inflate.obj $(ROOT)\inflate.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-inftrees.obj $(ROOT)\inftrees.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-trees.obj $(ROOT)\trees.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-uncompr.obj $(ROOT)\uncompr.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-zutil.obj $(ROOT)\zutil.c
+	lib -nologo -out:$(TLBUILD)\libz.lib $(TLBUILD)\libz-*.obj

@@ -1,0 +1,23 @@
+CFLAGS=-nologo -c -I$(TLROOT) -I$(TLROOT)\texk -I$(PREDEF) -DWIN32 -DNO_KPSE_DLL -DYY_NO_UNISTD_H
+ROOT=$(TLROOT)\texk\web2c\web2c
+GMP_ROOT=$(TLROOT)\libs\gmp\gmp-src
+
+all:
+  if not exist ($(TLTOOLS)\bin) (md $(TLTOOLS)\bin)
+  cl $(CFLAGS) -Fo$(TLBUILD)\web2c-lexer.obj $(ROOT)\web2c-lexer.c
+  cl $(CFLAGS) -Fo$(TLBUILD)\web2c-parser.obj $(ROOT)\web2c-parser.c
+  cl $(CFLAGS) -Fo$(TLBUILD)\web2c-main.obj $(ROOT)\main.c
+  cl $(CFLAGS) -Fo$(TLBUILD)\web2c-kps.obj $(ROOT)\kps.c
+  cl $(CFLAGS) -Fo$(TLBUILD)\fixwrites.obj $(ROOT)\fixwrites.c
+  cl $(CFLAGS) -Fo$(TLBUILD)\splitup.obj $(ROOT)\splitup.c
+  cl $(CFLAGS) -Fo$(TLBUILD)\makecpool.obj $(ROOT)\makecpool.c
+  link -nologo -out:$(TLTOOLS)\bin\web2c.exe $(TLBUILD)\web2c-*.obj
+  link -nologo -out:$(TLTOOLS)\bin\splitup.exe $(TLBUILD)\splitup.obj $(TLBUILD)\libkpathsea.lib
+  link -nologo -out:$(TLTOOLS)\bin\fixwrites.exe $(TLBUILD)\fixwrites.obj
+  link -nologo -out:$(TLTOOLS)\bin\makecpool.exe $(TLBUILD)\makecpool.obj
+  cl -nologo -c -Fo$(TLBUILD)\gen-bases.obj $(GMP_ROOT)\gen-bases.c
+  cl -nologo -c -Fo$(TLBUILD)\gen-fac.obj $(GMP_ROOT)\gen-fac.c
+  cl -nologo -c -Fo$(TLBUILD)\gen-fib.obj $(GMP_ROOT)\gen-fib.c
+  link -nologo -out:$(TLTOOLS)\bin\gmp-gen-bases.exe $(TLBUILD)\gen-bases.obj
+  link -nologo -out:$(TLTOOLS)\bin\gmp-gen-fac.exe $(TLBUILD)\gen-fac.obj
+  link -nologo -out:$(TLTOOLS)\bin\gmp-gen-fib.exe $(TLBUILD)\gen-fib.obj

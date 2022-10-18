@@ -1,0 +1,38 @@
+ROOT=$(TLROOT)\libs\lua53\lua53-src\src
+CFLAGS=-nologo -utf-8 -c -O2 -Oy -DLUA_COMPAT_MODULE -DLUA_COMPAT_5_2 -DLUAI_HASHLIMIT=6 -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lapi.obj $(ROOT)\lapi.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lauxlib.obj $(ROOT)\lauxlib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lbaselib.obj $(ROOT)\lbaselib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lbitlib.obj $(ROOT)\lbitlib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lcode.obj $(ROOT)\lcode.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lcorolib.obj $(ROOT)\lcorolib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lctype.obj $(ROOT)\lctype.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ldblib.obj $(ROOT)\ldblib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ldebug.obj $(ROOT)\ldebug.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ldo.obj $(ROOT)\ldo.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ldump.obj $(ROOT)\ldump.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lfunc.obj $(ROOT)\lfunc.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lgc.obj $(ROOT)\lgc.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-linit.obj $(ROOT)\linit.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-liolib.obj $(ROOT)\liolib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-llex.obj $(ROOT)\llex.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lmathlib.obj $(ROOT)\lmathlib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lmem.obj $(ROOT)\lmem.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-loadlib.obj $(ROOT)\loadlib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lobject.obj $(ROOT)\lobject.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lopcodes.obj $(ROOT)\lopcodes.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-loslib.obj $(ROOT)\loslib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lparser.obj $(ROOT)\lparser.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lstate.obj $(ROOT)\lstate.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lstring.obj $(ROOT)\lstring.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lstrlib.obj $(ROOT)\lstrlib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ltable.obj $(ROOT)\ltable.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ltablib.obj $(ROOT)\ltablib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-ltm.obj $(ROOT)\ltm.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lua.obj $(ROOT)\lua.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lundump.obj $(ROOT)\lundump.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lutf8lib.obj $(ROOT)\lutf8lib.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lvm.obj $(ROOT)\lvm.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lzio.obj $(ROOT)\lzio.c
+	lib -nologo -out:$(TLBUILD)\libtexlua53.lib $(TLBUILD)\libtexlua53-*.obj

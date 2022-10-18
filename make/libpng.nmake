@@ -1,0 +1,19 @@
+ROOT=$(TLROOT)\libs\libpng\libpng-src
+CFLAGS=-nologo -c -O2 -Oy -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src -I$(TLROOT)\libs\libpng\libpng-src -I$(PREDEF)\libpng
+all:
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-png.obj $(ROOT)\png.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngerror.obj $(ROOT)\pngerror.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngget.obj $(ROOT)\pngget.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngmem.obj $(ROOT)\pngmem.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngpread.obj $(ROOT)\pngpread.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngread.obj $(ROOT)\pngread.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngrio.obj $(ROOT)\pngrio.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngrtran.obj $(ROOT)\pngrtran.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngrutil.obj $(ROOT)\pngrutil.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngset.obj $(ROOT)\pngset.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngtrans.obj $(ROOT)\pngtrans.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwio.obj $(ROOT)\pngwio.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwrite.obj $(ROOT)\pngwrite.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwtran.obj $(ROOT)\pngwtran.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwutil.obj $(ROOT)\pngwutil.c
+	lib -nologo -out:$(TLBUILD)\libpng.lib $(TLBUILD)\libpng-*.obj
