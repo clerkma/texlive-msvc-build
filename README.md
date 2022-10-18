@@ -24,11 +24,11 @@ Prepare enviroment variables:
 set TLROOT=your\path\to\texlive
 set TEXMFCNF=%TLROOT%\texk\kpathsea
 set PREDEF=%CD%\predef
+set TLTOOLS=%CD%\tools
 set TLARCH=x64
 @rem please make sure that directories existed
 set TLBUILD=%CD%\x64-build
 set TLWORKS=%CD%\bin\x64
-set TLTOOLS=%CD%\tools
 @rem build xetex-specimen
 set XETEXSP=your\path\to\xetex-specimen
 set XETEXSPROOT=%XETEXSP%\xetexdir
