@@ -19,7 +19,7 @@ TeX Live with MSVC
 
 Prepare enviroment variables:
 
-```
+```bat
 @rem set-var-x64.bat
 set TLROOT=your\path\to\texlive
 set TEXMFCNF=%TLROOT%\texk\kpathsea
@@ -37,7 +37,7 @@ set SPECIMENROOT=%XETEXSP%\libspecimen
 
 Bootstrap:
 
-```
+```bat
 tools\set-env-x64.bat
 make-libs.bat
 nmake -nologo -f make\bootstrap.nmake
@@ -47,7 +47,7 @@ nmake -nologo -f make\bootstrap.nmake
 
 Build `web2c` programs:
 
-```
+```bat
 nmake -nologo -f make\build.nmake all
 ```
 
@@ -55,12 +55,12 @@ nmake -nologo -f make\build.nmake all
 
 Build LuaTeX and LuaHBTeX:
 
-```
+```bat
 nmake -nologo -f make\luatex.nmake luatex luahbtex
 ```
 
 Build LuJITTeX and LuaJITHBTeX:
 
-```
+```bat
 nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 ```
