@@ -186,9 +186,9 @@ mf:
   $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-win32.obj $(WINDOWROOT)\win32.c
   $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\libwindow-x11.obj $(WINDOWROOT)\x11-Xlib.c
   lib -nologo -out:$(TLBUILD)\libwindow.lib $(TLBUILD)\libwindow-*.obj
-  link -nologo -dll -out:$(TLWORKS)\mf.exe $(TLBUILD)\mf-*.obj $(RUNTIME_LDFLAGS) libwindow.lib
+  link -nologo -out:$(TLWORKS)\mf.exe $(TLBUILD)\mf-*.obj $(RUNTIME_LDFLAGS) libwindow.lib
   $(CC) $(MF_CFLAGS) -Fo$(TLBUILD)\mf-mfextra.obj -DNO_MF_ASM -DMFNOWIN $(WEB2CROOT)\mfextra.c
-  link -nologo -dll -out:$(TLWORKS)\mf-nowin.exe $(TLBUILD)\mf-*.obj $(RUNTIME_LDFLAGS) libwindow.lib
+  link -nologo -out:$(TLWORKS)\mf-nowin.exe $(TLBUILD)\mf-*.obj $(RUNTIME_LDFLAGS) libwindow.lib
 
 MFLUA_CFLAGS=-nologo -c -I. -DMF_LUA -DNO_MF_ASM -I$(WEB2CROOT) $(KPATHSEA_CFLAGS) $(LUA53_CFLAGS) $(POTRACE_CFLAGS)
 mflua: mf
