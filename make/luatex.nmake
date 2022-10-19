@@ -289,7 +289,7 @@ LUAHBTEX_LDFLAGS=-libpath:$(TLBUILD) $(LUATEX_LDFLAGS_COMMON) $(LIBLUA)hbtexspec
 $(LUATEX): $(LUATEX_DEP)
   $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-luatex.obj -Ddll$(LUATEX)main=main $(LUATEXROOT)\luatex.c
   $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)tex-lmplib.obj $(MPLIBROOT)\lmplib.c
-  link -nologo -out:$(TLWORKS)\$(LUATEX).exe $(TLBUILD)\$(LIBLUA)tex-*.obj $(LUATEX_LDFLAGS)
+  link -nologo -dll -out:$(TLWORKS)\$(LUATEX).dll $(TLBUILD)\$(LIBLUA)tex-*.obj $(LUATEX_LDFLAGS)
 
 $(LIBLUA)hbtexspecific:
   $(CC) $(LUATEX_CFLAGS) -DLUATEX_HARFBUZZ_ENABLED -I$(MPLIBROOT) -Fo$(TLBUILD)\$(LIBLUA)hbtexspecific-utils.obj $(LUATEXROOT)\utils\utils.c 
@@ -319,5 +319,4 @@ $(LIBLUA)harfbuzz:
 $(LUAHBTEX): $(LUAHBTEX_DEP)
   $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)hbtex-luatex.obj -Ddll$(LUATEX)main=main $(LUATEXROOT)\luatex.c
   $(CC) $(LUATEX_CFLAGS) -Fo$(TLBUILD)\$(LIBLUA)hbtex-lmplib.obj $(MPLIBROOT)\lmplib.c
-  link -nologo -out:$(TLWORKS)\$(LUAHBTEX).exe $(TLBUILD)\$(LIBLUA)hbtex-*.obj $(LUAHBTEX_LDFLAGS)
-    
+  link -nologo -dll -out:$(TLWORKS)\$(LUAHBTEX).dll $(TLBUILD)\$(LIBLUA)hbtex-*.obj $(LUAHBTEX_LDFLAGS)
