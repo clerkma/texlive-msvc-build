@@ -600,9 +600,9 @@ xetex-specimen: libmd5
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-synctex.obj $(SYNCTEXROOT)\synctex.c
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-specimen.obj $(SPECIMENROOT)\libspecimen.c
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-parson.obj $(SPECIMENROOT)\parson.c
-  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetex0.obj xetex0.c
-  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetexini.obj xetexini.c
-  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj xetex-pool.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetex0.obj $(PREDEF)\xetex0.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetexini.obj $(PREDEF)\xetexini.c
+  $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj $(PREDEF)\xetex-pool.c
   link -nologo -dll -out:$(TLWORKS)\xetex.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
 
 all: bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave odvicopy odvitype\
