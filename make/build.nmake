@@ -685,6 +685,96 @@ dvipdfmx:
   $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dirent.obj $(PREDEF)\kpathsea\dirent.c
   link -nologo -dll -out:$(TLWORKS)\dvipdfmx.dll $(TLBUILD)\dvipdfmx-*.obj -libpath:$(TLBUILD) libkpathsea.lib libpng.lib libpaper.lib libz.lib $(RUNTIME_LIBS)
 
+KPSEROOT=$(TLROOT)\texk\kpathsea
+KPSE_CFLAGS=-nologo -c -D_CRT_DECLARE_NONSTDC_NAMES=0 $(KPATHSEA_CFLAGS)
+KPSE_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+kpsetools:
+  $(CC) $(KPSE_CFLAGS) -Fo$(TLBUILD)\kpsetools-access.obj $(KPSEROOT)\access.c
+  $(CC) $(KPSE_CFLAGS) -Fo$(TLBUILD)\kpsetools-stat.obj $(KPSEROOT)\kpsestat.c
+  $(CC) $(KPSE_CFLAGS) -Fo$(TLBUILD)\kpsetools-which.obj $(KPSEROOT)\kpsewhich.c
+  link -nologo -out:$(TLWORKS)\kpseaccess.exe $(TLBUILD)\kpsetools-access.obj $(KPSE_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\kpsestat.exe $(TLBUILD)\kpsetools-stat.obj $(KPSE_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\kpsewhich.exe $(TLBUILD)\kpsetools-which.obj $(KPSE_LDFLAGS)
+
+MAKEJVF_ROOT=$(TLROOT)\texk\makejvf
+MAKEJVF_CFLAGS=-nologo -c $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
+MAKEJVF_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)
+makejvf:
+  $(CC) $(MAKEJVF_CFLAGS) -Fo$(TLBUILD)\makejvf-main.obj $(MAKEJVF_ROOT)\main.c
+  $(CC) $(MAKEJVF_CFLAGS) -Fo$(TLBUILD)\makejvf-tfmread.obj $(MAKEJVF_ROOT)\tfmread.c
+  $(CC) $(MAKEJVF_CFLAGS) -Fo$(TLBUILD)\makejvf-tool.obj $(MAKEJVF_ROOT)\tool.c
+  $(CC) $(MAKEJVF_CFLAGS) -Fo$(TLBUILD)\makejvf-uniblock.obj $(MAKEJVF_ROOT)\uniblock.c
+  $(CC) $(MAKEJVF_CFLAGS) -Fo$(TLBUILD)\makejvf-usrtable.obj $(MAKEJVF_ROOT)\usrtable.c
+  $(CC) $(MAKEJVF_CFLAGS) -Fo$(TLBUILD)\makejvf-write.obj $(MAKEJVF_ROOT)\write.c
+  link -nologo -out:$(TLWORKS)\makejvf.exe $(TLBUILD)\makejvf-*.obj $(MAKEJVF_LDFLAGS)
+
+MAKEINDEX_ROOT=$(TLROOT)\texk\makeindexk
+MAKEINDEX_CFLAGS=-nologo -c -I$(PREDEF)\makeindex $(KPATHSEA_CFLAGS)
+MAKEINDEX_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+makeindex:
+  $(CC) $(MAKEINDEX_CFLAGS) -Fo$(TLBUILD)\makeindex-genind.obj $(MAKEINDEX_ROOT)\genind.c
+  $(CC) $(MAKEINDEX_CFLAGS) -Fo$(TLBUILD)\makeindex-mkind.obj $(MAKEINDEX_ROOT)\mkind.c
+  $(CC) $(MAKEINDEX_CFLAGS) -Fo$(TLBUILD)\makeindex-qsort.obj $(MAKEINDEX_ROOT)\qsort.c
+  $(CC) $(MAKEINDEX_CFLAGS) -Fo$(TLBUILD)\makeindex-scanid.obj $(MAKEINDEX_ROOT)\scanid.c
+  $(CC) $(MAKEINDEX_CFLAGS) -Fo$(TLBUILD)\makeindex-scanst.obj $(MAKEINDEX_ROOT)\scanst.c
+  $(CC) $(MAKEINDEX_CFLAGS) -Fo$(TLBUILD)\makeindex-sortid.obj $(MAKEINDEX_ROOT)\sortid.c
+  link -nologo -out:$(TLWORKS)\makeindex.exe $(TLBUILD)\makeindex-*.obj $(MAKEINDEX_LDFLAGS)
+
+MENDEX_ROOT=$(TLROOT)\texk\mendexk
+MENDEX_CFLAGS=-nologo -c -I$(PREDEF)\mendex $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
+MENDEX_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)
+mendex:
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-convert.obj $(MENDEX_ROOT)\convert.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-fread.obj $(MENDEX_ROOT)\fread.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-fwrite.obj $(MENDEX_ROOT)\fwrite.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-kp.obj $(MENDEX_ROOT)\kp.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-main.obj $(MENDEX_ROOT)\main.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-pageread.obj $(MENDEX_ROOT)\pageread.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-qsort.obj $(MENDEX_ROOT)\qsort.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-sort.obj $(MENDEX_ROOT)\sort.c
+  $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-styfile.obj $(MENDEX_ROOT)\styfile.c
+  link -nologo -out:$(TLWORKS)\mendex.exe $(TLBUILD)\mendex-*.obj $(MENDEX_LDFLAGS)
+
+TTFDUMP_ROOT=$(TLROOT)\texk\ttfdump
+TTFDUMP_CFLAGS=-nologo -c -DHAVE_CONFIG_H -DWIN32 -I$(PREDEF)\ttfdump $(KPATHSEA_CFLAGS) -I$(TLROOT)\texk\kpathsea -I$(TTFDUMP_ROOT)\include
+MAKEJVF_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+ttfdump:
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-cmap.obj $(TTFDUMP_ROOT)\libttf\cmap.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-cvt.obj $(TTFDUMP_ROOT)\libttf\cvt.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-disasm.obj $(TTFDUMP_ROOT)\libttf\disasm.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-font.obj $(TTFDUMP_ROOT)\libttf\font.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-fpgm.obj $(TTFDUMP_ROOT)\libttf\fpgm.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-gasp.obj $(TTFDUMP_ROOT)\libttf\gasp.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-gcache.obj $(TTFDUMP_ROOT)\libttf\gcache.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-glyf.obj $(TTFDUMP_ROOT)\libttf\glyf.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-gpos.obj $(TTFDUMP_ROOT)\libttf\gpos.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-gstate.obj $(TTFDUMP_ROOT)\libttf\gstate.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-gsub.obj $(TTFDUMP_ROOT)\libttf\gsub.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-hdmx.obj $(TTFDUMP_ROOT)\libttf\hdmx.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-head.obj $(TTFDUMP_ROOT)\libttf\head.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-hhea.obj $(TTFDUMP_ROOT)\libttf\hhea.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-hmtx.obj $(TTFDUMP_ROOT)\libttf\hmtx.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-kern.obj $(TTFDUMP_ROOT)\libttf\kern.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-loca.obj $(TTFDUMP_ROOT)\libttf\loca.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-ltsh.obj $(TTFDUMP_ROOT)\libttf\ltsh.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-maxp.obj $(TTFDUMP_ROOT)\libttf\maxp.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-name.obj $(TTFDUMP_ROOT)\libttf\name.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-os2.obj $(TTFDUMP_ROOT)\libttf\os2.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-otfcommon.obj $(TTFDUMP_ROOT)\libttf\otfcommon.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-pclt.obj $(TTFDUMP_ROOT)\libttf\pclt.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-post.obj $(TTFDUMP_ROOT)\libttf\post.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-prep.obj $(TTFDUMP_ROOT)\libttf\prep.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-tabledir.obj $(TTFDUMP_ROOT)\libttf\tabledir.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-ttc.obj $(TTFDUMP_ROOT)\libttf\ttc.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-ttfread.obj $(TTFDUMP_ROOT)\libttf\ttfread.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-ttfutil.obj $(TTFDUMP_ROOT)\libttf\ttfutil.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-vdmx.obj $(TTFDUMP_ROOT)\libttf\vdmx.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-vhea.obj $(TTFDUMP_ROOT)\libttf\vhea.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-vmtx.obj $(TTFDUMP_ROOT)\libttf\vmtx.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-ttfdump.obj $(TTFDUMP_ROOT)\src\ttfdump.c
+  $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-getopt.obj $(KPSEROOT)\getopt.c
+  link -nologo -out:$(TLWORKS)\ttfdump.exe $(TLBUILD)\ttfdump-*.obj $(TTFDUMP_LDFLAGS)
+
 all: bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave odvicopy odvitype\
   ofm2opl opl2ofm ovf2ovp ovp2ovf twill aleph omfonts otp2ocp outocp tex mf\
   ptex pbibtex pdvitype ppltotf ptftopl eptex\

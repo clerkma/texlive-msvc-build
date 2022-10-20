@@ -92,6 +92,12 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 ## Supported Programs
 
 * dvipdfmx (exported `dlldvipdfmxmain`)
+* kpsetools (kpseaccess, kpsestat, kpsewhich)
+* makejvf
+* makeindex
+* mendex
+* ttfdump
+
 
 ```bat
 nmake -nologo -f make\build.nmake <prog_name>
