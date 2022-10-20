@@ -5,6 +5,7 @@ RUNTIME_LIBS=Advapi32.lib Shell32.lib User32.lib Ws2_32.lib Gdi32.lib Rpcrt4.lib
 RUNTIME_LDFLAGS=-libpath:$(TLBUILD) libruntime.lib libkpathsea.lib $(RUNTIME_LIBS)
 
 ZLIB_CFLAGS=-I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+LIBPAPER_CFLAGS=-I$(TLROOT)\libs\libpaper\libpaper-src\lib
 LIBPNG_CFLAGS=-I$(PREDEF)\libpng -I$(TLROOT)\libs\libpng\libpng-src
 LIBMPFR_CFLAGS=-I$(PREDEF)\mpfr -I$(TLROOT)\libs\mpfr\mpfr-src\src
 LIBGMP_CFLAGS=-I$(PREDEF)\gmp -I$(TLROOT)\libs\gmp\gmp-src
@@ -604,6 +605,85 @@ xetex-specimen: libmd5
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetexini.obj $(PREDEF)\xetexini.c
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj $(PREDEF)\xetex-pool.c
   link -nologo -dll -out:$(TLWORKS)\xetex.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
+
+DVIPDFMX_ROOT=$(TLROOT)\texk\dvipdfm-x
+DVIPDFMX_CFLAGS=-c -nologo $(KPATHSEA_CFLAGS) $(LIBPNG_CFLAGS) $(LIBPAPER_CFLAGS) $(ZLIB_CFLAGS) -I$(PREDEF)\dvipdfmx \
+  -D_CRT_DECLARE_NONSTDC_NAMES=0 -DHAVE_CONFIG_H -DWIN32
+dvipdfmx:
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-agl.obj $(DVIPDFMX_ROOT)\agl.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-bmpimage.obj $(DVIPDFMX_ROOT)\bmpimage.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cff.obj $(DVIPDFMX_ROOT)\cff.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cff_dict.obj $(DVIPDFMX_ROOT)\cff_dict.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cid.obj $(DVIPDFMX_ROOT)\cid.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cidtype0.obj $(DVIPDFMX_ROOT)\cidtype0.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cidtype2.obj $(DVIPDFMX_ROOT)\cidtype2.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cmap.obj $(DVIPDFMX_ROOT)\cmap.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cmap_read.obj $(DVIPDFMX_ROOT)\cmap_read.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cmap_write.obj $(DVIPDFMX_ROOT)\cmap_write.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-cs_type2.obj $(DVIPDFMX_ROOT)\cs_type2.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dpxconf.obj $(DVIPDFMX_ROOT)\dpxconf.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dpxcrypt.obj $(DVIPDFMX_ROOT)\dpxcrypt.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dpxfile.obj $(DVIPDFMX_ROOT)\dpxfile.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dpxutil.obj $(DVIPDFMX_ROOT)\dpxutil.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dvi.obj $(DVIPDFMX_ROOT)\dvi.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dvipdfmx.obj $(DVIPDFMX_ROOT)\dvipdfmx.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-epdf.obj $(DVIPDFMX_ROOT)\epdf.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-error.obj $(DVIPDFMX_ROOT)\error.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-fontmap.obj $(DVIPDFMX_ROOT)\fontmap.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-jp2image.obj $(DVIPDFMX_ROOT)\jp2image.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-jpegimage.obj $(DVIPDFMX_ROOT)\jpegimage.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-mem.obj $(DVIPDFMX_ROOT)\mem.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-mfileio.obj $(DVIPDFMX_ROOT)\mfileio.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-mpost.obj $(DVIPDFMX_ROOT)\mpost.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-mt19937ar.obj $(DVIPDFMX_ROOT)\mt19937ar.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-numbers.obj $(DVIPDFMX_ROOT)\numbers.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-otl_opt.obj $(DVIPDFMX_ROOT)\otl_opt.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfcolor.obj $(DVIPDFMX_ROOT)\pdfcolor.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfdev.obj $(DVIPDFMX_ROOT)\pdfdev.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfdoc.obj $(DVIPDFMX_ROOT)\pdfdoc.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfdraw.obj $(DVIPDFMX_ROOT)\pdfdraw.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfencoding.obj $(DVIPDFMX_ROOT)\pdfencoding.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfencrypt.obj $(DVIPDFMX_ROOT)\pdfencrypt.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdffont.obj $(DVIPDFMX_ROOT)\pdffont.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfnames.obj $(DVIPDFMX_ROOT)\pdfnames.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfobj.obj $(DVIPDFMX_ROOT)\pdfobj.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfparse.obj $(DVIPDFMX_ROOT)\pdfparse.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfresource.obj $(DVIPDFMX_ROOT)\pdfresource.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pdfximage.obj $(DVIPDFMX_ROOT)\pdfximage.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pkfont.obj $(DVIPDFMX_ROOT)\pkfont.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pngimage.obj $(DVIPDFMX_ROOT)\pngimage.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pst.obj $(DVIPDFMX_ROOT)\pst.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-pst_obj.obj $(DVIPDFMX_ROOT)\pst_obj.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-sfnt.obj $(DVIPDFMX_ROOT)\sfnt.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_color.obj $(DVIPDFMX_ROOT)\spc_color.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_dvipdfmx.obj $(DVIPDFMX_ROOT)\spc_dvipdfmx.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_dvips.obj $(DVIPDFMX_ROOT)\spc_dvips.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_html.obj $(DVIPDFMX_ROOT)\spc_html.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_misc.obj $(DVIPDFMX_ROOT)\spc_misc.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_pdfm.obj $(DVIPDFMX_ROOT)\spc_pdfm.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_tpic.obj $(DVIPDFMX_ROOT)\spc_tpic.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_util.obj $(DVIPDFMX_ROOT)\spc_util.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-spc_xtx.obj $(DVIPDFMX_ROOT)\spc_xtx.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-specials.obj $(DVIPDFMX_ROOT)\specials.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-subfont.obj $(DVIPDFMX_ROOT)\subfont.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-t1_char.obj $(DVIPDFMX_ROOT)\t1_char.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-t1_load.obj $(DVIPDFMX_ROOT)\t1_load.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tfm.obj $(DVIPDFMX_ROOT)\tfm.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-truetype.obj $(DVIPDFMX_ROOT)\truetype.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tt_aux.obj $(DVIPDFMX_ROOT)\tt_aux.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tt_cmap.obj $(DVIPDFMX_ROOT)\tt_cmap.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tt_glyf.obj $(DVIPDFMX_ROOT)\tt_glyf.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tt_gsub.obj $(DVIPDFMX_ROOT)\tt_gsub.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tt_post.obj $(DVIPDFMX_ROOT)\tt_post.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-tt_table.obj $(DVIPDFMX_ROOT)\tt_table.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-type0.obj $(DVIPDFMX_ROOT)\type0.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-type1.obj $(DVIPDFMX_ROOT)\type1.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-type1c.obj $(DVIPDFMX_ROOT)\type1c.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-unicode.obj $(DVIPDFMX_ROOT)\unicode.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-vf.obj $(DVIPDFMX_ROOT)\vf.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-xbb.obj $(DVIPDFMX_ROOT)\xbb.c
+  $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dirent.obj $(PREDEF)\kpathsea\dirent.c
+  link -nologo -dll -out:$(TLWORKS)\dvipdfmx.dll $(TLBUILD)\dvipdfmx-*.obj -libpath:$(TLBUILD) libkpathsea.lib libpng.lib libpaper.lib libz.lib $(RUNTIME_LIBS)
 
 all: bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave odvicopy odvitype\
   ofm2opl opl2ofm ovf2ovp ovp2ovf twill aleph omfonts otp2ocp outocp tex mf\

@@ -77,6 +77,23 @@ task_libpng = {
     "prefix": "libpng-",
 }
 
+task_libpaper = {
+    "cflags": [
+        "-nologo", "-c", "-O2", "-Oy",
+        "-I$(PREDEF)/luatex", # unistd.h
+        "-DPAPERSIZE=\\\"letter\\\"",
+        "-DPAPERSIZEVAR=\\\"PAPERSIZE\\\"",
+        "-D__STDC__", 
+        "-Dstrcasecmp=_stricmp",
+    ],
+    "root": "$(TLROOT)/libs/libpaper/libpaper-src/lib",
+    "components": [
+        "dimen.c", "paper.c"
+    ],
+    "out": "libpaper.lib",
+    "prefix": "libpaper-",
+}
+
 task_libfreetype = {
     "cflags": [
         "-nologo", "-c", "-utf-8", "-O2", "-Oy",
@@ -1364,6 +1381,7 @@ task_map = {
     # "icudata": task_libicudata,
     "icuuc": task_libicuuc,
     "otfcc": task_otfcc,
+    "paper": task_libpaper,
 }
 
 if __name__ == "__main__":

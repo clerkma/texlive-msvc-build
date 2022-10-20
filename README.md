@@ -51,6 +51,30 @@ Build `web2c` programs:
 nmake -nologo -f make\build.nmake all
 ```
 
+To make an `exe` wrapper of `dll`-base engine/programs (eg. `xetex`):
+```bat
+cl -c -DDLLPROC=dllxetexmain call.c
+link -out:xetex.exe call.obj %TLWORKS%\xetex.lib
+```
+
+Body of `call.c`:
+```c
+#include <stdio.h>
+
+extern DLLPROC(int, char**);
+
+int main(int ac, char ** av)
+{
+  return DLLPROC(ac, av);
+}
+```
+
+To create symbolic links:
+```bat
+mklink xelatex.exe xetex.exe
+mklink xelatex-dev.exe xetex.exe
+```
+
 ## Lua*TeX
 
 Build LuaTeX and LuaHBTeX:
@@ -63,4 +87,12 @@ Build LuJITTeX and LuaJITHBTeX:
 
 ```bat
 nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
+```
+
+## Supported Programs
+
+* dvipdfmx (exported `dlldvipdfmxmain`)
+
+```bat
+nmake -nologo -f make\build.nmake <prog_name>
 ```
