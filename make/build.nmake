@@ -56,8 +56,8 @@ CATUTIL=py $(TLTOOLS)\cat.py
 CFLAGS=-nologo -c -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
 
 tangle:
-  $(CATUTIL) $(WEB2CROOT)\web2c\common.defines $(WEB2CROOT)\tangleboot.pin | web2c -hcpascal.h -ctangleboot | fixwrites tangleboot > tangleboot.c
-  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tangleboot.obj tangleboot.c
+  $(CATUTIL) $(WEB2CROOT)\web2c\common.defines $(WEB2CROOT)\tangleboot.pin | web2c -hcpascal.h -ctangleboot | fixwrites tangleboot > $(PREDEF)\tangleboot.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tangleboot.obj $(PREDEF)\tangleboot.c
   link -nologo -out:$(TLWORKS)\tangle.exe $(TLBUILD)\tangleboot.obj $(RUNTIME_LDFLAGS)
 
 ctangle:

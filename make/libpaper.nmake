@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\libpaper\libpaper-src\lib
-CFLAGS=-nologo -c -O2 -Oy -I$(PREDEF)\luatex -DPAPERSIZE=\"letter\" -DPAPERSIZEVAR=\"PAPERSIZE\" -Za
+CFLAGS=-nologo -c -O2 -Oy -I$(PREDEF)\luatex -DPAPERSIZE=\"letter\" -DPAPERSIZEVAR=\"PAPERSIZE\" -D__STDC__ -Dstrcasecmp=_stricmp
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpaper-dimen.obj $(ROOT)\dimen.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpaper-paper.obj $(ROOT)\paper.c
