@@ -27,6 +27,7 @@ POTRACE_CFLAGS=-I$(TLROOT)\libs\potrace\potrace-src\src
 
 WEB2CROOT=$(TLROOT)\texk\web2c
 SYNCTEXROOT=$(WEB2CROOT)\synctexdir
+HITEXROOT=$(WEB2CROOT)\hitexdir
 PDFTEXROOT=$(WEB2CROOT)\pdftexdir
 PTEXROOT=$(WEB2CROOT)\ptexdir
 UPTEXROOT=$(WEB2CROOT)\uptexdir
@@ -40,6 +41,8 @@ EUPTEXROOT=$(WEB2CROOT)\euptexdir
 XETEXROOT=$(WEB2CROOT)\xetexdir
 MPLIBROOT=$(WEB2CROOT)\mplibdir
 TIEROOT=$(WEB2CROOT)\tiedir
+CTIEROOT=$(WEB2CROOT)\ctiedir
+CWEBROOT=$(WEB2CROOT)\cwebdir
 LUATEXROOT=$(WEB2CROOT)\luatexdir
 OMEGAWAREROOT=$(WEB2CROOT)\omegaware
 PMPROOT=$(WEB2CROOT)\pmpostdir
@@ -64,9 +67,59 @@ ctangle:
 
 tie:
   set CWEBINPUTS=$(TIEROOT)
+  cd $(PREDEF)
   ctangle tie.w tie-w2c.ch
-  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tie.obj tie.c
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tie.obj $(PREDEF)\tie.c
   link -nologo -out:$(TLWORKS)\tie.exe $(TLBUILD)\tie.obj $(RUNTIME_LDFLAGS)
+
+ctie:
+  set CWEBINPUTS=$(CTIEROOT)
+  cd $(PREDEF)
+  ctangle ctie.w ctie-k.ch
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\ctie.obj $(PREDEF)\ctie.c
+  link -nologo -out:$(TLWORKS)\ctie.exe $(TLBUILD)\ctie.obj $(RUNTIME_LDFLAGS)
+
+cweb_src:
+  set CWEBINPUTS=$(CWEBROOT)
+  cd $(PREDEF)
+  ctangle common comm-w2c.ch cweb.c
+  cd $(MAKEDIR)
+
+cweave: cweb_src
+  set CWEBINPUTS=$(CWEBROOT)
+  cd $(PREDEF)
+  ctangle cweave cweav-w2c
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\cweave.obj $(PREDEF)\cweave.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\cweb.obj $(PREDEF)\cweb.c
+  link -nologo -out:$(TLWORKS)\cweave.exe $(TLBUILD)\cweave.obj $(TLBUILD)\cweb.obj $(RUNTIME_LDFLAGS)
+
+ctwill: cweb_src
+  set CWEBINPUTS=$(CWEBROOT)
+  cd $(PREDEF)
+  ctangle cweave ctwill-w2c ctwill.c
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\ctwill.obj $(PREDEF)\ctwill.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\cweb.obj $(PREDEF)\cweb.c
+  link -nologo -out:$(TLWORKS)\ctwill.exe $(TLBUILD)\ctwill.obj $(TLBUILD)\cweb.obj $(RUNTIME_LDFLAGS)
+
+ctwill-refsort:
+  set CWEBINPUTS=$(CWEBROOT)
+  cd $(PREDEF)
+  ctangle refsort refsort ctwill-refsort.c
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\ctwill-refsort.obj $(PREDEF)\ctwill-refsort.c
+  link -nologo -out:$(TLWORKS)\ctwill-refsort.exe $(TLBUILD)\ctwill-refsort.obj $(RUNTIME_LDFLAGS)
+
+ctwill-twinx:
+  set CWEBINPUTS=$(CWEBROOT)
+  cd $(PREDEF)
+  ctangle twinx twinx ctwill-twinx.c
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\ctwill-twinx.obj $(PREDEF)\ctwill-twinx.c
+  link -nologo -out:$(TLWORKS)\ctwill-twinx.exe $(TLBUILD)\ctwill-twinx.obj $(RUNTIME_LDFLAGS)
 
 bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave otangle odvicopy odvitype:
   set WEBINPUTS=.;$(WEB2CROOT);$(OMEGAWAREROOT)
@@ -78,9 +131,10 @@ bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf poo
   link -nologo -out:$(TLWORKS)\$@.exe $(TLBUILD)\$@.obj $(RUNTIME_LDFLAGS)
 
 ofm2opl opl2ofm ovf2ovp ovp2ovf:
-  set WEBINPUTS=.;$(OMEGAWAREROOT)
+  set WEBINPUTS=.;$(WEB2CROOT);
   cd $(PREDEF)
-  otangle $@ $@
+  tie -m $@.web omegaware\$@.web omegaware\$@.up
+  otangle $@ omegaware\$@.ch
   $(CONVERT) $@
   cd $(MAKEDIR)
   $(CC) $(CFLAGS) -Fo$(TLBUILD)\$@.obj $(PREDEF)\$@.c
@@ -775,8 +829,9 @@ ttfdump:
   $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-getopt.obj $(KPSEROOT)\getopt.c
   link -nologo -out:$(TLWORKS)\ttfdump.exe $(TLBUILD)\ttfdump-*.obj $(TTFDUMP_LDFLAGS)
 
-all: bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave odvicopy odvitype\
-  ofm2opl opl2ofm ovf2ovp ovp2ovf twill aleph omfonts otp2ocp outocp tex mf\
+all: tangle weave ctangle cweave tie ctie ctwill ctwill-refsort ctwill-twinx twill\
+  bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf odvicopy odvitype\
+  ofm2opl opl2ofm ovf2ovp ovp2ovf aleph omfonts otp2ocp outocp tex mf\
   ptex pbibtex pdvitype ppltotf ptftopl eptex\
   uptex upbibtex updvitype uppltotf uptftopl euptex\
   pdftex ttf2afm pdftosrc mpost pmpost upmpost
