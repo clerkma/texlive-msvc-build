@@ -662,6 +662,19 @@ xetex-specimen: libmd5
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj $(PREDEF)\xetex-pool.c
   link -nologo -dll -out:$(TLWORKS)\xetex.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
 
+CHKTEX_ROOT=$(TLROOT)\texk\chktex
+CHKTEX_CFLAGS=-nologo -c -I$(CHKTEX_ROOT) -I$(CHKTEX_ROOT)\chktex-src -I$(CHKTEX_ROOT)\regex \
+  -DWIN32 -DHAVE_CONFIG_H -DKPATHSEA $(KPATHSEA_CFLAGS) -I$(PREDEF)\chktex
+CHKTEX_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+chktex:
+  $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-ChkTeX.obj $(CHKTEX_ROOT)\chktex-src\ChkTeX.c
+  $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-FindErrs.obj $(CHKTEX_ROOT)\chktex-src\FindErrs.c
+  $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-OpSys.obj $(CHKTEX_ROOT)\chktex-src\OpSys.c
+  $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-Resource.obj $(CHKTEX_ROOT)\chktex-src\Resource.c
+  $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-Utility.obj $(CHKTEX_ROOT)\chktex-src\Utility.c
+    $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-regex.obj $(CHKTEX_ROOT)\regex\regex.c
+  link -nologo -out:$(TLWORKS)\chktex.exe $(TLBUILD)\chktex-*.obj $(CHKTEX_LDFLAGS)
+
 CJKUTILS_ROOT=$(TLROOT)\texk\cjkutils
 CJKUTILS_CFLAGS=-nologo -c -I$(CJKUTILS_ROOT)\cjkutils-src\hbf2gf
 cjkutils:
@@ -680,6 +693,22 @@ cjkutils:
   link -nologo -out:$(TLWORKS)\extconv.exe $(TLBUILD)\extconv.obj
   link -nologo -out:$(TLWORKS)\sjisconv.exe $(TLBUILD)\sjisconv.obj
   link -nologo -out:$(TLWORKS)\hbf2gf.exe $(TLBUILD)\hbf2gf.obj  $(TLBUILD)\hbf.obj
+
+DETEX_ROOT=$(TLROOT)\texk\detex
+DETEX_CFLAGS=-nologo -c -DKPATHSEA -DWIN32 -I$(PREDEF)\detex $(KPATHSEA_CFLAGS)
+DETEX_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+detex:
+  $(CC) $(DETEX_CFLAGS) -Fo$(TLBUILD)\detex.obj $(DETEX_ROOT)\detex-src\detex.c
+  link -nologo -out:$(TLWORKS)\detex.exe $(TLBUILD)\detex.obj $(DETEX_LDFLAGS)
+
+DTL_ROOT=$(TLROOT)\texk\dtl
+DTL_CFLAGS=-nologo -c -DHAVE_CONFIG_H -DKPATHSEA -DWIN32 -I$(PREDEF)\dtl $(KPATHSEA_CFLAGS)
+DTL_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+dtl:
+  $(CC) $(DTL_CFLAGS) -Fo$(TLBUILD)\dt2dv.obj $(DTL_ROOT)\dt2dv.c
+  $(CC) $(DTL_CFLAGS) -Fo$(TLBUILD)\dv2dt.obj $(DTL_ROOT)\dv2dt.c
+  link -nologo -out:$(TLWORKS)\dt2dv.exe $(TLBUILD)\dt2dv.obj $(DTL_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\dv2dt.exe $(TLBUILD)\dv2dt.obj $(DTL_LDFLAGS)
 
 DVI2TTY_ROOT=$(TLROOT)\texk\dvi2tty
 DVI2TTY_CFLAGS=-nologo -c -DWIN32 -DKPATHSEA -I$(PREDEF)\luatex -I$(PREDEF)\dvi2tty $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
