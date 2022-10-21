@@ -91,7 +91,11 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 
 ## Supported Programs
 
+* cjkutils (bg5conv, cef5conv, cefconv, cefsconv, extconv, sjisconv, hbf2gf)
+* dvi2tty (disdvi, dvi2tty)
+* dvidvi
 * dvipdfmx (exported `dlldvipdfmxmain`)
+* dvips
 * kpsetools (kpseaccess, kpsestat, kpsewhich)
 * makejvf
 * makeindex

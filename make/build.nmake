@@ -662,6 +662,42 @@ xetex-specimen: libmd5
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj $(PREDEF)\xetex-pool.c
   link -nologo -dll -out:$(TLWORKS)\xetex.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
 
+CJKUTILS_ROOT=$(TLROOT)\texk\cjkutils
+CJKUTILS_CFLAGS=-nologo -c -I$(CJKUTILS_ROOT)\cjkutils-src\hbf2gf
+cjkutils:
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\bg5conv.obj $(CJKUTILS_ROOT)\bg5conv.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\cef5conv.obj $(CJKUTILS_ROOT)\cef5conv.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\cefconv.obj $(CJKUTILS_ROOT)\cefconv.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\cefsconv.obj $(CJKUTILS_ROOT)\cefsconv.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\extconv.obj $(CJKUTILS_ROOT)\extconv.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\hbf2gf.obj $(CJKUTILS_ROOT)\hbf2gf.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\hbf.obj $(CJKUTILS_ROOT)\cjkutils-src\hbf2gf\hbf.c
+  $(CC) $(CJKUTILS_CFLAGS) -Fo$(TLBUILD)\sjisconv.obj $(CJKUTILS_ROOT)\sjisconv.c
+  link -nologo -out:$(TLWORKS)\bg5conv.exe $(TLBUILD)\bg5conv.obj
+  link -nologo -out:$(TLWORKS)\cef5conv.exe $(TLBUILD)\cef5conv.obj
+  link -nologo -out:$(TLWORKS)\cefconv.exe $(TLBUILD)\cefconv.obj
+  link -nologo -out:$(TLWORKS)\cefsconv.exe $(TLBUILD)\cefsconv.obj
+  link -nologo -out:$(TLWORKS)\extconv.exe $(TLBUILD)\extconv.obj
+  link -nologo -out:$(TLWORKS)\sjisconv.exe $(TLBUILD)\sjisconv.obj
+  link -nologo -out:$(TLWORKS)\hbf2gf.exe $(TLBUILD)\hbf2gf.obj  $(TLBUILD)\hbf.obj
+
+DVI2TTY_ROOT=$(TLROOT)\texk\dvi2tty
+DVI2TTY_CFLAGS=-nologo -c -DWIN32 -DKPATHSEA -I$(PREDEF)\luatex -I$(PREDEF)\dvi2tty $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
+DVI2TTY_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)
+dvi2tty:
+  $(CC) $(DVI2TTY_CFLAGS) -Fo$(TLBUILD)\disdvi.obj $(DVI2TTY_ROOT)\dvi2tty-src\disdvi.c
+  $(CC) $(DVI2TTY_CFLAGS) -Fo$(TLBUILD)\dvi2tty.obj $(DVI2TTY_ROOT)\dvi2tty-src\dvi2tty.c
+  $(CC) $(DVI2TTY_CFLAGS) -Fo$(TLBUILD)\dvistuff.obj $(DVI2TTY_ROOT)\dvi2tty-src\dvistuff.c
+  link -nologo -out:$(TLWORKS)\disdvi.exe $(TLBUILD)\disdvi.obj $(DVI2TTY_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\dvi2tty.exe $(TLBUILD)\dvi2tty.obj $(TLBUILD)\dvistuff.obj $(DVI2TTY_LDFLAGS)
+
+DVIDVI_ROOT=$(TLROOT)\texk\dvidvi
+DVIDVI_CFLAGS=-nologo -c -I$(PREDEF)\dvidvi $(KPATHSEA_CFLAGS) -DHAVE_CONFIG_H -DWIN32 -DNO_DEBUG -DKPATHSEA -DASCIIPTEX
+DVIDVI_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)
+dvidvi:
+  $(CC) $(DVIDVI_CFLAGS) -Fo$(TLBUILD)\dvidvi.obj $(DVIDVI_ROOT)\dvidvi.c
+  link -nologo -out:$(TLWORKS)\dvidvi.exe $(TLBUILD)\dvidvi.obj $(DVI2TTY_LDFLAGS)
+
 DVIPDFMX_ROOT=$(TLROOT)\texk\dvipdfm-x
 DVIPDFMX_CFLAGS=-c -nologo $(KPATHSEA_CFLAGS) $(LIBPNG_CFLAGS) $(LIBPAPER_CFLAGS) $(ZLIB_CFLAGS) -I$(PREDEF)\dvipdfmx \
   -D_CRT_DECLARE_NONSTDC_NAMES=0 -DHAVE_CONFIG_H -DWIN32
@@ -740,6 +776,46 @@ dvipdfmx:
   $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-xbb.obj $(DVIPDFMX_ROOT)\xbb.c
   $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dirent.obj $(PREDEF)\kpathsea\dirent.c
   link -nologo -dll -out:$(TLWORKS)\dvipdfmx.dll $(TLBUILD)\dvipdfmx-*.obj -libpath:$(TLBUILD) libkpathsea.lib libpng.lib libpaper.lib libz.lib $(RUNTIME_LIBS)
+
+DVIPS_ROOT=$(TLROOT)\texk\dvipsk
+DVIPS_CFLAGS=-nologo -c -DWIN32 -DKPATHSEA $(KPATHSEA_CFLAGS) -I$(PREDEF)\dvips
+DVIPS_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+dvips:
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-bbox.obj $(DVIPS_ROOT)\bbox.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-bitmapenc.obj $(DVIPS_ROOT)\bitmapenc.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-color.obj $(DVIPS_ROOT)\color.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-dopage.obj $(DVIPS_ROOT)\dopage.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-dosection.obj $(DVIPS_ROOT)\dosection.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-dospecial.obj $(DVIPS_ROOT)\dospecial.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-download.obj $(DVIPS_ROOT)\download.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-dpicheck.obj $(DVIPS_ROOT)\dpicheck.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-drawPS.obj $(DVIPS_ROOT)\drawPS.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-dviinput.obj $(DVIPS_ROOT)\dviinput.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-dvips.obj $(DVIPS_ROOT)\dvips.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-emspecial.obj $(DVIPS_ROOT)\emspecial.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-finclude.obj $(DVIPS_ROOT)\finclude.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-fontdef.obj $(DVIPS_ROOT)\fontdef.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-header.obj $(DVIPS_ROOT)\header.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-hps.obj $(DVIPS_ROOT)\hps.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-loadfont.obj $(DVIPS_ROOT)\loadfont.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-output.obj $(DVIPS_ROOT)\output.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-papersiz.obj $(DVIPS_ROOT)\papersiz.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-pprescan.obj $(DVIPS_ROOT)\pprescan.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-prescan.obj $(DVIPS_ROOT)\prescan.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-repack.obj $(DVIPS_ROOT)\repack.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-resident.obj $(DVIPS_ROOT)\resident.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-scalewidth.obj $(DVIPS_ROOT)\scalewidth.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-scanpage.obj $(DVIPS_ROOT)\scanpage.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-search.obj $(DVIPS_ROOT)\search.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-skippage.obj $(DVIPS_ROOT)\skippage.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-t1part.obj $(DVIPS_ROOT)\t1part.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-tfmload.obj $(DVIPS_ROOT)\tfmload.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-unpack.obj $(DVIPS_ROOT)\unpack.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-virtualfont.obj $(DVIPS_ROOT)\virtualfont.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\dvips-writet1.obj $(DVIPS_ROOT)\writet1.c
+  $(CC) $(DVIPS_CFLAGS) -Fo$(TLBUILD)\afm2afm.obj $(DVIPS_ROOT)\afm2tfm.c
+  link -nologo -out:$(TLWORKS)\dvips.exe $(TLBUILD)\dvips-*.obj $(DVIPS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\afm2afm.exe $(TLBUILD)\afm2afm.obj $(DVIPS_LDFLAGS)
 
 KPSEROOT=$(TLROOT)\texk\kpathsea
 KPSE_CFLAGS=-nologo -c -D_CRT_DECLARE_NONSTDC_NAMES=0 $(KPATHSEA_CFLAGS)

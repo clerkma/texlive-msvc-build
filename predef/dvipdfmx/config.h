@@ -1,3 +1,6 @@
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
 #define HAVE_GETENV 1
 #define HAVE_INTTYPES_H 1
 #define HAVE_LIBPNG 1
@@ -11,3 +14,5 @@
 #define HAVE_LIBPAPER 1
 
 #define VERSION "20220710"
+
+#endif /* __CONFIG_H__ */
