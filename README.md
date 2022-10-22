@@ -39,7 +39,7 @@ Bootstrap:
 
 ```bat
 tools\set-env-x64.bat
-make-libs.bat
+tools\make-libs.bat
 nmake -nologo -f make\bootstrap.nmake
 ```
 

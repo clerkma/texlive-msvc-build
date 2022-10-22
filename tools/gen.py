@@ -25,8 +25,8 @@ hb_version_h = {
     "subs": {
         "@HB_VERSION_MAJOR@": "5",
         "@HB_VERSION_MINOR@": "3",
-        "@HB_VERSION_MICRO@": "0",
-        "@HB_VERSION@": "5.3.0",
+        "@HB_VERSION_MICRO@": "1",
+        "@HB_VERSION@": "5.3.1",
     }
 }
 
@@ -36,7 +36,7 @@ pixman_version_h = {
     "out": "$(PREDEF)/pixman/pixman-version.h",
     "subs": {
         "@PIXMAN_VERSION_MAJOR@": "0",
-        "@PIXMAN_VERSION_MINOR@": "40",
+        "@PIXMAN_VERSION_MINOR@": "42",
         "@PIXMAN_VERSION_MICRO@": "0",
     }
 }
@@ -74,14 +74,17 @@ def run_build_icu_data():
 
 
 def run(task):
-    name_src = task["file"].replace("$(TLROOT)", os.getenv("TLROOT"))
-    name_out = task["out"].replace("$(PREDEF)", os.getenv("PREDEF"))
-    with open(name_src) as src:
-        text = src.read()
-        for k, v in task["subs"].items():
-            text = text.replace(k, v)
-        with open(name_out, "w") as out:
-            out.write(text)
+    tlroot = os.getenv("TLROOT")
+    predef = os.getenv("PREDEF")
+    if tlroot is not None and predef is not None:
+        name_src = task["file"].replace("$(TLROOT)", tlroot)
+        name_out = task["out"].replace("$(PREDEF)", )
+        with open(name_src) as src:
+            text = src.read()
+            for k, v in task["subs"].items():
+                text = text.replace(k, v)
+            with open(name_out, "w") as out:
+                out.write(text)
 
 
 if __name__ == "__main__":
@@ -91,3 +94,7 @@ if __name__ == "__main__":
     else:
         if sys.argv[1] == "icudata":
             run_build_icu_data()
+        elif sys.argv[1] == "header":
+            task_list = [gmp_h, hb_version_h, pixman_version_h]
+            for one in task_list:
+                run(one)
