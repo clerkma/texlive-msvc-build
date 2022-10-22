@@ -98,11 +98,14 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 * dvi2tty (disdvi, dvi2tty)
 * dvidvi
 * dvipdfmx (exported `dlldvipdfmxmain`)
+* dvipng
+* dvipos
 * dvips (afm2afm, dvips)
 * kpsetools (kpseaccess, kpsestat, kpsewhich)
 * makejvf
 * makeindex
 * mendex
+* ttf2pk2 (ttf2pk, ttf2tfm)
 * ttfdump
 
 

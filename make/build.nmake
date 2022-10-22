@@ -5,6 +5,7 @@ RUNTIME_LIBS=Advapi32.lib Shell32.lib User32.lib Ws2_32.lib Gdi32.lib Rpcrt4.lib
 RUNTIME_LDFLAGS=-libpath:$(TLBUILD) libruntime.lib libkpathsea.lib $(RUNTIME_LIBS)
 
 ZLIB_CFLAGS=-I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+LIBGD_CFLAGS=-DNONDLL -DBGDWIN32 -I$(TLROOT)\libs\gd\libgd-src\src
 LIBPAPER_CFLAGS=-I$(TLROOT)\libs\libpaper\libpaper-src\lib
 LIBPNG_CFLAGS=-I$(PREDEF)\libpng -I$(TLROOT)\libs\libpng\libpng-src
 LIBMPFR_CFLAGS=-I$(PREDEF)\mpfr -I$(TLROOT)\libs\mpfr\mpfr-src\src
@@ -806,6 +807,39 @@ dvipdfmx:
   $(CC) $(DVIPDFMX_CFLAGS) -Fo$(TLBUILD)\dvipdfmx-dirent.obj $(PREDEF)\kpathsea\dirent.c
   link -nologo -dll -out:$(TLWORKS)\dvipdfmx.dll $(TLBUILD)\dvipdfmx-*.obj -libpath:$(TLBUILD) libkpathsea.lib libpng.lib libpaper.lib libz.lib $(RUNTIME_LIBS)
 
+DVIPNG_ROOT=$(TLROOT)\texk\dvipng
+DVIPNG_CFLAGS=-nologo -c -I$(PREDEF)\dvipng -DTEXLIVE -DWIN32 -D_CRT_DECLARE_NONSTDC_NAMES=0 $(KPATHSEA_CFLAGS) $(LIBGD_CFLAGS) $(LIBFREETYPE_CFLAGS) $(LIBPNG_CFLAGS) $(ZLIB_CFLAGS)
+DVIPNG_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libgd.lib libfreetype.lib libpng.lib libz.lib $(RUNTIME_LIBS)
+dvipng:
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-color.obj $(DVIPNG_ROOT)\dvipng-src\color.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-draw.obj $(DVIPNG_ROOT)\dvipng-src\draw.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-dvi.obj $(DVIPNG_ROOT)\dvipng-src\dvi.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-dvipng.obj $(DVIPNG_ROOT)\dvipng-src\dvipng.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-font.obj $(DVIPNG_ROOT)\dvipng-src\font.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-misc.obj $(DVIPNG_ROOT)\dvipng-src\misc.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-papersiz.obj $(DVIPNG_ROOT)\dvipng-src\papersiz.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-pk.obj $(DVIPNG_ROOT)\dvipng-src\pk.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-ppagelist.obj $(DVIPNG_ROOT)\dvipng-src\ppagelist.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-set.obj $(DVIPNG_ROOT)\dvipng-src\set.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-special.obj $(DVIPNG_ROOT)\dvipng-src\special.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-vf.obj $(DVIPNG_ROOT)\dvipng-src\vf.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-enc.obj $(DVIPNG_ROOT)\dvipng-src\enc.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-fontmap.obj $(DVIPNG_ROOT)\dvipng-src\fontmap.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-ft.obj $(DVIPNG_ROOT)\dvipng-src\ft.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-sfd.obj $(DVIPNG_ROOT)\dvipng-src\sfd.c
+  $(CC) $(DVIPNG_CFLAGS) -Fo$(TLBUILD)\dvipng-tfm.obj $(DVIPNG_ROOT)\dvipng-src\tfm.c
+  link -nologo -out:$(TLWORKS)\dvipng.exe $(TLBUILD)\dvipng-*.obj $(DVIPNG_LDFLAGS)
+
+DVIPOS_ROOT=$(TLROOT)\texk\dvipos
+DVIPOS_CFLAGS=-nologo -c -DKPATHSEA $(KPATHSEA_CFLAGS)
+DVIPOS_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+dvipos:
+  $(CC) $(DVIPOS_CFLAGS) -Fo$(TLBUILD)\dvipos-dvicore.obj $(DVIPOS_ROOT)\dvicore.c
+  $(CC) $(DVIPOS_CFLAGS) -Fo$(TLBUILD)\dvipos-dvipos.obj $(DVIPOS_ROOT)\dvipos.c
+  $(CC) $(DVIPOS_CFLAGS) -Fo$(TLBUILD)\dvipos-tfm.obj $(DVIPOS_ROOT)\tfm.c
+  $(CC) $(DVIPOS_CFLAGS) -Fo$(TLBUILD)\dvipos-utils.obj $(DVIPOS_ROOT)\utils.c
+  link -nologo -out:$(TLWORKS)\dvipos.exe $(TLBUILD)\dvipos-*.obj $(DVIPOS_LDFLAGS)
+
 DVIPS_ROOT=$(TLROOT)\texk\dvipsk
 DVIPS_CFLAGS=-nologo -c -DWIN32 -DKPATHSEA $(KPATHSEA_CFLAGS) -I$(PREDEF)\dvips
 DVIPS_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
@@ -895,6 +929,31 @@ mendex:
   $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-sort.obj $(MENDEX_ROOT)\sort.c
   $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-styfile.obj $(MENDEX_ROOT)\styfile.c
   link -nologo -out:$(TLWORKS)\mendex.exe $(TLBUILD)\mendex-*.obj $(MENDEX_LDFLAGS)
+
+TTF2PK2_ROOT=$(TLROOT)\texk\ttf2pk2
+TTF2PK2_CFLAGS=-nologo -c -I$(PREDEF)\ttf2pk2 -DHAVE_LIBKPATHSEA -DHAVE_CONFIG_H $(KPATHSEA_CFLAGS) $(LIBFREETYPE_CFLAGS)
+TTF2PK2_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libfreetype.lib libz.lib $(RUNTIME_LIBS)
+ttf2pk2:
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-errormsg.obj $(TTF2PK2_ROOT)\errormsg.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-filesrch.obj $(TTF2PK2_ROOT)\filesrch.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-ftlib.obj $(TTF2PK2_ROOT)\ftlib.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-ligkern.obj $(TTF2PK2_ROOT)\ligkern.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-newobj.obj $(TTF2PK2_ROOT)\newobj.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-parse.obj $(TTF2PK2_ROOT)\parse.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-subfont.obj $(TTF2PK2_ROOT)\subfont.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-texenc.obj $(TTF2PK2_ROOT)\texenc.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-lib-ttfenc.obj $(TTF2PK2_ROOT)\ttfenc.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-bin-pklib.obj $(TTF2PK2_ROOT)\pklib.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-bin-ttf2pk.obj $(TTF2PK2_ROOT)\ttf2pk.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2pk2-bin-ttflib.obj $(TTF2PK2_ROOT)\ttflib.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2tfm-case.obj $(TTF2PK2_ROOT)\case.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2tfm-tfmaux.obj $(TTF2PK2_ROOT)\tfmaux.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2tfm-tfm2tfm.obj $(TTF2PK2_ROOT)\ttf2tfm.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2tfm-ttfaux.obj $(TTF2PK2_ROOT)\ttfaux.c
+  $(CC) $(TTF2PK2_CFLAGS) -Fo$(TLBUILD)\ttf2tfm-vplaux.obj $(TTF2PK2_ROOT)\vplaux.c
+  lib -nologo -out:$(TLBUILD)\libttf2pk2.lib $(TLBUILD)\ttf2pk2-lib-*.obj
+  link -nologo -out:$(TLWORKS)\ttf2pk.exe $(TLBUILD)\ttf2pk2-bin-*.obj $(TLBUILD)\libttf2pk2.lib $(TTF2PK2_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\ttf2tfm.exe $(TLBUILD)\ttf2tfm-*.obj $(TLBUILD)\libttf2pk2.lib $(TTF2PK2_LDFLAGS)
 
 TTFDUMP_ROOT=$(TLROOT)\texk\ttfdump
 TTFDUMP_CFLAGS=-nologo -c -DHAVE_CONFIG_H -DWIN32 -I$(PREDEF)\ttfdump $(KPATHSEA_CFLAGS) -I$(TLROOT)\texk\kpathsea -I$(TTFDUMP_ROOT)\include
