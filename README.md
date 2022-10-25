@@ -39,8 +39,9 @@ Bootstrap:
 
 ```bat
 tools\set-env-x64.bat
-tools\make-libs.bat
+nmake -nologo -f make\libkpathsea.nmake
 nmake -nologo -f make\bootstrap.nmake
+nmake -nologo -f make\build.nmake TLWORKS=%TLTOOLS% tangle ctangle otangle tie
 ```
 
 ## `web2c` Programs
@@ -48,7 +49,9 @@ nmake -nologo -f make\bootstrap.nmake
 Build `web2c` programs:
 
 ```bat
+tools\make-libs.bat
 nmake -nologo -f make\build.nmake all
+tools\make-exe-warpper.bat
 ```
 
 To make an `exe` wrapper of `dll`-base engine/programs (eg. `xetex`):
