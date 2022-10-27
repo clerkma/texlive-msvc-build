@@ -674,6 +674,28 @@ xetex-specimen: libmd5
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj $(PREDEF)\xetex-pool.c
   link -nologo -dll -out:$(TLWORKS)\xetex.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
 
+BIBTEXX_ROOT=$(TLROOT)\texk\bibtex-x
+BIBTEXX_CFLAGS=-nologo -utf-8 -c -DHAVE_CONFIG_H -DWIN32 -DKPATHSEA -I$(PREDEF)\bibtex-x $(KPATHSEA_CFLAGS) -I$(TLROOT)/texk/kpathsea -DMAKE_KPSE_DLL
+BIBTEX8_CFLAGS=$(BIBTEXX_CFLAGS) -DSUPPORT_8BIT
+BIBTEX8_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+BIBTEXU_CFLAGS=$(BIBTEXX_CFLAGS) -DUTF_8 $(LIBICU_CFLAGS) $(LIBICUIO_CFLAGS) $(LIBICUI18N_CFLAGS)
+BIBTEXU_LDFLAGS=-libpath:$(TLBUILD) libicuio.lib libicui18n.lib libicuuc.lib libicudata.lib libkpathsea.lib $(RUNTIME_LIBS)
+bibtex-x:
+  $(CC) $(BIBTEX8_CFLAGS) -Fo$(TLBUILD)\bibtex8-bibtex-1.obj $(BIBTEXX_ROOT)\bibtex-1.c
+  $(CC) $(BIBTEX8_CFLAGS) -Fo$(TLBUILD)\bibtex8-bibtex-2.obj $(BIBTEXX_ROOT)\bibtex-2.c
+  $(CC) $(BIBTEX8_CFLAGS) -Fo$(TLBUILD)\bibtex8-bibtex-3.obj $(BIBTEXX_ROOT)\bibtex-3.c
+  $(CC) $(BIBTEX8_CFLAGS) -Fo$(TLBUILD)\bibtex8-bibtex-4.obj $(BIBTEXX_ROOT)\bibtex-4.c
+  $(CC) $(BIBTEX8_CFLAGS) -Fo$(TLBUILD)\bibtex8-bibtex.obj $(BIBTEXX_ROOT)\bibtex.c
+  $(CC) $(BIBTEX8_CFLAGS) -Fo$(TLBUILD)\bibtex8-utils.obj $(BIBTEXX_ROOT)\utils.c
+  link -nologo -out:$(TLWORKS)\bibtex8.exe $(TLBUILD)\bibtex8-*.obj $(BIBTEX8_LDFLAGS)
+  $(CC) $(BIBTEXU_CFLAGS) -Fo$(TLBUILD)\bibtexu-bibtex-1.obj $(BIBTEXX_ROOT)\bibtex-1.c
+  $(CC) $(BIBTEXU_CFLAGS) -Fo$(TLBUILD)\bibtexu-bibtex-2.obj $(BIBTEXX_ROOT)\bibtex-2.c
+  $(CC) $(BIBTEXU_CFLAGS) -Fo$(TLBUILD)\bibtexu-bibtex-3.obj $(BIBTEXX_ROOT)\bibtex-3.c
+  $(CC) $(BIBTEXU_CFLAGS) -Fo$(TLBUILD)\bibtexu-bibtex-4.obj $(BIBTEXX_ROOT)\bibtex-4.c
+  $(CC) $(BIBTEXU_CFLAGS) -Fo$(TLBUILD)\bibtexu-bibtex.obj $(BIBTEXX_ROOT)\bibtex.c
+  $(CC) $(BIBTEXU_CFLAGS) -Fo$(TLBUILD)\bibtexu-utils.obj $(BIBTEXX_ROOT)\utils.c
+  link -nologo -out:$(TLWORKS)\bibtexu.exe $(TLBUILD)\bibtexu-*.obj $(BIBTEXU_LDFLAGS)
+
 CHKTEX_ROOT=$(TLROOT)\texk\chktex
 CHKTEX_CFLAGS=-nologo -c -I$(CHKTEX_ROOT) -I$(CHKTEX_ROOT)\chktex-src -I$(CHKTEX_ROOT)\regex \
   -DWIN32 -DHAVE_CONFIG_H -DKPATHSEA $(KPATHSEA_CFLAGS) -I$(PREDEF)\chktex
@@ -684,7 +706,7 @@ chktex:
   $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-OpSys.obj $(CHKTEX_ROOT)\chktex-src\OpSys.c
   $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-Resource.obj $(CHKTEX_ROOT)\chktex-src\Resource.c
   $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-Utility.obj $(CHKTEX_ROOT)\chktex-src\Utility.c
-    $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-regex.obj $(CHKTEX_ROOT)\regex\regex.c
+  $(CC) $(CHKTEX_CFLAGS) -Fo$(TLBUILD)\chktex-regex.obj $(CHKTEX_ROOT)\regex\regex.c
   link -nologo -out:$(TLWORKS)\chktex.exe $(TLBUILD)\chktex-*.obj $(CHKTEX_LDFLAGS)
 
 CJKUTILS_ROOT=$(TLROOT)\texk\cjkutils
@@ -1008,7 +1030,7 @@ ttfdump:
 
 UPMENDEX_ROOT=$(TLROOT)\texk\upmendex
 UPMENDEX_CFLAGS=-nologo -c -utf-8 -I$(PREDEF)\upmendex $(KPATHSEA_CFLAGS) $(LIBICU_CFLAGS) $(LIBICUIO_CFLAGS) $(LIBICUI18N_CFLAGS)
-UPMENDEX_LDFLAGS=-libpath:$(TLBUILD) libicuio.lib libicui18n.lib libkpathsea.lib libicuuc.lib libicudata.lib $(RUNTIME_LDFLAGS)
+UPMENDEX_LDFLAGS=-libpath:$(TLBUILD) libicuio.lib libicui18n.lib libkpathsea.lib libicuuc.lib libicudata.lib $(RUNTIME_LIBS)
 upmendex:
   $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-convert.obj $(UPMENDEX_ROOT)\convert.c
   $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-fread.obj $(UPMENDEX_ROOT)\fread.c

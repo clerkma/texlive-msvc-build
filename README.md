@@ -95,6 +95,7 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 
 ## Supported Programs
 
+* bibtex-x (bibtex8, bibtexu)
 * chktex
 * cjkutils (bg5conv, cef5conv, cefconv, cefsconv, extconv, sjisconv, hbf2gf)
 * detex
@@ -111,6 +112,7 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 * mendex
 * ttf2pk2 (ttf2pk, ttf2tfm)
 * ttfdump
+* upmendex
 
 
 ```bat
