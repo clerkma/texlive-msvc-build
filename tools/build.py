@@ -1325,7 +1325,7 @@ def build(conf):
             object_name = "$(TLBUILD)\\" + conf["prefix"] + y.replace(".cc", ".obj")
         else:
             object_name = "$(TLBUILD)\\" + conf["prefix"] + y.replace(".c", ".obj")
-        cmd = "$(CC) $(CFLAGS) -Fo%s $(ROOT)\\%s" % (object_name, x)
+        cmd = "$(CC) $(CFLAGS) -Fo%s $(ROOT)\\%s" % (object_name, x.replace("/", "\\"))
         cmd_list.append(cmd)
     if ".lib" in conf["out"]:
         cmd = "lib -nologo -out:$(TLBUILD)\\%s $(TLBUILD)\\%s*.obj" % (conf["out"], conf["prefix"])
@@ -1384,6 +1384,8 @@ task_map = {
     "icuuc": task_libicuuc,
     "otfcc": task_otfcc,
     "paper": task_libpaper,
+    "icuio": task_libicuio,
+    "icui18n": task_libicui18n,
 }
 
 if __name__ == "__main__":

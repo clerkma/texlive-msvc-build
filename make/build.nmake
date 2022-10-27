@@ -14,6 +14,8 @@ LIBCAIRO_CFLAGS=-DCAIRO_WIN32_STATIC_BUILD -I$(PREDEF)\cairo -I$(TLROOT)\libs\ca
 LIBPIXMAN_CFLAGS=-I$(PREDEF)\pixman -I$(TLROOT)\libs\pixman\pixman-src\pixman
 LIBXPDF_CFLAGS=-DPDF_PARSER_ONLY -I$(PREDEF)\xpdf -I$(TLROOT)\libs\xpdf\xpdf-src -I$(TLROOT)\libs\xpdf\xpdf-src\goo -I$(TLROOT)\libs\xpdf\xpdf-src\xpdf
 LIBICU_CFLAGS=-DU_STATIC_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common
+LIBICUIO_CFLAGS=-I$(TLROOT)\libs\icu\icu-src\source\io
+LIBICUI18N_CFLAGS=-I$(TLROOT)\libs\icu\icu-src\source\i18n
 LIBGRAPHITE2_CFLAGS=-DGRAPHITE2_STATIC -I$(TLROOT)\libs\graphite2\graphite2-src\include
 LIBHARFBUZZ_CFLAGS=-I$(TLROOT)\libs\harfbuzz\harfbuzz-src\src -I$(PREDEF)\harfbuzz
 LIBFREETYPE_CFLAGS=-I$(TLROOT)\libs\freetype2\freetype-src\include
@@ -56,14 +58,14 @@ CATUTIL=py $(TLTOOLS)\cat.py
 
 CFLAGS=-nologo -c -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
 
-tangle:
+tangleboot:
   cd $(PREDEF)
   $(CATUTIL) $(WEB2CROOT)\web2c\common.defines $(WEB2CROOT)\tangleboot.pin | web2c -hcpascal.h -ctangleboot | fixwrites tangleboot > tangleboot.c
   cd $(MAKEDIR)
   $(CC) $(CFLAGS) -Fo$(TLBUILD)\tangleboot.obj $(PREDEF)\tangleboot.c
   link -nologo -out:$(TLWORKS)\tangle.exe $(TLBUILD)\tangleboot.obj $(RUNTIME_LDFLAGS)
 
-ctangle:
+ctangleboot:
   $(CC) -TC $(CFLAGS) -Fo$(TLBUILD)\ctangleboot.obj $(WEB2CROOT)\ctangleboot.cin
   $(CC) -TC $(CFLAGS) -Fo$(TLBUILD)\cwebroot.obj $(WEB2CROOT)\cwebboot.cin
   link -nologo -out:$(TLWORKS)\ctangle.exe $(TLBUILD)\ctangleboot.obj $(TLBUILD)\cwebroot.obj $(RUNTIME_LDFLAGS)
@@ -89,6 +91,15 @@ cweb_src:
   cd $(PREDEF)
   ctangle common comm-w2c.ch cweb.c
   cd $(MAKEDIR)
+
+ctangle: cweb_src
+  set CWEBINPUTS=$(CWEBROOT)
+  cd $(PREDEF)
+  ctangle ctangle ctang-w2c
+  cd $(MAKEDIR)
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\ctangle.obj $(PREDEF)\ctangle.c
+  $(CC) $(CFLAGS) -Fo$(TLBUILD)\cweb.obj $(PREDEF)\cweb.c
+  link -nologo -out:$(TLWORKS)\ctangle.exe $(TLBUILD)\ctangle.obj $(TLBUILD)\cweb.obj $(RUNTIME_LDFLAGS)
 
 cweave: cweb_src
   set CWEBINPUTS=$(CWEBROOT)
@@ -124,7 +135,7 @@ ctwill-twinx:
   $(CC) $(CFLAGS) -Fo$(TLBUILD)\ctwill-twinx.obj $(PREDEF)\ctwill-twinx.c
   link -nologo -out:$(TLWORKS)\ctwill-twinx.exe $(TLBUILD)\ctwill-twinx.obj $(RUNTIME_LDFLAGS)
 
-bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf weave otangle odvicopy odvitype:
+bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tangle tftopl vftovp vptovf weave otangle odvicopy odvitype:
   set WEBINPUTS=.;$(WEB2CROOT);$(OMEGAWAREROOT)
   cd $(PREDEF)
   tangle $@ $@
@@ -994,6 +1005,21 @@ ttfdump:
   $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-ttfdump.obj $(TTFDUMP_ROOT)\src\ttfdump.c
   $(CC) $(TTFDUMP_CFLAGS) -Fo$(TLBUILD)\ttfdump-getopt.obj $(KPSEROOT)\getopt.c
   link -nologo -out:$(TLWORKS)\ttfdump.exe $(TLBUILD)\ttfdump-*.obj $(TTFDUMP_LDFLAGS)
+
+UPMENDEX_ROOT=$(TLROOT)\texk\upmendex
+UPMENDEX_CFLAGS=-nologo -c -utf-8 -I$(PREDEF)\upmendex $(KPATHSEA_CFLAGS) $(LIBICU_CFLAGS) $(LIBICUIO_CFLAGS) $(LIBICUI18N_CFLAGS)
+UPMENDEX_LDFLAGS=-libpath:$(TLBUILD) libicuio.lib libicui18n.lib libkpathsea.lib libicuuc.lib libicudata.lib $(RUNTIME_LDFLAGS)
+upmendex:
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-convert.obj $(UPMENDEX_ROOT)\convert.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-fread.obj $(UPMENDEX_ROOT)\fread.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-fwrite.obj $(UPMENDEX_ROOT)\fwrite.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-kp.obj $(UPMENDEX_ROOT)\kp.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-main.obj $(UPMENDEX_ROOT)\main.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-pageread.obj $(UPMENDEX_ROOT)\pageread.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-qsort.obj $(UPMENDEX_ROOT)\qsort.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-sort.obj $(UPMENDEX_ROOT)\sort.c
+  $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-styfile.obj $(UPMENDEX_ROOT)\styfile.c
+  link -nologo -out:$(TLWORKS)\upmendex.exe $(TLBUILD)\upmendex-*.obj $(UPMENDEX_LDFLAGS)
 
 all: tangle weave ctangle cweave tie ctie ctwill ctwill-refsort ctwill-twinx twill\
   bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf odvicopy odvitype\
