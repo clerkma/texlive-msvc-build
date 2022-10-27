@@ -4,7 +4,7 @@ TeX Live with MSVC
 
 ## Requirements
 
-* Visual Studio (tested 2019)
+* Visual Studio (tested: 2019, 2022)
   * nmake
   * clang-cl (for libotfcc)
 * Python 3 (tested 3.10.4)
@@ -35,18 +35,19 @@ set XETEXSPROOT=%XETEXSP%\xetexdir
 set SPECIMENROOT=%XETEXSP%\libspecimen
 ```
 
-Bootstrap:
+Bootstrap (using host compiler):
 
 ```bat
 tools\set-env-x64.bat
 nmake -nologo -f make\libkpathsea.nmake
+nmake -nologo -f make\libruntime.nmake
 nmake -nologo -f make\bootstrap.nmake
 nmake -nologo -f make\build.nmake TLWORKS=%TLTOOLS% tangle ctangle otangle tie
 ```
 
 ## `web2c` Programs
 
-Build `web2c` programs:
+Build `web2c` programs (host build or cross build):
 
 ```bat
 tools\make-libs.bat
