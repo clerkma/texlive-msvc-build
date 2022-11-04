@@ -960,6 +960,103 @@ kpsetools:
   link -nologo -out:$(TLWORKS)\kpsestat.exe $(TLBUILD)\kpsetools-stat.obj $(KPSE_LDFLAGS)
   link -nologo -out:$(TLWORKS)\kpsewhich.exe $(TLBUILD)\kpsetools-which.obj $(KPSE_LDFLAGS)
 
+LCDF_TYPETOOLS_ROOT=$(TLROOT)\texk\lcdf-typetools
+LIBLCDF_ROOT=$(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\liblcdf
+LIBLCDF_CFLAGS=-c -nologo -EHsc -DWIN32 -DHAVE_CONFIG_H $(KPATHSEA_CFLAGS) -I$(PREDEF)\lcdf-typetools -I$(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\include
+liblcdf:
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-bezier.obj $(LIBLCDF_ROOT)\bezier.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-clp.obj $(LIBLCDF_ROOT)\clp.c
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-error.obj $(LIBLCDF_ROOT)\error.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-filename.obj $(LIBLCDF_ROOT)\filename.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-globmatch.obj $(LIBLCDF_ROOT)\globmatch.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-landmark.obj $(LIBLCDF_ROOT)\landmark.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-md5.obj $(LIBLCDF_ROOT)\md5.c
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-permstr.obj $(LIBLCDF_ROOT)\permstr.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-point.obj $(LIBLCDF_ROOT)\point.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-slurper.obj $(LIBLCDF_ROOT)\slurper.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-straccum.obj $(LIBLCDF_ROOT)\straccum.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-string.obj $(LIBLCDF_ROOT)\string.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-strtonum.obj $(LIBLCDF_ROOT)\strtonum.c
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-transform.obj $(LIBLCDF_ROOT)\transform.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\liblcdf-vectorv.obj $(LIBLCDF_ROOT)\vectorv.cc
+  lib -nologo -out:$(TLBUILD)\liblcdf.lib $(TLBUILD)\liblcdf-*.obj
+
+LIBEFONT_ROOT=$(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\libefont
+LIBEFONT_CFLAGS=$(LIBLCDF_CFLAGS)
+libefont:
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-afm.obj $(LIBEFONT_ROOT)\afm.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-afmparse.obj $(LIBEFONT_ROOT)\afmparse.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-afmw.obj $(LIBEFONT_ROOT)\afmw.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-amfm.obj $(LIBEFONT_ROOT)\amfm.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-cff.obj $(LIBEFONT_ROOT)\cff.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-encoding.obj $(LIBEFONT_ROOT)\encoding.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-findmet.obj $(LIBEFONT_ROOT)\findmet.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-metrics.obj $(LIBEFONT_ROOT)\metrics.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otf.obj $(LIBEFONT_ROOT)\otf.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfcmap.obj $(LIBEFONT_ROOT)\otfcmap.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfdata.obj $(LIBEFONT_ROOT)\otfdata.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfdescrip.obj $(LIBEFONT_ROOT)\otfdescrip.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfgpos.obj $(LIBEFONT_ROOT)\otfgpos.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfgsub.obj $(LIBEFONT_ROOT)\otfgsub.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfname.obj $(LIBEFONT_ROOT)\otfname.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfos2.obj $(LIBEFONT_ROOT)\otfos2.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfpost.obj $(LIBEFONT_ROOT)\otfpost.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-pairop.obj $(LIBEFONT_ROOT)\pairop.cc
+  $(CC) $(LIBEFONT_CFLAGS) -DPSRES -Fo$(TLBUILD)\libefont-psres.obj $(LIBEFONT_ROOT)\psres.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1bounds.obj $(LIBEFONT_ROOT)\t1bounds.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1cs.obj $(LIBEFONT_ROOT)\t1cs.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1csgen.obj $(LIBEFONT_ROOT)\t1csgen.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1interp.obj $(LIBEFONT_ROOT)\t1interp.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1item.obj $(LIBEFONT_ROOT)\t1item.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1font.obj $(LIBEFONT_ROOT)\t1font.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1fontskel.obj $(LIBEFONT_ROOT)\t1fontskel.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1mm.obj $(LIBEFONT_ROOT)\t1mm.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1rw.obj $(LIBEFONT_ROOT)\t1rw.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-t1unparser.obj $(LIBEFONT_ROOT)\t1unparser.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-ttfcs.obj $(LIBEFONT_ROOT)\ttfcs.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-ttfhead.obj $(LIBEFONT_ROOT)\ttfhead.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-ttfkern.obj $(LIBEFONT_ROOT)\ttfkern.cc
+  lib -nologo -out:$(TLBUILD)\libefont.lib $(TLBUILD)\libefont-*.obj
+
+LCDF_TYPETOOLS_LDFLAGS=-libpath:$(TLBUILD) liblcdf.lib libefont.lib libkpathsea.lib $(RUNTIME_LIBS)
+lcdf-typetools: liblcdf libefont
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\cfftot1-cfftot1.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\cfftot1\cfftot1.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\cfftot1-maket1font.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\cfftot1\maket1font.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\mmafm.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\mmafm\main.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\mmpfb-main.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\mmpfb\main.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\mmpfb-myfont.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\mmpfb\myfont.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\mmpfb-t1minimize.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\mmpfb\t1minimize.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\mmpfb-t1rewrit.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\mmpfb\t1rewrit.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otfinfo.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otfinfo\otfinfo.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-automatic.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\automatic.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-dvipsencoding.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\dvipsencoding.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-glyphfilter.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\glyphfilter.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-metrics.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\metrics.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-otftotfm.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\otftotfm.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-secondary.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\secondary.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-uniprop.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\uniprop.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-util.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\util.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\otftotfm-kpseinterface.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\otftotfm\kpseinterface.c
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1dotlessj.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1dotlessj\t1dotlessj.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1lint-t1lint.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1lint\t1lint.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1lint-cscheck.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1lint\cscheck.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1rawafm.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1rawafm\t1rawafm.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1reencode-t1reencode.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1reencode\t1reencode.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1reencode-util.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1reencode\util.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\t1testpage.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\t1testpage\t1testpage.cc
+  $(CC) $(LIBLCDF_CFLAGS) -Fo$(TLBUILD)\ttftotype42.obj $(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\ttftotype42\ttftotype42.cc
+  link -nologo -out:$(TLWORKS)\cfftot1.exe $(TLBUILD)\cfftot1-*.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\mmafm.exe $(TLBUILD)\mmafm.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\mmpfb.exe $(TLBUILD)\mmpfb-*.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\otfinfo.exe $(TLBUILD)\otfinfo.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\otftotfm.exe $(TLBUILD)\otftotfm-*.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\t1dotlessj.exe $(TLBUILD)\t1dotlessj.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\t1lint.exe $(TLBUILD)\t1lint-*.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\t1rawafm.exe $(TLBUILD)\t1rawafm.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\t1reencode.exe $(TLBUILD)\t1reencode-*.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\t1testpage.exe $(TLBUILD)\t1testpage.obj $(LCDF_TYPETOOLS_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\ttftotype42.exe $(TLBUILD)\ttftotype42.obj $(LCDF_TYPETOOLS_LDFLAGS)
+
 MAKEJVF_ROOT=$(TLROOT)\texk\makejvf
 MAKEJVF_CFLAGS=-nologo -c $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
 MAKEJVF_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)

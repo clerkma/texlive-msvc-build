@@ -109,6 +109,7 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 * gregorio
 * gsftopk
 * kpsetools (kpseaccess, kpsestat, kpsewhich)
+* lcd-typetools (cfftot1, mmafm, mmpfb, otftotfm, t1dotlessj, t1lint, t1rawafm, t1reencode, t1testpage, ttftotype42)
 * makejvf
 * makeindex
 * mendex
