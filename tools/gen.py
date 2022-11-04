@@ -37,7 +37,7 @@ pixman_version_h = {
     "subs": {
         "@PIXMAN_VERSION_MAJOR@": "0",
         "@PIXMAN_VERSION_MINOR@": "42",
-        "@PIXMAN_VERSION_MICRO@": "0",
+        "@PIXMAN_VERSION_MICRO@": "2",
     }
 }
 

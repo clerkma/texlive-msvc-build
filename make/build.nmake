@@ -913,6 +913,42 @@ dvips:
   link -nologo -out:$(TLWORKS)\dvips.exe $(TLBUILD)\dvips-*.obj $(DVIPS_LDFLAGS)
   link -nologo -out:$(TLWORKS)\afm2afm.exe $(TLBUILD)\afm2afm.obj $(DVIPS_LDFLAGS)
 
+GSFTOPK_ROOT=$(TLROOT)\texk\gsftopk
+GSFTOPK_CFLAGS=-nologo -c -DWIN32 -DKPATHSEA $(KPATHSEA_CFLAGS) -I$(PREDEF)\gsftopk
+GSFTOPK_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+gsftopk:
+  $(CC) $(GSFTOPK_CFLAGS) -Fo$(TLBUILD)\gsftopk.obj $(GSFTOPK_ROOT)\gsftopk.c
+  link -nologo -out:$(TLWORKS)\gsftopk.exe $(TLBUILD)\gsftopk.obj $(GSFTOPK_LDFLAGS)
+
+GREGORIO_ROOT=$(TLROOT)\texk\gregorio
+GREGORIO_SRC=$(GREGORIO_ROOT)\gregorio-src\src
+GREGORIO_CFLAGS=-nologo -c -O2 -DUSE_KPSE $(KPATHSEA_CFLAGS) \
+  -I$(GREGORIO_SRC) -I$(GREGORIO_SRC)\gabc -I$(GREGORIO_SRC)\dump -I$(GREGORIO_SRC)\gregoriotex -I$(PREDEF)\gregorio -I$(PREDEF)\luatex
+GREGORIO_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
+gregorio:
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-characters.obj $(GREGORIO_SRC)\characters.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gregorio-utils.obj $(GREGORIO_SRC)\gregorio-utils.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-messages.obj $(GREGORIO_SRC)\messages.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-sha1.obj $(GREGORIO_SRC)\sha1.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-struct.obj $(GREGORIO_SRC)\struct.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-support.obj $(GREGORIO_SRC)\support.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-unicode.obj $(GREGORIO_SRC)\unicode.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-dump.obj $(GREGORIO_SRC)\dump\dump.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-elements-determination.obj $(GREGORIO_SRC)\gabc\gabc-elements-determination.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-glyphs-determination.obj $(GREGORIO_SRC)\gabc\gabc-glyphs-determination.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-notes-determination-l.obj $(GREGORIO_SRC)\gabc\gabc-notes-determination-l.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-score-determination.obj $(GREGORIO_SRC)\gabc\gabc-score-determination.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-score-determination-l.obj $(GREGORIO_SRC)\gabc\gabc-score-determination-l.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-score-determination-y.obj $(GREGORIO_SRC)\gabc\gabc-score-determination-y.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gabc-write.obj $(GREGORIO_SRC)\gabc\gabc-write.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gregoriotex-position.obj $(GREGORIO_SRC)\gregoriotex\gregoriotex-position.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-gregoriotex-write.obj $(GREGORIO_SRC)\gregoriotex\gregoriotex-write.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-vowel.obj $(GREGORIO_SRC)\vowel\vowel.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-vowel-rules-l.obj $(GREGORIO_SRC)\vowel\vowel-rules-l.c
+  $(CC) $(GREGORIO_CFLAGS) -Fo$(TLBUILD)\gregorio-vowel-rules-y.obj $(GREGORIO_SRC)\vowel\vowel-rules-y.c
+  rc -nologo -fo$(TLBUILD)\gregorio-resources.res $(GREGORIO_ROOT)\gregorio-src\windows\gregorio-resources.rc
+  link -nologo -out:$(TLWORKS)\gregorio.exe $(TLBUILD)\gregorio-*.obj $(TLBUILD)\gregorio-resources.res $(GREGORIO_LDFLAGS)
+
 KPSEROOT=$(TLROOT)\texk\kpathsea
 KPSE_CFLAGS=-nologo -c -D_CRT_DECLARE_NONSTDC_NAMES=0 $(KPATHSEA_CFLAGS)
 KPSE_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
