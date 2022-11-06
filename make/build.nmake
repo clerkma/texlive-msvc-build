@@ -913,6 +913,239 @@ dvips:
   link -nologo -out:$(TLWORKS)\dvips.exe $(TLBUILD)\dvips-*.obj $(DVIPS_LDFLAGS)
   link -nologo -out:$(TLWORKS)\afm2afm.exe $(TLBUILD)\afm2afm.obj $(DVIPS_LDFLAGS)
 
+DVISVGM_BROTLI_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\libs\brotli
+DVISVGM_BROTLI_CFLAGS=-nologo -c -I$(DVISVGM_BROTLI_ROOT)\include 
+DVISVGM_BROTLI_LDFLAGS=
+dvisvgm_brotli:
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-common-constants.obj $(DVISVGM_BROTLI_ROOT)\common\constants.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-common-context.obj $(DVISVGM_BROTLI_ROOT)\common\context.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-common-dictionary.obj $(DVISVGM_BROTLI_ROOT)\common\dictionary.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-common-platform.obj $(DVISVGM_BROTLI_ROOT)\common\platform.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-common-transform.obj $(DVISVGM_BROTLI_ROOT)\common\transform.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-backward_references.obj $(DVISVGM_BROTLI_ROOT)\enc\backward_references.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-backward_references_hq.obj $(DVISVGM_BROTLI_ROOT)\enc\backward_references_hq.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-bit_cost.obj $(DVISVGM_BROTLI_ROOT)\enc\bit_cost.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-block_splitter.obj $(DVISVGM_BROTLI_ROOT)\enc\block_splitter.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-brotli_bit_stream.obj $(DVISVGM_BROTLI_ROOT)\enc\brotli_bit_stream.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-cluster.obj $(DVISVGM_BROTLI_ROOT)\enc\cluster.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-command.obj $(DVISVGM_BROTLI_ROOT)\enc\command.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-compress_fragment.obj $(DVISVGM_BROTLI_ROOT)\enc\compress_fragment.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-compress_fragment_two_pass.obj $(DVISVGM_BROTLI_ROOT)\enc\compress_fragment_two_pass.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-dictionary_hash.obj $(DVISVGM_BROTLI_ROOT)\enc\dictionary_hash.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-encode.obj $(DVISVGM_BROTLI_ROOT)\enc\encode.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-encoder_dict.obj $(DVISVGM_BROTLI_ROOT)\enc\encoder_dict.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-entropy_encode.obj $(DVISVGM_BROTLI_ROOT)\enc\entropy_encode.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-fast_log.obj $(DVISVGM_BROTLI_ROOT)\enc\fast_log.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-histogram.obj $(DVISVGM_BROTLI_ROOT)\enc\histogram.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-literal_cost.obj $(DVISVGM_BROTLI_ROOT)\enc\literal_cost.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-memory.obj $(DVISVGM_BROTLI_ROOT)\enc\memory.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-metablock.obj $(DVISVGM_BROTLI_ROOT)\enc\metablock.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-static_dict.obj $(DVISVGM_BROTLI_ROOT)\enc\static_dict.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-utf8_util.obj $(DVISVGM_BROTLI_ROOT)\enc\utf8_util.c
+  lib -nologo -out:$(TLBUILD)\libbrotli.lib $(TLBUILD)\libbrotli-*.obj
+
+DVISVGM_FFWOFF_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\libs\ff-woff
+DVISVGM_FFWOFF_CFLAGS=-nologo -c -I$(DVISVGM_FFWOFF_ROOT)\inc -I$(DVISVGM_FFWOFF_ROOT)\fontforge $(ZLIB_CFLAGS)
+DVISVGM_FFWOFF_LDFLAGS=
+dvisvgm_ffwoff:
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-alphabet.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\alphabet.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-asmfpst.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\asmfpst.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-autohint.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\autohint.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-char.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\char.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-cjk.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\cjk.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-cvundoes.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\cvundoes.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-dumppfa.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\dumppfa.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-encoding.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\encoding.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-fflocale.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\fflocale.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-fvfonts.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\fvfonts.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-gwwiconv.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\gwwiconv.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-lookups.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\lookups.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-macbinary.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\macbinary.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-macenc.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\macenc.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-mathconstants.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\mathconstants.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-memory.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\memory.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-mm.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\mm.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-namelist.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\namelist.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-nouiutil.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\nouiutil.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-nowakowskittfinstr.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\nowakowskittfinstr.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-parsepfa.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\parsepfa.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-parsettf.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\parsettf.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-parsettfatt.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\parsettfatt.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-psread.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\psread.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-pua.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\pua.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-sfd.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\sfd.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-sfd1.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\sfd1.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinechar.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinechar.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinefont.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinefont.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineorder2.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineorder2.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineoverlap.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineoverlap.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinerefigure.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinerefigure.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinesave.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinesave.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinesaveafm.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinesaveafm.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineutil.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineutil.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineutil2.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineutil2.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-start.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\start.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-stemdb.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\stemdb.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tmpfile2.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tmpfile2.cpp
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottf.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottf.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottfaat.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottfaat.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottfgpos.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottfgpos.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottfvar.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottfvar.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-ttfinstrs.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\ttfinstrs.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-ttfspecial.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\ttfspecial.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-unialt.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\unialt.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-ustring.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\ustring.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-utype.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\utype.c
+  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-woff.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\woff.c
+  lib -nologo -out:$(TLBUILD)\libffwoff.lib $(TLBUILD)\libffwoff-*.obj
+
+DVISVGM_WOFF2_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\libs\woff2
+DVISVGM_WOFF2_CFLAGS=-nologo -c -EHsc -I$(DVISVGM_WOFF2_ROOT)\include -I$(DVISVGM_BROTLI_ROOT)\include
+DVISVGM_WOFF2_LDFLAGS=
+dvisvgm_woff2:
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-font.obj $(DVISVGM_WOFF2_ROOT)\src\font.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-glyph.obj $(DVISVGM_WOFF2_ROOT)\src\glyph.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-normalize.obj $(DVISVGM_WOFF2_ROOT)\src\normalize.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-table_tags.obj $(DVISVGM_WOFF2_ROOT)\src\table_tags.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-transform.obj $(DVISVGM_WOFF2_ROOT)\src\transform.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-variable_length.obj $(DVISVGM_WOFF2_ROOT)\src\variable_length.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-woff2_common.obj $(DVISVGM_WOFF2_ROOT)\src\woff2_common.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-woff2_enc.obj $(DVISVGM_WOFF2_ROOT)\src\woff2_enc.cc
+  $(CC) $(DVISVGM_WOFF2_CFLAGS) -Fo$(TLBUILD)\libwoff2-woff2_out.obj $(DVISVGM_WOFF2_ROOT)\src\woff2_out.cc
+  lib -nologo -out:$(TLBUILD)\libwoff2.lib $(TLBUILD)\libwoff2-*.obj
+
+DVISVGM_LIBS_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\libs
+DVISVGM_LIBS_CFLAGS=-nologo -c
+DVISVGM_LIBS_LDFLAGS=
+dvisvgm_libs:
+  $(CC) $(DVISVGM_LIBS_CFLAGS) -EHsc -Fo$(TLBUILD)\libdvisvgm-misc-clipper.obj $(DVISVGM_LIBS_ROOT)\clipper\clipper.cpp
+  $(CC) $(DVISVGM_LIBS_CFLAGS) -Fo$(TLBUILD)\libdvisvgm-misc-md5.obj $(DVISVGM_LIBS_ROOT)\md5\md5.c
+  $(CC) $(DVISVGM_LIBS_CFLAGS) -Fo$(TLBUILD)\libdvisvgm-misc-xxhash.obj $(DVISVGM_LIBS_ROOT)\xxHash\xxhash.c
+  lib -nologo -out:$(TLBUILD)\libdvisvgm-misc.lib $(TLBUILD)\libdvisvgm-misc-*.obj
+
+DVISVGM_OPTIMIZER_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src\optimizer
+DVISVGM_OPTIMIZER_CFLAGS=-nologo -c -EHsc -I$(DVISVGM_LIBS_ROOT)\variant\include -I$(DVISVGM_LIBS_ROOT)\xxHash
+DVISVGM_OPTIMIZER_LDFLAGS=
+dvisvgm_optimizer:
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-AttributeExtractor.obj $(DVISVGM_OPTIMIZER_ROOT)\AttributeExtractor.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-ClipPathReassigner.obj $(DVISVGM_OPTIMIZER_ROOT)\ClipPathReassigner.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-GroupCollapser.obj $(DVISVGM_OPTIMIZER_ROOT)\GroupCollapser.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-RedundantElementRemover.obj $(DVISVGM_OPTIMIZER_ROOT)\RedundantElementRemover.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-SVGOptimizer.obj $(DVISVGM_OPTIMIZER_ROOT)\SVGOptimizer.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-TextSimplifier.obj $(DVISVGM_OPTIMIZER_ROOT)\TextSimplifier.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-TransformSimplifier.obj $(DVISVGM_OPTIMIZER_ROOT)\TransformSimplifier.cpp
+  $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-WSNodeRemover.obj $(DVISVGM_OPTIMIZER_ROOT)\WSNodeRemover.cpp
+  lib -nologo -out:$(TLBUILD)\liboptimizer.lib $(TLBUILD)\liboptimizer-*.obj
+
+DVISVGM_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src
+DVISVGM_CFLAGS=-nologo -c -EHsc -DTEXLIVEWIN32 -I$(PREDEF)\dvisvgm -I$(DVISVGM_LIBS_ROOT)\variant\include -I$(DVISVGM_LIBS_ROOT)\xxHash \
+  -I$(DVISVGM_WOFF2_ROOT)\include -I$(DVISVGM_LIBS_ROOT)\md5 -I$(DVISVGM_LIBS_ROOT)\clipper -I$(DVISVGM_LIBS_ROOT)\brotli\include \
+  -I$(DVISVGM_LIBS_ROOT)\ff-woff\fontforge -I$(DVISVGM_LIBS_ROOT)\ff-woff\inc \
+  $(KPATHSEA_CFLAGS) $(LIBFREETYPE_CFLAGS) $(POTRACE_CFLAGS) $(ZLIB_CFLAGS)
+DVISVGM_LDFLAGS=-libpath:$(TLBUILD) libbrotli.lib libffwoff.lib libwoff2.lib libdvisvgm-misc.lib liboptimizer.lib libkpathsea.lib libz.lib libfreetype.lib libpotrace.lib $(RUNTIME_LIBS)
+dvisvgm: dvisvgm_brotli dvisvgm_ffwoff dvisvgm_woff2 dvisvgm_libs dvisvgm_optimizer
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-BasicDVIReader.obj $(DVISVGM_ROOT)\BasicDVIReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Bezier.obj $(DVISVGM_ROOT)\Bezier.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-BgColorSpecialHandler.obj $(DVISVGM_ROOT)\BgColorSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Bitmap.obj $(DVISVGM_ROOT)\Bitmap.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-BoundingBox.obj $(DVISVGM_ROOT)\BoundingBox.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Calculator.obj $(DVISVGM_ROOT)\Calculator.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-CharMapID.obj $(DVISVGM_ROOT)\CharMapID.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-CLCommandLine.obj $(DVISVGM_ROOT)\CLCommandLine.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-CMap.obj $(DVISVGM_ROOT)\CMap.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-CMapManager.obj $(DVISVGM_ROOT)\CMapManager.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-CMapReader.obj $(DVISVGM_ROOT)\CMapReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Color.obj $(DVISVGM_ROOT)\Color.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ColorSpecialHandler.obj $(DVISVGM_ROOT)\ColorSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Directory.obj $(DVISVGM_ROOT)\Directory.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-DLLoader.obj $(DVISVGM_ROOT)\DLLoader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-DVIReader.obj $(DVISVGM_ROOT)\DVIReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-DvisvgmSpecialHandler.obj $(DVISVGM_ROOT)\DvisvgmSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-DVIToSVG.obj $(DVISVGM_ROOT)\DVIToSVG.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-DVIToSVGActions.obj $(DVISVGM_ROOT)\DVIToSVGActions.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-EllipticalArc.obj $(DVISVGM_ROOT)\EllipticalArc.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-EmSpecialHandler.obj $(DVISVGM_ROOT)\EmSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-EncFile.obj $(DVISVGM_ROOT)\EncFile.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-EPSFile.obj $(DVISVGM_ROOT)\EPSFile.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FileFinder.obj $(DVISVGM_ROOT)\FileFinder.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FilePath.obj $(DVISVGM_ROOT)\FilePath.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FileSystem.obj $(DVISVGM_ROOT)\FileSystem.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Font.obj $(DVISVGM_ROOT)\Font.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontCache.obj $(DVISVGM_ROOT)\FontCache.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontEncoding.obj $(DVISVGM_ROOT)\FontEncoding.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontEngine.obj $(DVISVGM_ROOT)\FontEngine.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontManager.obj $(DVISVGM_ROOT)\FontManager.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontMap.obj $(DVISVGM_ROOT)\FontMap.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontMetrics.obj $(DVISVGM_ROOT)\FontMetrics.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-FontWriter.obj $(DVISVGM_ROOT)\FontWriter.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-GFGlyphTracer.obj $(DVISVGM_ROOT)\GFGlyphTracer.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-GFReader.obj $(DVISVGM_ROOT)\GFReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-GFTracer.obj $(DVISVGM_ROOT)\GFTracer.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Ghostscript.obj $(DVISVGM_ROOT)\Ghostscript.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-HashFunction.obj $(DVISVGM_ROOT)\HashFunction.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-HtmlSpecialHandler.obj $(DVISVGM_ROOT)\HtmlSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-HyperlinkManager.obj $(DVISVGM_ROOT)\HyperlinkManager.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ImageToSVG.obj $(DVISVGM_ROOT)\ImageToSVG.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-InputBuffer.obj $(DVISVGM_ROOT)\InputBuffer.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-InputReader.obj $(DVISVGM_ROOT)\InputReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-JFM.obj $(DVISVGM_ROOT)\JFM.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Length.obj $(DVISVGM_ROOT)\Length.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-MapLine.obj $(DVISVGM_ROOT)\MapLine.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Matrix.obj $(DVISVGM_ROOT)\Matrix.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Message.obj $(DVISVGM_ROOT)\Message.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-MetafontWrapper.obj $(DVISVGM_ROOT)\MetafontWrapper.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-NoPsSpecialHandler.obj $(DVISVGM_ROOT)\NoPsSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Opacity.obj $(DVISVGM_ROOT)\Opacity.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PageRanges.obj $(DVISVGM_ROOT)\PageRanges.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PageSize.obj $(DVISVGM_ROOT)\PageSize.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PapersizeSpecialHandler.obj $(DVISVGM_ROOT)\PapersizeSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PathClipper.obj $(DVISVGM_ROOT)\PathClipper.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PDFParser.obj $(DVISVGM_ROOT)\PDFParser.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PdfSpecialHandler.obj $(DVISVGM_ROOT)\PdfSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PreScanDVIReader.obj $(DVISVGM_ROOT)\PreScanDVIReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Process.obj $(DVISVGM_ROOT)\Process.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-psdefs.obj $(DVISVGM_ROOT)\psdefs.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSInterpreter.obj $(DVISVGM_ROOT)\PSInterpreter.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSPattern.obj $(DVISVGM_ROOT)\PSPattern.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSPreviewFilter.obj $(DVISVGM_ROOT)\PSPreviewFilter.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PsSpecialHandler.obj $(DVISVGM_ROOT)\PsSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-RangeMap.obj $(DVISVGM_ROOT)\RangeMap.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ShadingPatch.obj $(DVISVGM_ROOT)\ShadingPatch.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SignalHandler.obj $(DVISVGM_ROOT)\SignalHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SourceInput.obj $(DVISVGM_ROOT)\SourceInput.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SpecialManager.obj $(DVISVGM_ROOT)\SpecialManager.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-StreamReader.obj $(DVISVGM_ROOT)\StreamReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-StreamWriter.obj $(DVISVGM_ROOT)\StreamWriter.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Subfont.obj $(DVISVGM_ROOT)\Subfont.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGCharHandler.obj $(DVISVGM_ROOT)\SVGCharHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGCharHandlerFactory.obj $(DVISVGM_ROOT)\SVGCharHandlerFactory.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGCharPathHandler.obj $(DVISVGM_ROOT)\SVGCharPathHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGCharTspanTextHandler.obj $(DVISVGM_ROOT)\SVGCharTspanTextHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGElement.obj $(DVISVGM_ROOT)\SVGElement.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGOutput.obj $(DVISVGM_ROOT)\SVGOutput.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGSingleCharTextHandler.obj $(DVISVGM_ROOT)\SVGSingleCharTextHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SVGTree.obj $(DVISVGM_ROOT)\SVGTree.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-System.obj $(DVISVGM_ROOT)\System.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TensorProductPatch.obj $(DVISVGM_ROOT)\TensorProductPatch.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Terminal.obj $(DVISVGM_ROOT)\Terminal.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TFM.obj $(DVISVGM_ROOT)\TFM.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ToUnicodeMap.obj $(DVISVGM_ROOT)\ToUnicodeMap.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TpicSpecialHandler.obj $(DVISVGM_ROOT)\TpicSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TriangularPatch.obj $(DVISVGM_ROOT)\TriangularPatch.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TrueTypeFont.obj $(DVISVGM_ROOT)\TrueTypeFont.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TTFAutohint.obj $(DVISVGM_ROOT)\TTFAutohint.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Unicode.obj $(DVISVGM_ROOT)\Unicode.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-utility.obj $(DVISVGM_ROOT)\utility.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-VFReader.obj $(DVISVGM_ROOT)\VFReader.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLDocument.obj $(DVISVGM_ROOT)\XMLDocument.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLNode.obj $(DVISVGM_ROOT)\XMLNode.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLParser.obj $(DVISVGM_ROOT)\XMLParser.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLString.obj $(DVISVGM_ROOT)\XMLString.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLString.obj $(DVISVGM_ROOT)\XMLString.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ffwrapper.obj $(DVISVGM_ROOT)\ffwrapper.c
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-dvisvgm.obj $(DVISVGM_ROOT)\dvisvgm.cpp
+  link -nologo -out:$(TLWORKS)\dvisvgm.exe $(TLBUILD)\dvisvgm-*.obj $(DVISVGM_LDFLAGS)
+
 GSFTOPK_ROOT=$(TLROOT)\texk\gsftopk
 GSFTOPK_CFLAGS=-nologo -c -DWIN32 -DKPATHSEA $(KPATHSEA_CFLAGS) -I$(PREDEF)\gsftopk
 GSFTOPK_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)

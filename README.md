@@ -106,6 +106,7 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 * dvipng
 * dvipos
 * dvips (afm2afm, dvips)
+* dvisvgm
 * gregorio
 * gsftopk
 * kpsetools (kpseaccess, kpsestat, kpsewhich)
