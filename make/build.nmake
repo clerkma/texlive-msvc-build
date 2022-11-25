@@ -1409,12 +1409,18 @@ upmendex:
   $(CC) $(UPMENDEX_CFLAGS) -Fo$(TLBUILD)\upmendex-styfile.obj $(UPMENDEX_ROOT)\styfile.c
   link -nologo -out:$(TLWORKS)\upmendex.exe $(TLBUILD)\upmendex-*.obj $(UPMENDEX_LDFLAGS)
 
-all: tangle weave ctangle cweave tie ctie ctwill ctwill-refsort ctwill-twinx twill\
+program-all: bibtex-x chktex cjkutils detex dtl dvi2tty dvidvi dvipdfmx dvipng dvipos\
+  dvips dvisvgm gsftopk gregorio kpsetools lcdf-typetools makejvf makeindex mendex\
+  ttf2pk2 ttfdump upmendex
+
+engine-all: tangle weave ctangle cweave tie ctie ctwill ctwill-refsort ctwill-twinx twill\
   bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf odvicopy odvitype\
   ofm2opl opl2ofm ovf2ovp ovp2ovf aleph omfonts otp2ocp outocp tex mf\
   ptex pbibtex pdvitype ppltotf ptftopl eptex\
   uptex upbibtex updvitype uppltotf uptftopl euptex\
   pdftex ttf2afm pdftosrc mpost pmpost upmpost
+
+all: engine-all
 
 clean:
   @if exist $(PREDEF)\*.c (del $(PREDEF)\*.c)
