@@ -524,7 +524,7 @@ uptex:
 upbibtex:
   set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
   cd $(PREDEF)
-  tie -m upbibtex.web bibtex.web bibtex.ch ptexdir\pbibtex.ch
+  tie -m upbibtex.web bibtex.web bibtex.ch
   tangle upbibtex upbibtex
   -$(CONVERT) upbibtex
   cd $(MAKEDIR)
@@ -535,7 +535,7 @@ upbibtex:
 updvitype:
   set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
   cd $(PREDEF)
-  tie -m updvitype.web dvitype.web dvitype.ch ptexdir\pdvitype.ch
+  tie -m updvitype.web dvitype.web dvitype.ch
   tangle updvitype updvitype
   $(CONVERT) updvitype
   cd $(MAKEDIR)
@@ -546,7 +546,7 @@ updvitype:
 uppltotf:
   set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
   cd $(PREDEF)
-  tie -m uppltotf.web pltotf.web pltotf.ch ptexdir\ppltotf.ch
+  tie -m uppltotf.web pltotf.web pltotf.ch
   tangle uppltotf uppltotf
   $(CONVERT) uppltotf
   cd $(MAKEDIR)
@@ -557,7 +557,7 @@ uppltotf:
 uptftopl:
   set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
   cd $(PREDEF)
-  tie -m uptftopl.web tftopl.web tftopl.ch ptexdir\ptftopl.ch
+  tie -m uptftopl.web tftopl.web tftopl.ch
   tangle uptftopl uptftopl
   $(CONVERT) uptftopl
   cd $(MAKEDIR)
