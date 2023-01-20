@@ -1,6 +1,6 @@
 *.exe
 *~
-tools/bin/*
+tools/bin/*.exe
 build-src
 build-out
 build-bin

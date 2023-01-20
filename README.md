@@ -42,7 +42,7 @@ tools\set-env-x64.bat
 nmake -nologo -f make\libkpathsea.nmake
 nmake -nologo -f make\libruntime.nmake
 nmake -nologo -f make\bootstrap.nmake
-nmake -nologo -f make\build.nmake TLWORKS=%TLTOOLS% tangleboot ctangleboot otangle tie
+nmake -nologo -f make\build.nmake TLWORKS=%TLTOOLS%\bin tangleboot ctangleboot otangle tie
 ```
 
 ## `web2c` Programs
