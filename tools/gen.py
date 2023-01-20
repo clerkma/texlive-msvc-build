@@ -48,12 +48,12 @@ def run_build_icu_data():
     if tlroot is None or tlbuild is None:
         print("Please set variable 'TLROOT' and 'TLBUILD'. ")
     else:
-        icudata_path = os.path.join(tlroot, r"libs\icu\icu-src\source\data\in\icudt71l.dat")
+        icudata_path = os.path.join(tlroot, r"libs\icu\icu-src\source\data\in\icudt72l.dat")
         icudata_data = None
         with open(icudata_path, "rb") as src:
             icudata_data = src.read()
         if icudata_data is None:
-            print("'icudt71l.dat': It seems empty.")
+            print("'icudt72l.dat': It seems empty.")
         else:
             out_name = os.path.join(tlbuild, "libicudata.c")
             with open(out_name, "w") as out:
@@ -61,7 +61,7 @@ def run_build_icu_data():
                 out.write("struct icudata {\n")
                 out.write("  double item0;\n")
                 out.write("  unsigned char item1[%d];\n" % data_len)
-                out.write("} icudt71_dat = { 0.0, {\n")
+                out.write("} icudt72_dat = { 0.0, {\n")
                 row = (data_len + 15) // 16
                 for i in range(row):
                     data = icudata_data[i*16:i*16+16]

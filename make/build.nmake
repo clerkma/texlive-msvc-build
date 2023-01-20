@@ -409,71 +409,6 @@ upmpost: pmpost
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-ptfmin.obj $(PREDEF)\ptfmin.c
   link -nologo -dll -out:$(TLWORKS)\upmpost.dll $(TLBUILD)\upmpost-*.obj libmputil.lib $(PMPOST_LDFLAGS)
 
-PTEX_CFLAGS =$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-ptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS)
-PTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
-ptex:
-  set WEBINPUTS=.;$(WEB2CROOT)
-  cd $(PREDEF)
-  tie -m ptex.web tex.web tex.ch tracingstacklevels.ch partoken.ch zlib-fmt.ch
-  tie -c ptex.ch ptex.web ptexdir\ptex-base.ch synctexdir\synctex-def.ch0 synctexdir\synctex-p-mem.ch0 synctexdir\synctex-mem.ch0 \
-    synctexdir\synctex-p-mem.ch1 synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-rec.ch2\
-    synctexdir\synctex-p-rec.ch1 tex-binpool.ch
-  tangle ptex.web ptex.ch
-  $(CONVERT) ptex
-  cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-ptex0.obj $(PREDEF)\ptex0.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-ptexini.obj $(PREDEF)\ptexini.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-pool.obj $(PREDEF)\ptex-pool.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-kanji.obj $(PTEXROOT)\kanji.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-kanji_dump.obj $(PTEXROOT)\kanji_dump.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-ptexextra.obj $(PTEXROOT)\ptexextra.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptex-synctex.obj $(SYNCTEXROOT)\synctex.c
-  link -nologo -dll -out:$(TLWORKS)\ptex.dll $(TLBUILD)\ptex-*.obj $(PTEX_LDFLAGS)
-
-pbibtex:
-  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
-  cd $(PREDEF)
-  tie -m pbibtex.web bibtex.web bibtex.ch
-  tangle pbibtex pbibtex
-  $(CONVERT) pbibtex
-  cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pbibtex-pbibtex.obj $(PREDEF)\pbibtex.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pbibtex-kanji.obj $(PTEXROOT)\kanji.c
-  link -nologo -out:$(TLWORKS)\pbibtex.exe $(TLBUILD)\pbibtex-*.obj $(PTEX_LDFLAGS)
-
-pdvitype:
-  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
-  cd $(PREDEF)
-  tie -m pdvitype.web dvitype.web dvitype.ch
-  tangle pdvitype pdvitype
-  $(CONVERT) pdvitype
-  cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pdvitype-pdvitype.obj -DHEX_CHAR_CODE $(PREDEF)\pdvitype.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\pdvitype-kanji.obj $(PTEXROOT)\kanji.c
-  link -nologo -out:$(TLWORKS)\pdvitype.exe $(TLBUILD)\pdvitype-*.obj $(PTEX_LDFLAGS)
-
-ppltotf:
-  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
-  cd $(PREDEF)
-  tie -m ppltotf.web pltotf.web pltotf.ch
-  tangle ppltotf ppltotf
-  $(CONVERT) ppltotf
-  cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ppltotf-ppltotf.obj -DPRESERVE_PUTC $(PREDEF)\ppltotf.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ppltotf-kanji.obj $(PTEXROOT)\kanji.c
-  link -nologo -out:$(TLWORKS)\ppltotf.exe $(TLBUILD)\ppltotf-*.obj $(PTEX_LDFLAGS)
-
-ptftopl:
-  set WEBINPUTS=.;$(WEB2CROOT);$(PTEXROOT)
-  cd $(PREDEF)
-  tie -m ptftopl.web tftopl.web tftopl.ch
-  tangle ptftopl ptftopl
-  $(CONVERT) ptftopl
-  cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptftopl-ptftopl.obj $(TLBUILD)\ptftopl-ptftopl.obj $(PREDEF)\ptftopl.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\ptftopl-kanji.obj $(PTEXROOT)\kanji.c
-  link -nologo -out:$(TLWORKS)\ptftopl.exe $(TLBUILD)\ptftopl-*.obj $(PTEX_LDFLAGS)
-
 libmd5:
   $(CC) $(CFLAGS) -Fo$(TLBUILD)\libmd5-md5.obj $(MD5ROOT)\md5.c
   lib -nologo -out:$(TLBUILD)\libmd5.lib $(TLBUILD)\libmd5-md5.obj
@@ -528,8 +463,8 @@ upbibtex:
   tangle upbibtex upbibtex
   -$(CONVERT) upbibtex
   cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\upbibtex-upbibtex.obj $(PREDEF)\upbibtex.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\upbibtex-kanji.obj $(UPTEXROOT)\kanji.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\upbibtex-upbibtex.obj $(PREDEF)\upbibtex.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\upbibtex-kanji.obj $(UPTEXROOT)\kanji.c
   link -nologo -out:$(TLWORKS)\upbibtex.exe $(TLBUILD)\upbibtex-*.obj $(UPTEX_LDFLAGS)
 
 updvitype:
@@ -539,8 +474,8 @@ updvitype:
   tangle updvitype updvitype
   $(CONVERT) updvitype
   cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\updvitype-updvitype.obj -DHEX_CHAR_CODE $(PREDEF)\updvitype.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\updvitype-kanji.obj $(UPTEXROOT)\kanji.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\updvitype-updvitype.obj -DHEX_CHAR_CODE $(PREDEF)\updvitype.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\updvitype-kanji.obj $(UPTEXROOT)\kanji.c
   link -nologo -out:$(TLWORKS)\updvitype.exe $(TLBUILD)\updvitype-*.obj $(UPTEX_LDFLAGS)
 
 uppltotf:
@@ -550,8 +485,8 @@ uppltotf:
   tangle uppltotf uppltotf
   $(CONVERT) uppltotf
   cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uppltotf-uppltotf.obj -DPRESERVE_PUTC $(PREDEF)\uppltotf.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uppltotf-kanji.obj $(UPTEXROOT)\kanji.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uppltotf-uppltotf.obj -DPRESERVE_PUTC $(PREDEF)\uppltotf.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uppltotf-kanji.obj $(UPTEXROOT)\kanji.c
   link -nologo -out:$(TLWORKS)\uppltotf.exe $(TLBUILD)\uppltotf-*.obj $(UPTEX_LDFLAGS)
 
 uptftopl:
@@ -561,9 +496,9 @@ uptftopl:
   tangle uptftopl uptftopl
   $(CONVERT) uptftopl
   cd $(MAKEDIR)
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-uptftopl.obj $(PREDEF)\uptftopl.c
-  $(CC) $(PTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-kanji.obj $(UPTEXROOT)\kanji.c
-  link -nologo -out:$(TLWORKS)\uptftopl.exe $(TLBUILD)\uptftopl-*.obj $(PTEX_LDFLAGS)
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-uptftopl.obj $(PREDEF)\uptftopl.c
+  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-kanji.obj $(UPTEXROOT)\kanji.c
+  link -nologo -out:$(TLWORKS)\uptftopl.exe $(TLBUILD)\uptftopl-*.obj $(UPTEX_LDFLAGS)
 
 EUPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-euptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS) -I$(MD5ROOT)
 EUPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
@@ -944,61 +879,6 @@ dvisvgm_brotli:
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-utf8_util.obj $(DVISVGM_BROTLI_ROOT)\enc\utf8_util.c
   lib -nologo -out:$(TLBUILD)\libbrotli.lib $(TLBUILD)\libbrotli-*.obj
 
-DVISVGM_FFWOFF_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\libs\ff-woff
-DVISVGM_FFWOFF_CFLAGS=-nologo -c -I$(DVISVGM_FFWOFF_ROOT)\inc -I$(DVISVGM_FFWOFF_ROOT)\fontforge $(ZLIB_CFLAGS)
-DVISVGM_FFWOFF_LDFLAGS=
-dvisvgm_ffwoff:
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-alphabet.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\alphabet.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-asmfpst.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\asmfpst.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-autohint.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\autohint.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-char.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\char.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-cjk.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\cjk.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-cvundoes.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\cvundoes.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-dumppfa.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\dumppfa.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-encoding.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\encoding.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-fflocale.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\fflocale.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-fvfonts.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\fvfonts.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-gwwiconv.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\gwwiconv.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-lookups.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\lookups.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-macbinary.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\macbinary.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-macenc.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\macenc.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-mathconstants.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\mathconstants.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-memory.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\memory.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-mm.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\mm.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-namelist.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\namelist.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-nouiutil.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\nouiutil.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-nowakowskittfinstr.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\nowakowskittfinstr.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-parsepfa.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\parsepfa.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-parsettf.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\parsettf.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-parsettfatt.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\parsettfatt.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-psread.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\psread.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-pua.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\pua.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-sfd.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\sfd.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-sfd1.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\sfd1.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinechar.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinechar.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinefont.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinefont.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineorder2.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineorder2.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineoverlap.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineoverlap.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinerefigure.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinerefigure.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinesave.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinesave.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splinesaveafm.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splinesaveafm.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineutil.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineutil.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-splineutil2.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\splineutil2.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-start.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\start.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-stemdb.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\stemdb.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tmpfile2.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tmpfile2.cpp
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottf.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottf.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottfaat.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottfaat.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottfgpos.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottfgpos.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-tottfvar.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\tottfvar.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-ttfinstrs.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\ttfinstrs.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-ttfspecial.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\ttfspecial.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-unialt.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\unialt.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-ustring.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\ustring.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-utype.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\utype.c
-  $(CC) $(DVISVGM_FFWOFF_CFLAGS) -Fo$(TLBUILD)\libffwoff-woff.obj $(DVISVGM_FFWOFF_ROOT)\fontforge\woff.c
-  lib -nologo -out:$(TLBUILD)\libffwoff.lib $(TLBUILD)\libffwoff-*.obj
-
 DVISVGM_WOFF2_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\libs\woff2
 DVISVGM_WOFF2_CFLAGS=-nologo -c -EHsc -I$(DVISVGM_WOFF2_ROOT)\include -I$(DVISVGM_BROTLI_ROOT)\include
 DVISVGM_WOFF2_LDFLAGS=
@@ -1037,13 +917,55 @@ dvisvgm_optimizer:
   $(CC) $(DVISVGM_OPTIMIZER_CFLAGS) -Fo$(TLBUILD)\liboptimizer-WSNodeRemover.obj $(DVISVGM_OPTIMIZER_ROOT)\WSNodeRemover.cpp
   lib -nologo -out:$(TLBUILD)\liboptimizer.lib $(TLBUILD)\liboptimizer-*.obj
 
+DVISVGM_LIBTTF_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src\ttf
+DVISVGM_LIBTTF_CFLAGS=-nologo -c -EHsc -I$(PREDEF)\dvisvgm -I$(PREDEF)\dvisvgm\ttf -I$(DVISVGM_LIBS_ROOT)\boost -I$(TLROOT)\texk\dvisvgm\dvisvgm-src\src \
+ $(ZLIB_CFLAGS) -I$(DVISVGM_LIBS_ROOT) -I$(DVISVGM_LIBS_ROOT)\variant\include -I$(DVISVGM_WOFF2_ROOT)\include
+DVISVGM_LIBTTF_LDFLAGS=
+dvisvgm_libttf:
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-cmap.obj $(DVISVGM_LIBTTF_ROOT)\CmapTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-glyf.obj $(DVISVGM_LIBTTF_ROOT)\GlyfTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-head.obj $(DVISVGM_LIBTTF_ROOT)\HeadTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-hhea.obj $(DVISVGM_LIBTTF_ROOT)\HheaTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-hmtx.obj $(DVISVGM_LIBTTF_ROOT)\HmtxTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-maxp.obj $(DVISVGM_LIBTTF_ROOT)\MaxpTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-name.obj $(DVISVGM_LIBTTF_ROOT)\NameTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-os_2.obj $(DVISVGM_LIBTTF_ROOT)\OS2Table.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-post.obj $(DVISVGM_LIBTTF_ROOT)\PostTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-autohint.obj $(DVISVGM_LIBTTF_ROOT)\TTFAutohint.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-ttftable.obj $(DVISVGM_LIBTTF_ROOT)\TTFTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-ttfwriter.obj $(DVISVGM_LIBTTF_ROOT)\TTFWriter.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-vhea.obj $(DVISVGM_LIBTTF_ROOT)\VheaTable.cpp
+  $(CC) $(DVISVGM_LIBTTF_CFLAGS) -Fo$(TLBUILD)\libdvisvgmttf-vmtx.obj $(DVISVGM_LIBTTF_ROOT)\VmtxTable.cpp
+  lib -nologo -out:$(TLBUILD)\libdvisvgmttf.lib $(TLBUILD)\libdvisvgmttf-*.obj
+
+DVISVGM_LIBBASE14FONTS_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src\fonts
+DVISVGM_LIBBASE14FONTS_CFLAGS=-nologo -c -EHsc
+libbase14fonts:
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-base14fonts.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\Base14Fonts.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-Dingbats.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\Dingbats.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Bold.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-BoldItalic.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Italic.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Regular.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Bold.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-BoldItalic.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Italic.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Regular.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Bold.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-BoldItalic.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Italic.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Regular.cff.cpp
+	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-StandardSymbolsPS.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\StandardSymbolsPS.cff.cpp
+  lib -nologo -out:$(TLBUILD)\libbase14fonts.lib $(TLBUILD)\libbase14fonts-*.obj
+
 DVISVGM_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src
 DVISVGM_CFLAGS=-nologo -c -EHsc -DTEXLIVEWIN32 -I$(PREDEF)\dvisvgm -I$(DVISVGM_LIBS_ROOT)\variant\include -I$(DVISVGM_LIBS_ROOT)\xxHash \
   -I$(DVISVGM_WOFF2_ROOT)\include -I$(DVISVGM_LIBS_ROOT)\md5 -I$(DVISVGM_LIBS_ROOT)\clipper -I$(DVISVGM_LIBS_ROOT)\brotli\include \
   -I$(DVISVGM_LIBS_ROOT)\ff-woff\fontforge -I$(DVISVGM_LIBS_ROOT)\ff-woff\inc \
   $(KPATHSEA_CFLAGS) $(LIBFREETYPE_CFLAGS) $(POTRACE_CFLAGS) $(ZLIB_CFLAGS)
-DVISVGM_LDFLAGS=-libpath:$(TLBUILD) libbrotli.lib libffwoff.lib libwoff2.lib libdvisvgm-misc.lib liboptimizer.lib libkpathsea.lib libz.lib libfreetype.lib libpotrace.lib $(RUNTIME_LIBS)
-dvisvgm: dvisvgm_brotli dvisvgm_ffwoff dvisvgm_woff2 dvisvgm_libs dvisvgm_optimizer
+DVISVGM_LDFLAGS=-libpath:$(TLBUILD) libbrotli.lib libffwoff.lib libwoff2.lib libdvisvgm-misc.lib liboptimizer.lib libdvisvgmttf.lib libbase14fonts.lib\
+ libkpathsea.lib libz.lib libfreetype.lib libpotrace.lib $(RUNTIME_LIBS)
+dvisvgm: dvisvgm_brotli dvisvgm_woff2 dvisvgm_libs dvisvgm_optimizer dvisvgm_libttf libbase14fonts
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-BasicDVIReader.obj $(DVISVGM_ROOT)\BasicDVIReader.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Bezier.obj $(DVISVGM_ROOT)\Bezier.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-BgColorSpecialHandler.obj $(DVISVGM_ROOT)\BgColorSpecialHandler.cpp
@@ -1100,7 +1022,9 @@ dvisvgm: dvisvgm_brotli dvisvgm_ffwoff dvisvgm_woff2 dvisvgm_libs dvisvgm_optimi
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PageSize.obj $(DVISVGM_ROOT)\PageSize.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PapersizeSpecialHandler.obj $(DVISVGM_ROOT)\PapersizeSpecialHandler.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PathClipper.obj $(DVISVGM_ROOT)\PathClipper.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PDFHandler.obj $(DVISVGM_ROOT)\PDFHandler.cpp  
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PDFParser.obj $(DVISVGM_ROOT)\PDFParser.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PDFToSVG.obj $(DVISVGM_ROOT)\PDFToSVG.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PdfSpecialHandler.obj $(DVISVGM_ROOT)\PdfSpecialHandler.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PreScanDVIReader.obj $(DVISVGM_ROOT)\PreScanDVIReader.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Process.obj $(DVISVGM_ROOT)\Process.cpp
@@ -1132,8 +1056,6 @@ dvisvgm: dvisvgm_brotli dvisvgm_ffwoff dvisvgm_woff2 dvisvgm_libs dvisvgm_optimi
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ToUnicodeMap.obj $(DVISVGM_ROOT)\ToUnicodeMap.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TpicSpecialHandler.obj $(DVISVGM_ROOT)\TpicSpecialHandler.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TriangularPatch.obj $(DVISVGM_ROOT)\TriangularPatch.cpp
-  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TrueTypeFont.obj $(DVISVGM_ROOT)\TrueTypeFont.cpp
-  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-TTFAutohint.obj $(DVISVGM_ROOT)\TTFAutohint.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Unicode.obj $(DVISVGM_ROOT)\Unicode.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-utility.obj $(DVISVGM_ROOT)\utility.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-VFReader.obj $(DVISVGM_ROOT)\VFReader.cpp
@@ -1142,7 +1064,6 @@ dvisvgm: dvisvgm_brotli dvisvgm_ffwoff dvisvgm_woff2 dvisvgm_libs dvisvgm_optimi
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLParser.obj $(DVISVGM_ROOT)\XMLParser.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLString.obj $(DVISVGM_ROOT)\XMLString.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-XMLString.obj $(DVISVGM_ROOT)\XMLString.cpp
-  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ffwrapper.obj $(DVISVGM_ROOT)\ffwrapper.c
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-dvisvgm.obj $(DVISVGM_ROOT)\dvisvgm.cpp
   link -nologo -out:$(TLWORKS)\dvisvgm.exe $(TLBUILD)\dvisvgm-*.obj $(DVISVGM_LDFLAGS)
 
@@ -1416,8 +1337,7 @@ program-all: bibtex-x chktex cjkutils detex dtl dvi2tty dvidvi dvipdfmx dvipng d
 engine-all: tangle weave ctangle cweave tie ctie ctwill ctwill-refsort ctwill-twinx twill\
   bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf odvicopy odvitype\
   ofm2opl opl2ofm ovf2ovp ovp2ovf aleph omfonts otp2ocp outocp tex mf\
-  ptex pbibtex pdvitype ppltotf ptftopl eptex\
-  uptex upbibtex updvitype uppltotf uptftopl euptex\
+  eptex uptex upbibtex updvitype uppltotf uptftopl euptex\
   pdftex ttf2afm pdftosrc mpost pmpost upmpost
 
 all: engine-all
