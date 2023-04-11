@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\gd\libgd-src
-CFLAGS=-nologo -c -O2 -Oy -DBGDWIN32 -DNONDLL -DHAVE_CONFIG_H -I$(PREDEF)\zlib -I$(PREDEF)\gd -I$(TLROOT)\libs\zlib\zlib-src -I$(TLROOT)\libs\libpng\libpng-src -I$(PREDEF)\libpng -I$(TLROOT)\libs\freetype2\freetype-src\include
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -DBGDWIN32 -DNONDLL -DHAVE_CONFIG_H -I$(PREDEF)\zlib -I$(PREDEF)\gd -I$(TLROOT)\libs\zlib\zlib-src -I$(TLROOT)\libs\libpng\libpng-src -I$(PREDEF)\libpng -I$(TLROOT)\libs\freetype2\freetype-src\include
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgd-gd.obj $(ROOT)\src/gd.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgd-gd_avif.obj $(ROOT)\src/gd_avif.c

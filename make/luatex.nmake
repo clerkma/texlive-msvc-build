@@ -1,4 +1,4 @@
-CFLAGS=-nologo -c -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
+CFLAGS=-nologo -c $(TLCFLAGS) -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
 RUNTIME_LIBS=Advapi32.lib Shell32.lib User32.lib Ws2_32.lib Gdi32.lib Rpcrt4.lib
 RUNTIME_LDFLAGS=-libpath:$(TLBUILD) libruntime.lib libkpathsea.lib $(RUNTIME_LIBS)
 

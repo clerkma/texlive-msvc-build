@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\texk\kpathsea
-CFLAGS=-nologo -c -O2 -Oy -DWIN32 -DNO_KPSE_DLL -DMAKE_KPSE_DLL -I$(PREDEF) -I$(TLROOT)\texk
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -DWIN32 -DNO_KPSE_DLL -DMAKE_KPSE_DLL -I$(PREDEF) -I$(TLROOT)\texk
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libkpathsea-tex-file.obj $(ROOT)\tex-file.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libkpathsea-absolute.obj $(ROOT)\absolute.c

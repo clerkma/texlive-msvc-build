@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\mpfr\mpfr-src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DHAVE_CONFIG_H -I$(TLROOT)\libs\mpfr\mpfr-src\src -I$(PREDEF)\gmp -I$(PREDEF)\mpfr
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DHAVE_CONFIG_H -I$(TLROOT)\libs\mpfr\mpfr-src\src -I$(PREDEF)\gmp -I$(PREDEF)\mpfr
 all:
 	copy $(TLROOT)\libs\mpfr\mpfr-src\src\mparam_h.in $(PREDEF)\mpfr\mparam.h
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-abort_prec_max.obj $(ROOT)\src\abort_prec_max.c

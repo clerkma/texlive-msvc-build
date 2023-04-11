@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\graphite2\graphite2-src\src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DGRAPHITE2_STATIC -DGRAPHITE2_NTRACING -I$(TLROOT)\libs\graphite2\graphite2-src\include -I$(TLROOT)\libs\freetype2\freetype2-src\include
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DGRAPHITE2_STATIC -DGRAPHITE2_NTRACING -I$(TLROOT)\libs\graphite2\graphite2-src\include -I$(TLROOT)\libs\freetype2\freetype2-src\include
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgraphite2-CmapCache.obj $(ROOT)\CmapCache.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgraphite2-Code.obj $(ROOT)\Code.cpp

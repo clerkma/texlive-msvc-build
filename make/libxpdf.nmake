@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\xpdf\xpdf-src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DHAVE_CONFIG_H -DPDF_PARSER_ONLY -I$(PREDEF)\xpdf -I$(TLROOT)\libs\xpdf\xpdf-src -I$(TLROOT)\libs\xpdf\xpdf-src\goo -I$(TLROOT)\libs\xpdf\xpdf-src\fofi -I$(TLROOT)\libs\xpdf\xpdf-src\splash
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DHAVE_CONFIG_H -DPDF_PARSER_ONLY -I$(PREDEF)\xpdf -I$(TLROOT)\libs\xpdf\xpdf-src -I$(TLROOT)\libs\xpdf\xpdf-src\goo -I$(TLROOT)\libs\xpdf\xpdf-src\fofi -I$(TLROOT)\libs\xpdf\xpdf-src\splash
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libxpdf-FixedPoint.obj $(ROOT)\goo/FixedPoint.cc
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libxpdf-GHash.obj $(ROOT)\goo/GHash.cc

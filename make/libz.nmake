@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\zlib\zlib-src
-CFLAGS=-nologo -c -O2 -Oy -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zlib
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zlib
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-adler32.obj $(ROOT)\adler32.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libz-compress.obj $(ROOT)\compress.c

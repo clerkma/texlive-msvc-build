@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\zziplib\zziplib-src\zzip
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -I$(TLROOT)\libs\zziplib\zziplib-src -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zziplib -I$(PREDEF)\zlib
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\libs\zziplib\zziplib-src -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zziplib -I$(PREDEF)\zlib
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-dir.obj $(ROOT)\dir.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-err.obj $(ROOT)\err.c

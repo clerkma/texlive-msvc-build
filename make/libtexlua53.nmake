@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\lua53\lua53-src\src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DLUA_COMPAT_MODULE -DLUA_COMPAT_5_2 -DLUAI_HASHLIMIT=6 -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DLUA_COMPAT_MODULE -DLUA_COMPAT_5_2 -DLUAI_HASHLIMIT=6 -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lapi.obj $(ROOT)\lapi.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libtexlua53-lauxlib.obj $(ROOT)\lauxlib.c

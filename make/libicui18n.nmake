@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\icu\icu-src\source\i18n
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DU_IMPORT= -DU_EXPORT= -DU_ATTRIBUTE_DEPRECATED= -DU_I18N_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common -I$(TLROOT)\libs\icu\icu-src\source\i18n
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DU_IMPORT= -DU_EXPORT= -DU_ATTRIBUTE_DEPRECATED= -DU_I18N_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common -I$(TLROOT)\libs\icu\icu-src\source\i18n
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui8n-alphaindex.obj $(ROOT)\alphaindex.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui8n-anytrans.obj $(ROOT)\anytrans.cpp

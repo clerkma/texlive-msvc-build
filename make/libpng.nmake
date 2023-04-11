@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\libpng\libpng-src
-CFLAGS=-nologo -c -O2 -Oy -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src -I$(TLROOT)\libs\libpng\libpng-src -I$(PREDEF)\libpng
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src -I$(TLROOT)\libs\libpng\libpng-src -I$(PREDEF)\libpng
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-png.obj $(ROOT)\png.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngerror.obj $(ROOT)\pngerror.c

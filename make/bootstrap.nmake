@@ -1,4 +1,4 @@
-CFLAGS=-nologo -c -I$(TLROOT) -I$(TLROOT)\texk -I$(PREDEF) -DWIN32 -DNO_KPSE_DLL -DYY_NO_UNISTD_H
+CFLAGS=-nologo -c $(TLCFLAGS) -I$(TLROOT) -I$(TLROOT)\texk -I$(TLROOT)\texk\web2c -I$(PREDEF) -DWIN32 -DNO_KPSE_DLL -DYY_NO_UNISTD_H
 ROOT=$(TLROOT)\texk\web2c\web2c
 GMP_ROOT=$(TLROOT)\libs\gmp\gmp-src
 

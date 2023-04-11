@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\texk\ptexenc
-CFLAGS=-nologo -c -O2 -Oy -DWIN32 -DNO_KPSE_DLL -DNO_PTENC_DLL -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -DWIN32 -DNO_KPSE_DLL -DNO_PTENC_DLL -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libptexenc-kanjicnv.obj $(ROOT)\kanjicnv.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libptexenc-ptexenc.obj $(ROOT)\ptexenc.c

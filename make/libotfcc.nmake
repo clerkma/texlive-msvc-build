@@ -4,7 +4,7 @@ OTFCC_ARCH_CFLAGS=--target=arm64-pc-windows-msvc
 
 CC=clang-cl
 ROOT=$(TLROOT)\texk\web2c\mfluadir\otfcc
-CFLAGS=-nologo -c -O2 -Oy -I$(TLROOT)\texk\kpathsea \
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\texk\kpathsea \
 	-I$(ROOT)\include -I$(ROOT)\include\dep \
 	-I$(ROOT)\lib -I$(PREDEF)\otfcc\polyfill-msvc -DMAKE_KPSE_DLL \
 	-D_CRT_SECURE_NO_WARNINGS -D_CARYLL_USE_PRE_SERIALIZED -DMAIN_VER=0 -DSECONDARY_VER=10 -DPATCH_VER=4 $(OTFCC_ARCH_CFLAGS)

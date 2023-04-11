@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\icu\icu-src\source\common
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DU_IMPORT= -DU_EXPORT= -DU_ATTRIBUTE_DEPRECATED= -DU_PLATFORM_USES_ONLY_WIN32_API=1 -DU_COMMON_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DU_IMPORT= -DU_EXPORT= -DU_ATTRIBUTE_DEPRECATED= -DU_PLATFORM_USES_ONLY_WIN32_API=1 -DU_COMMON_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-appendable.obj $(ROOT)\appendable.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-bmpset.obj $(ROOT)\bmpset.cpp

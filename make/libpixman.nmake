@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\pixman\pixman-src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DPACKAGE=pixman -I$(TLROOT)\libs\pixman\pixman-src -I$(PREDEF)\pixman
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DPACKAGE=pixman -I$(TLROOT)\libs\pixman\pixman-src -I$(PREDEF)\pixman
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpixman-pixman.obj $(ROOT)\pixman/pixman.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpixman-pixman-access.obj $(ROOT)\pixman/pixman-access.c

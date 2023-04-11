@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\potrace\potrace-src\src
-CFLAGS=-nologo -c -O2 -Oy -DHAVE_INTTYPES_H -DVERSION=\"1.16\" -I$(TLROOT)\libs\potrace\potrace-src\src
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -DHAVE_INTTYPES_H -DVERSION=\"1.16\" -I$(TLROOT)\libs\potrace\potrace-src\src
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpotrace-curve.obj $(ROOT)\curve.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpotrace-decompose.obj $(ROOT)\decompose.c

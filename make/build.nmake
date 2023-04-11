@@ -56,7 +56,7 @@ CONVERT=py $(TLTOOLS)\convert.py
 PMPUTIL=py $(TLTOOLS)\pig.py pmp
 CATUTIL=py $(TLTOOLS)\cat.py
 
-CFLAGS=-nologo -c -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
+CFLAGS=-nologo -c $(TLCFLAGS) -DWIN32 -I. -I$(WEB2CROOT) $(KPATHSEA_CFLAGS)
 
 tangleboot:
   cd $(PREDEF)

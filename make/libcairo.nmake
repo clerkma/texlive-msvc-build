@@ -1,5 +1,5 @@
 ROOT=$(PREDEF)\cairo\src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy -DCAIRO_WIN32_STATIC_BUILD -DCAIRO_NO_MUTEX -DPIXMAN_API="" -I$(PREDEF)\cairo -I$(PREDEF)\cairo\src -I$(PREDEF)\pixman -I$(TLROOT)\libs\pixman\pixman-src\pixman -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DCAIRO_WIN32_STATIC_BUILD -DCAIRO_NO_MUTEX -DPIXMAN_API="" -I$(PREDEF)\cairo -I$(PREDEF)\cairo\src -I$(PREDEF)\pixman -I$(TLROOT)\libs\pixman\pixman-src\pixman -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
 all:
 	if exist $(PREDEF)\cairo\src (rd /S /Q $(PREDEF)\cairo\src)
 	md $(PREDEF)\cairo\src

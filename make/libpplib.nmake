@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\pplib\pplib-src\src
-CFLAGS=-nologo -c -O2 -Oy -I$(TLROOT)\libs\pplib\pplib-src\src\util -I$(TLROOT)\libs\pplib\pplib-src\src -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\libs\pplib\pplib-src\src\util -I$(TLROOT)\libs\pplib\pplib-src\src -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-ppheap.obj $(ROOT)\ppheap.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpplib-pparray.obj $(ROOT)\pparray.c
