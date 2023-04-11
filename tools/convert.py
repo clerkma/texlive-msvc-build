@@ -1,4 +1,3 @@
-from distutils.util import convert_path
 import fnmatch
 import os
 import sys
