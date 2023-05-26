@@ -54,4 +54,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-ot-shape-fallback.obj $(ROOT)\hb-ot-shape-fallback.cc
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-ot-var.obj $(ROOT)\hb-ot-var.cc
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-graphite2.obj $(ROOT)\hb-graphite2.cc
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-outline.obj $(ROOT)\hb-outline.cc
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-paint.obj $(ROOT)\hb-paint.cc
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-paint-extents.obj $(ROOT)\hb-paint-extents.cc
 	lib -nologo -out:$(TLBUILD)\libharfbuzz.lib $(TLBUILD)\libharfbuzz-*.obj
