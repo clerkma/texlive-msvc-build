@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\texk\web2c\lib
-CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DWIN32 -DNO_KPSE_DLL -DNO_PTENC_DLL -DPTEX -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\web2c -I$(TLROOT)\texk\ptexenc
+CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -DWIN32 -DNO_KPSE_DLL -DNO_PTENC_DLL -DPTEX -I$(TLROOT)\texk\web2c -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-basechsuffix.obj $(ROOT)\basechsuffix.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntimep-chartostring.obj $(ROOT)\chartostring.c

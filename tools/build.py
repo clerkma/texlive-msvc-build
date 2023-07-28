@@ -1,10 +1,9 @@
-import os
 import sys
 
 
 task_libkpathsea = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DWIN32", "-DNO_KPSE_DLL", "-DMAKE_KPSE_DLL",
         "-I$(PREDEF)", "-I$(TLROOT)/texk"
     ],
@@ -30,7 +29,7 @@ task_libkpathsea = {
 
 task_ptexenc = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DWIN32", "-DNO_KPSE_DLL", "-DNO_PTENC_DLL",
         "-I$(PREDEF)", "-I$(TLROOT)/texk", "-I$(TLROOT)/texk/ptexenc"
     ],
@@ -44,7 +43,7 @@ task_ptexenc = {
 
 task_zlib = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-I$(TLROOT)/libs/zlib/zlib-src",
         "-I$(PREDEF)/zlib"
     ],
@@ -61,7 +60,7 @@ task_zlib = {
 
 task_libpng = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-I$(PREDEF)/zlib",
         "-I$(TLROOT)/libs/zlib/zlib-src",
         "-I$(TLROOT)/libs/libpng/libpng-src",
@@ -79,7 +78,7 @@ task_libpng = {
 
 task_libpaper = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-I$(PREDEF)/luatex", # unistd.h
         "-DPAPERSIZE=\\\"letter\\\"",
         "-DPAPERSIZEVAR=\\\"PAPERSIZE\\\"",
@@ -96,7 +95,7 @@ task_libpaper = {
 
 task_libfreetype = {
     "cflags": [
-        "-nologo", "-c", "-utf-8", "-O2", "-Oy",
+        "-nologo", "-c", "-utf-8", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DFT2_BUILD_LIBRARY",
         "-DDLG_API=\"\"",
         "-I$(TLROOT)/libs/freetype2/freetype-src/include",
@@ -130,7 +129,7 @@ task_libfreetype = {
 
 task_libgd = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DBGDWIN32",
         "-DNONDLL",
         "-DHAVE_CONFIG_H",
@@ -164,7 +163,7 @@ task_libgd = {
 
 task_libpixman = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DPACKAGE=pixman",
         "-I$(TLROOT)/libs/pixman/pixman-src",
         "-I$(PREDEF)/pixman"
@@ -193,7 +192,7 @@ task_libpixman = {
 
 task_libgmp = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DHAVE_CONFIG_H",
         "-DNO_ASM",
         "-I$(TLROOT)/libs/gmp/gmp-src",
@@ -311,7 +310,7 @@ task_libgmp = {
 
 task_libmpfr = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DHAVE_CONFIG_H",
         "-I$(TLROOT)/libs/mpfr/mpfr-src/src",
         "-I$(PREDEF)/gmp",
@@ -363,7 +362,7 @@ task_libmpfr = {
 
 task_libcairo = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DCAIRO_WIN32_STATIC_BUILD", "-DCAIRO_NO_MUTEX", "-DPIXMAN_API=\"\"",
         "-I$(PREDEF)/cairo",
         "-I$(PREDEF)/cairo/src",
@@ -416,7 +415,7 @@ task_libcairo = {
 
 task_libxpdf = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCXXFLAGS)",
         "-DHAVE_CONFIG_H",
         "-DPDF_PARSER_ONLY",
         "-I$(PREDEF)/xpdf",
@@ -454,7 +453,7 @@ task_libxpdf = {
 
 task_libzzip = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-I$(TLROOT)/libs/zziplib/zziplib-src",
         "-I$(TLROOT)/libs/zlib/zlib-src",
         "-I$(PREDEF)/zziplib",
@@ -472,7 +471,7 @@ task_libzzip = {
 
 task_libgraphite2 = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DGRAPHITE2_STATIC",
         "-DGRAPHITE2_NTRACING",
         "-I$(TLROOT)/libs/graphite2/graphite2-src/include",
@@ -497,7 +496,7 @@ task_libgraphite2 = {
 
 task_libteckit = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-I$(TLROOT)/libs/teckit/TECkit-src/source/Public-headers",
         "-I$(TLROOT)/libs/zlib/zlib-src",
         "-I$(PREDEF)/zlib",
@@ -518,7 +517,7 @@ task_libteckit = {
 
 task_libicuuc = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=",
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-DU_PLATFORM_USES_ONLY_WIN32_API=1",
@@ -592,7 +591,7 @@ task_libicuuc = {
 
 task_libicui18n = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-DU_I18N_IMPLEMENTATION",
@@ -687,7 +686,7 @@ task_libicui18n = {
 
 task_libicuio = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_IO_IMPLEMENTATION",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -706,7 +705,7 @@ task_libicuio = {
 
 task_libicutu = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_TOOLUTIL_IMPLEMENTATION",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -729,7 +728,7 @@ task_libicutu = {
 
 task_libicudata = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -744,7 +743,7 @@ task_libicudata = {
 
 task_libicutest = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-DT_CTEST_IMPLEMENTATION",
@@ -764,7 +763,7 @@ task_libicutest = {
 
 task_icu_makeconv = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -787,7 +786,7 @@ task_icu_makeconv = {
 
 task_icu_genrb = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -812,7 +811,7 @@ task_icu_genrb = {
 
 task_icu_genbrk = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -834,7 +833,7 @@ task_icu_genbrk = {
 
 task_icu_gencnval = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -856,7 +855,7 @@ task_icu_gencnval = {
 
 task_icu_gensprep = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -878,7 +877,7 @@ task_icu_gensprep = {
 
 task_icu_icuinfo = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -902,7 +901,7 @@ task_icu_icuinfo = {
 
 task_icu_genccode = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -924,7 +923,7 @@ task_icu_genccode = {
 
 task_icu_gencmn = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -946,7 +945,7 @@ task_icu_gencmn = {
 
 task_icu_icupkg = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -968,7 +967,7 @@ task_icu_icupkg = {
 
 task_icu_pkgdata = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -990,7 +989,7 @@ task_icu_pkgdata = {
 
 task_icu_gentest = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -1014,7 +1013,7 @@ task_icu_gentest = {
 
 task_icu_gennorm2 = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -1036,7 +1035,7 @@ task_icu_gennorm2 = {
 
 task_icu_gencfu = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -1059,7 +1058,7 @@ task_icu_gencfu = {
 
 task_icu_gendict = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -1081,7 +1080,7 @@ task_icu_gendict = {
 
 task_icu_icuexportdata = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -1103,7 +1102,7 @@ task_icu_icuexportdata = {
 
 task_icu_escapesrc = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-EHsc", "$(TLCXXFLAGS)",
         "-DU_IMPORT=", "-DU_EXPORT=", 
         "-DU_ATTRIBUTE_DEPRECATED=",
         "-I$(TLROOT)/libs/icu/icu-src/source/common",
@@ -1123,7 +1122,7 @@ task_icu_escapesrc = {
 
 task_libharfbuzz = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCXXFLAGS)",
         "-I$(TLROOT)/libs/harfbuzz/harfbuzz-src/src"
         "-I$(TLROOT)/libs/freetype2/freetype2-src/include",
         "-I$(PREDEF)/harfbuzz",
@@ -1143,7 +1142,8 @@ task_libharfbuzz = {
         'hb-ot-shaper-hangul.cc', 'hb-ot-shaper-hebrew.cc', 'hb-ot-shaper-indic-table.cc', 'hb-ot-shaper-indic.cc',
         'hb-ot-shaper-khmer.cc', 'hb-ot-shaper-myanmar.cc', 'hb-ot-shaper-syllabic.cc', 'hb-ot-shaper-thai.cc',
         'hb-ot-shaper-use.cc', 'hb-ot-shaper-vowel-constraints.cc', 'hb-ot-shape-normalize.cc', 'hb-ot-shape-fallback.cc',
-        'hb-ot-var.cc', 'hb-graphite2.cc'
+        'hb-ot-var.cc', 'hb-graphite2.cc', 'hb-outline.cc', 'hb-paint.cc', 'hb-paint-extents.cc',
+        'hb-wasm-api.cc', 'hb-wasm-shape.cc'
     ],
     "out": "libharfbuzz.lib",
     "prefix": "libharfbuzz-",
@@ -1151,7 +1151,8 @@ task_libharfbuzz = {
 
 task_libruntime = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
+        "-I$(TLROOT)/texk/web2c",
         "-I$(TLROOT)/texk/web2c/lib",
         "-I$(PREDEF)",
         "-I$(TLROOT)/texk",
@@ -1169,7 +1170,9 @@ task_libruntime = {
 
 task_libruntimep = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "-DWIN32", "-DNO_KPSE_DLL", "-DNO_PTENC_DLL", "-DPTEX",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
+        "-DWIN32", "-DNO_KPSE_DLL", "-DNO_PTENC_DLL", "-DPTEX",
+        "-I$(TLROOT)/texk/web2c",
         "-I$(TLROOT)/texk/web2c/lib",
         "-I$(PREDEF)",
         "-I$(TLROOT)/texk",
@@ -1190,7 +1193,7 @@ task_libruntimep = {
 
 task_libtexlua53 = {
     "cflags": [
-        "-nologo", "-utf-8", "-c", "-O2", "-Oy",
+        "-nologo", "-utf-8", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DLUA_COMPAT_MODULE",
         "-DLUA_COMPAT_5_2",
         "-DLUAI_HASHLIMIT=6",
@@ -1215,7 +1218,7 @@ task_libtexlua53 = {
 
 task_libpplib = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-I$(TLROOT)/libs/pplib/pplib-src/src/util",
         "-I$(TLROOT)/libs/pplib/pplib-src/src",
         "-I$(PREDEF)/zlib",
@@ -1237,7 +1240,7 @@ task_libpplib = {
 
 task_potrace = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-DHAVE_INTTYPES_H",
         "-DVERSION=\\\"1.16\\\"",
         "-I$(TLROOT)/libs/potrace/potrace-src/src",
@@ -1252,7 +1255,7 @@ task_potrace = {
 
 task_otfcc = {
     "cflags": [
-        "-nologo", "-c", "-O2", "-Oy",
+        "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
         "-I$(TLROOT)/texk/kpathsea", # for getopt
         "-I$(TLROOT)/texk/web2c/mfluadir/otfcc/include",
         "-I$(TLROOT)/texk/web2c/mfluadir/otfcc/include/dep",
@@ -1344,6 +1347,7 @@ def build(conf):
         out.write("CFLAGS=%s\n" % cflags.replace("/", "\\"))
         out.write("all:\n")
         out.write("\n".join(["\t%s" % x for x in cmd_list]))
+        out.write("\n")
 
 def run_build_icu():
     build(task_libicudata)

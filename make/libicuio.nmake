@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\icu\icu-src\source\io
-CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -EHsc -DU_IMPORT= -DU_EXPORT= -DU_IO_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common -I$(TLROOT)\libs\icu\icu-src\source\i18n -I$(TLROOT)\libs\icu\icu-src\source\io
+CFLAGS=-nologo -utf-8 -c -O2 -Oy -EHsc $(TLCXXFLAGS) -DU_IMPORT= -DU_EXPORT= -DU_IO_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common -I$(TLROOT)\libs\icu\icu-src\source\i18n -I$(TLROOT)\libs\icu\icu-src\source\io
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-locbund.obj $(ROOT)\locbund.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-sprintf.obj $(ROOT)\sprintf.cpp

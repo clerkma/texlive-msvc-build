@@ -1,14 +1,6 @@
-!if "$(TLARCH)" == "a64"
-OTFCC_ARCH_CFLAGS=--target=arm64-pc-windows-msvc
-!endif
-
 CC=clang-cl
 ROOT=$(TLROOT)\texk\web2c\mfluadir\otfcc
-CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\texk\kpathsea \
-	-I$(ROOT)\include -I$(ROOT)\include\dep \
-	-I$(ROOT)\lib -I$(PREDEF)\otfcc\polyfill-msvc -DMAKE_KPSE_DLL \
-	-D_CRT_SECURE_NO_WARNINGS -D_CARYLL_USE_PRE_SERIALIZED -DMAIN_VER=0 -DSECONDARY_VER=10 -DPATCH_VER=4 $(OTFCC_ARCH_CFLAGS)
-
+CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\texk\kpathsea -I$(TLROOT)\texk\web2c\mfluadir\otfcc\include -I$(TLROOT)\texk\web2c\mfluadir\otfcc\include\dep -I$(TLROOT)\texk\web2c\mfluadir\otfcc\lib -I$(PREDEF)\otfcc\polyfill-msvc -DMAKE_KPSE_DLL -D_CRT_SECURE_NO_WARNINGS -D_CARYLL_USE_PRE_SERIALIZED -DMAIN_VER=0 -DSECONDARY_VER=10 -DPATCH_VER=4 $(OTFCC_ARCH_CFLAGS)
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libotfcc-dep-extern-emyg-dtoa-emyg-dtoa.obj $(ROOT)\dep\extern\emyg-dtoa\emyg-dtoa.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libotfcc-dep-extern-json.obj $(ROOT)\dep\extern\json.c
