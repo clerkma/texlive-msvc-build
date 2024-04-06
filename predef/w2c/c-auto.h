@@ -1,7 +1,7 @@
 #ifndef WEB2C_C_AUTO_H
 #define WEB2C_C_AUTO_H
 
-#define WEB2CVERSION " (TeX Live 2023/dev)"
+#define WEB2CVERSION " (TeX Live 2025/dev)"
 
 #define EDITOR "vi +%d '%s'"
 

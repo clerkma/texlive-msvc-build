@@ -53,7 +53,7 @@ extern int win32_pclose(FILE *);
 
 #include <fcntl.h>
 
-#define VERSION "2.108"
+#define VERSION "2.110"
 #define GLYPHLISTDIR ""
 #define NOMINMAX 1 // for std::max
 

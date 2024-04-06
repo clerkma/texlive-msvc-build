@@ -15,6 +15,6 @@
 #define HAVE_POSIX_ERE 1
 #define TEX_LIVE 1
 
-#define PACKAGE_VERSION "1.7.6"
+#define PACKAGE_VERSION "1.7.8"
 
 #endif /* __CONFIG_H__ */

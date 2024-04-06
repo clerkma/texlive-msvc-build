@@ -16,5 +16,5 @@
 #define ZZIP_off64_t __int64
 #define ZZIP_ssize_t int
 #define ZZIP_restrict
-#define ZZIP_VERSION "0.13.x"
+#define ZZIP_VERSION "0.13.72"
 
