@@ -87,7 +87,7 @@ def convert_bibtex():
         cmd_s('hack0 [(][)] ;', 'if(setjmp(jmp9998)==1) goto lab9998;'),
         cmd_s('hack1 [(][)] ;', 'if(setjmp(jmp32)==0)for(;;)'),
         cmd_s('hack2 [(][)]', 'break'),
-        cmd_t('^void mainbody', "while \( true", "while (lab31==0")
+        cmd_t('^void mainbody', r"while \( true", "while (lab31==0")
     ]
     data = ""
     for line in sys.stdin:

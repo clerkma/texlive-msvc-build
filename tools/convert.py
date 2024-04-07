@@ -17,11 +17,15 @@ def combine_source(*args):
     return b"\n".join(source) + b"\n\n"
 
 
+def get_path(name, default):
+    p = os.getenv(name, default=default)
+    return p.replace("\\", "/")
+
 def convert(base):
-    tl_root = os.getenv("TLROOT", default="texlive")
+    tl_root = get_path("TLROOT", default="texlive")
     src = f"{tl_root}/texk/web2c"
-    tl_build_tool_root = os.getenv("TLTOOLS", default="tools")
-    tl_build = os.getenv("TLBUILD", default="build")
+    tl_build_tool_root = get_path("TLTOOLS", default="tools")
+    tl_build = get_path("TLBUILD", default="build")
     p_file = f"{base}.p"
     c_file = f"{base}.c"
     h_file = "cpascal.h"
@@ -43,7 +47,7 @@ def convert(base):
         h_file = "uptexdir/kanji.h"
 
     if base in ["bibtex", "pbibtex", "upbibtex"]:
-        mid_cmd = f"py {tl_build_tool_root}\pig.py run_cvtbib"
+        mid_cmd = f"py {tl_build_tool_root}/pig.py run_cvtbib"
     elif base in ["mf", "mflua", "mfluajit", "tex", "aleph", "etex", "pdftex",
                   "ptex", "eptex", "euptex", "uptex", "xetex"]:
         if fnmatch.fnmatch(base, "mf*"):
@@ -51,8 +55,8 @@ def convert(base):
                 f"{src}/web2c/texmf.defines",
                 f"{src}/web2c/mfmp.defines",
             ]
-            pre_cmd = f"py {tl_build_tool_root}\pig.py run_cvtmf1"
-            mid_cmd = f"py {tl_build_tool_root}\pig.py run_cvtmf2"
+            pre_cmd = f"py {tl_build_tool_root}/pig.py run_cvtmf1"
+            mid_cmd = f"py {tl_build_tool_root}/pig.py run_cvtmf2"
             web2c_options = ["-m", f"-c{base}coerce"]
         else:
             more_defines = [
@@ -69,10 +73,10 @@ def convert(base):
         c_file = f"{base}0.c"
         output = ""
 
-    convert_bat = f"{tl_build}\convert-{base}.bat"
+    convert_bat = f"{tl_build}/convert-{base}.bat"
     with open(convert_bat, "w") as out:
         defs = [f"{src}/web2c/common.defines"] + more_defines
-        cat_cmd = "py %s\cat.py %s %s" % (tl_build_tool_root, " ".join(defs), p_file)
+        cat_cmd = "py %s/cat.py %s %s" % (tl_build_tool_root, " ".join(defs), p_file)
         opts = ["-h%s" % h_file] + web2c_options
         pipe_line = [
             cat_cmd,
@@ -86,7 +90,7 @@ def convert(base):
         if base in ["mf", "mflua", "mfluajit", "tex", "aleph", "etex", "pdftex",
                     "ptex", "eptex", "euptex", "uptex", "xetex"]:
             out.write("\n")
-            out.write(f"py {tl_build_tool_root}\dog.py {base}coerce.h {src}/web2c/coerce.h")
+            out.write(f"py {tl_build_tool_root}/dog.py {base}coerce.h {src}/web2c/coerce.h")
             out.write("\n")
             out.write(f"makecpool {base} > {base}-pool.c")
     os.system(convert_bat)

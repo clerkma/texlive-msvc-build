@@ -864,6 +864,7 @@ dvisvgm_brotli:
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-brotli_bit_stream.obj $(DVISVGM_BROTLI_ROOT)\enc\brotli_bit_stream.c
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-cluster.obj $(DVISVGM_BROTLI_ROOT)\enc\cluster.c
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-command.obj $(DVISVGM_BROTLI_ROOT)\enc\command.c
+  $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-compound_dictionary.obj $(DVISVGM_BROTLI_ROOT)\enc\compound_dictionary.c
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-compress_fragment.obj $(DVISVGM_BROTLI_ROOT)\enc\compress_fragment.c
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-compress_fragment_two_pass.obj $(DVISVGM_BROTLI_ROOT)\enc\compress_fragment_two_pass.c
   $(CC) $(DVISVGM_BROTLI_CFLAGS) -Fo$(TLBUILD)\libbrotli-enc-dictionary_hash.obj $(DVISVGM_BROTLI_ROOT)\enc\dictionary_hash.c
@@ -941,29 +942,30 @@ dvisvgm_libttf:
 DVISVGM_LIBBASE14FONTS_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src\fonts
 DVISVGM_LIBBASE14FONTS_CFLAGS=-nologo -c -EHsc
 libbase14fonts:
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-base14fonts.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\Base14Fonts.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-Dingbats.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\Dingbats.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Bold.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-BoldItalic.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Italic.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Regular.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Bold.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-BoldItalic.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Italic.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Regular.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Bold.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-BoldItalic.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Italic.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Regular.cff.cpp
-	$(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-StandardSymbolsPS.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\StandardSymbolsPS.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-base14fonts.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\Base14Fonts.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-Dingbats.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\Dingbats.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Bold.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-BoldItalic.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Italic.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusMonoPS-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusMonoPS-Regular.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Bold.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-BoldItalic.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Italic.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusRoman-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusRoman-Regular.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Bold.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Bold.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-BoldItalic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-BoldItalic.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Italic.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Italic.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-NimbusSans-Regular.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\NimbusSans-Regular.cff.cpp
+  $(CC) $(DVISVGM_LIBBASE14FONTS_CFLAGS) -Fo$(TLBUILD)\libbase14fonts-StandardSymbolsPS.obj $(DVISVGM_LIBBASE14FONTS_ROOT)\StandardSymbolsPS.cff.cpp
   lib -nologo -out:$(TLBUILD)\libbase14fonts.lib $(TLBUILD)\libbase14fonts-*.obj
 
 DVISVGM_ROOT=$(TLROOT)\texk\dvisvgm\dvisvgm-src\src
-DVISVGM_CFLAGS=-nologo -c -EHsc -DTEXLIVEWIN32 -I$(PREDEF)\dvisvgm -I$(DVISVGM_LIBS_ROOT)\variant\include -I$(DVISVGM_LIBS_ROOT)\xxHash \
+DVISVGM_CFLAGS=-nologo -c -EHsc -DTEXLIVEWIN32 -I$(PREDEF)\dvisvgm -I$(DVISVGM_LIBS_ROOT)\boost \
+  -I$(DVISVGM_LIBS_ROOT)\variant\include -I$(DVISVGM_LIBS_ROOT)\xxHash \
   -I$(DVISVGM_WOFF2_ROOT)\include -I$(DVISVGM_LIBS_ROOT)\md5 -I$(DVISVGM_LIBS_ROOT)\clipper -I$(DVISVGM_LIBS_ROOT)\brotli\include \
   -I$(DVISVGM_LIBS_ROOT)\ff-woff\fontforge -I$(DVISVGM_LIBS_ROOT)\ff-woff\inc \
   $(KPATHSEA_CFLAGS) $(LIBFREETYPE_CFLAGS) $(POTRACE_CFLAGS) $(ZLIB_CFLAGS)
-DVISVGM_LDFLAGS=-libpath:$(TLBUILD) libbrotli.lib libffwoff.lib libwoff2.lib libdvisvgm-misc.lib liboptimizer.lib libdvisvgmttf.lib libbase14fonts.lib\
+DVISVGM_LDFLAGS=-libpath:$(TLBUILD) libbrotli.lib libwoff2.lib libdvisvgm-misc.lib liboptimizer.lib libdvisvgmttf.lib libbase14fonts.lib\
  libkpathsea.lib libz.lib libfreetype.lib libpotrace.lib $(RUNTIME_LIBS)
 dvisvgm: dvisvgm_brotli dvisvgm_woff2 dvisvgm_libs dvisvgm_optimizer dvisvgm_libttf libbase14fonts
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-BasicDVIReader.obj $(DVISVGM_ROOT)\BasicDVIReader.cpp
@@ -1017,6 +1019,7 @@ dvisvgm: dvisvgm_brotli dvisvgm_woff2 dvisvgm_libs dvisvgm_optimizer dvisvgm_lib
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Message.obj $(DVISVGM_ROOT)\Message.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-MetafontWrapper.obj $(DVISVGM_ROOT)\MetafontWrapper.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-NoPsSpecialHandler.obj $(DVISVGM_ROOT)\NoPsSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-OFM.obj $(DVISVGM_ROOT)\OFM.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-Opacity.obj $(DVISVGM_ROOT)\Opacity.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PageRanges.obj $(DVISVGM_ROOT)\PageRanges.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PageSize.obj $(DVISVGM_ROOT)\PageSize.cpp
@@ -1031,12 +1034,14 @@ dvisvgm: dvisvgm_brotli dvisvgm_woff2 dvisvgm_libs dvisvgm_optimizer dvisvgm_lib
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-psdefs.obj $(DVISVGM_ROOT)\psdefs.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSInterpreter.obj $(DVISVGM_ROOT)\PSInterpreter.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSPattern.obj $(DVISVGM_ROOT)\PSPattern.cpp
-  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSPreviewFilter.obj $(DVISVGM_ROOT)\PSPreviewFilter.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PSPreviewHandler.obj $(DVISVGM_ROOT)\PSPreviewHandler.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PsSpecialHandler.obj $(DVISVGM_ROOT)\PsSpecialHandler.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-PsSpecialHandlerProxy.obj $(DVISVGM_ROOT)\PsSpecialHandlerProxy.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-RangeMap.obj $(DVISVGM_ROOT)\RangeMap.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-ShadingPatch.obj $(DVISVGM_ROOT)\ShadingPatch.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SignalHandler.obj $(DVISVGM_ROOT)\SignalHandler.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SourceInput.obj $(DVISVGM_ROOT)\SourceInput.cpp
+  $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SpecialActions.obj $(DVISVGM_ROOT)\SpecialActions.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-SpecialManager.obj $(DVISVGM_ROOT)\SpecialManager.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-StreamReader.obj $(DVISVGM_ROOT)\StreamReader.cpp
   $(CC) $(DVISVGM_CFLAGS) -Fo$(TLBUILD)\dvisvgm-StreamWriter.obj $(DVISVGM_ROOT)\StreamWriter.cpp
@@ -1136,7 +1141,7 @@ liblcdf:
   lib -nologo -out:$(TLBUILD)\liblcdf.lib $(TLBUILD)\liblcdf-*.obj
 
 LIBEFONT_ROOT=$(LCDF_TYPETOOLS_ROOT)\lcdf-typetools-src\libefont
-LIBEFONT_CFLAGS=$(LIBLCDF_CFLAGS)
+LIBEFONT_CFLAGS=$(LIBLCDF_CFLAGS) -utf-8
 libefont:
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-afm.obj $(LIBEFONT_ROOT)\afm.cc
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-afmparse.obj $(LIBEFONT_ROOT)\afmparse.cc
@@ -1150,6 +1155,7 @@ libefont:
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfcmap.obj $(LIBEFONT_ROOT)\otfcmap.cc
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfdata.obj $(LIBEFONT_ROOT)\otfdata.cc
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfdescrip.obj $(LIBEFONT_ROOT)\otfdescrip.cc
+  $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otffvar.obj $(LIBEFONT_ROOT)\otffvar.cc
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfgpos.obj $(LIBEFONT_ROOT)\otfgpos.cc
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfgsub.obj $(LIBEFONT_ROOT)\otfgsub.cc
   $(CC) $(LIBEFONT_CFLAGS) -Fo$(TLBUILD)\libefont-otfname.obj $(LIBEFONT_ROOT)\otfname.cc
