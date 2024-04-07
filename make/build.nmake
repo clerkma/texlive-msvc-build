@@ -8,6 +8,7 @@ ZLIB_CFLAGS=-I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src
 LIBGD_CFLAGS=-DNONDLL -DBGDWIN32 -I$(TLROOT)\libs\gd\libgd-src\src
 LIBPAPER_CFLAGS=-I$(TLROOT)\libs\libpaper\libpaper-src\lib
 LIBPNG_CFLAGS=-I$(PREDEF)\libpng -I$(TLROOT)\libs\libpng\libpng-src
+LIBMPFI_CFLAGS=-I$(PREDEF)\mpfi -I$(TLROOT)\libs\mpfi\mpfi-src\src
 LIBMPFR_CFLAGS=-I$(PREDEF)\mpfr -I$(TLROOT)\libs\mpfr\mpfr-src\src
 LIBGMP_CFLAGS=-I$(PREDEF)\gmp -I$(TLROOT)\libs\gmp\gmp-src
 LIBCAIRO_CFLAGS=-DCAIRO_WIN32_STATIC_BUILD -I$(PREDEF)\cairo -I$(TLROOT)\libs\cairo\cairo-src\src
@@ -306,9 +307,9 @@ mfluajit: mf
     $(RUNTIME_LDFLAGS) libwindow.lib libluajit.lib libpotrace.lib libotfcc.lib
 
 MPOST_CFLAGS=$(CFLAGS) -I$(MPLIBROOT) $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS)
-MPOST_CFLAGS1=$(MPOST_CFLAGS) $(LIBMPFR_CFLAGS) $(LIBGMP_CFLAGS)
+MPOST_CFLAGS1=$(MPOST_CFLAGS) $(LIBGMP_CFLAGS) $(LIBMPFR_CFLAGS) $(LIBMPFI_CFLAGS)
 MPOST_CFLAGS2=$(MPOST_CFLAGS1) $(LIBCAIRO_CFLAGS) $(LIBPIXMAN_CFLAGS)
-MPOST_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libmpfr.lib libgmp.lib libcairo.lib libpixman.lib libpng.lib libz.lib $(RUNTIME_LIBS)
+MPOST_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libmpfi.lib libmpfr.lib libgmp.lib libcairo.lib libpixman.lib libpng.lib libz.lib $(RUNTIME_LIBS)
 mpost:
   set CWEBINPUTS=$(MPLIBROOT)
   cd $(PREDEF)
@@ -322,6 +323,7 @@ mpost:
   ctangle mpmath.w
   ctangle mpmathdecimal.w
   ctangle mpmathdouble.w
+  ctangle mpmathinterval.w
   ctangle mpstrings.w
   ctangle psout.w
   cd $(MAKEDIR)
@@ -330,6 +332,7 @@ mpost:
   $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpmath.obj $(PREDEF)\mpmath.c
   $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpmathdecimal.obj $(PREDEF)\mpmathdecimal.c
   $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpmathdouble.obj $(PREDEF)\mpmathdouble.c
+  $(CC) $(MPOST_CFLAGS1) -Fo$(TLBUILD)\mpost-core-mpmathinterval.obj $(PREDEF)\mpmathinterval.c
   $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-mpstrings.obj $(PREDEF)\mpstrings.c
   $(CC) $(MPOST_CFLAGS) -Fo$(TLBUILD)\mpost-core-psout.obj $(PREDEF)\psout.c
   lib -nologo -out:$(TLBUILD)\libmplibcore.lib $(TLBUILD)\mpost-core-*.obj
@@ -362,6 +365,8 @@ pmpost: mpost
   $(PMPUTIL) mpmathdecimal.h
   $(PMPUTIL) mpmathdouble.c
   $(PMPUTIL) mpmathdouble.h
+  $(PMPUTIL) mpmathinterval.c
+  $(PMPUTIL) mpmathinterval.h
   $(PMPUTIL) $(MPLIBROOT)\mpost.w
   ctangle pmpost pmpost
   $(PMPUTIL) mpstrings.h
@@ -383,6 +388,7 @@ pmpost: mpost
   $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathbinary.obj $(PREDEF)\pmpmathbinary.c 
   $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathdecimal.obj $(PREDEF)\pmpmathdecimal.c 
   $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathdouble.obj $(PREDEF)\pmpmathdouble.c 
+  $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpmathinterval.obj $(PREDEF)\pmpmathinterval.c 
   $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpost.obj $(PREDEF)\pmpost.c 
   $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpstrings.obj $(PREDEF)\pmpstrings.c 
   $(CC) $(PMPOST_CFLAGS) -Fo$(TLBUILD)\pmpost-pmpxout.obj $(PREDEF)\pmpxout.c 
@@ -400,6 +406,7 @@ upmpost: pmpost
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathbinary.obj $(PREDEF)\pmpmathbinary.c 
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathdecimal.obj $(PREDEF)\pmpmathdecimal.c 
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathdouble.obj $(PREDEF)\pmpmathdouble.c 
+  $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpmathinterval.obj $(PREDEF)\pmpmathinterval.c
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpost.obj $(PREDEF)\pmpost.c 
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpstrings.obj $(PREDEF)\pmpstrings.c 
   $(CC) $(UPMPOST_CFLAGS) -Fo$(TLBUILD)\upmpost-pmpxout.obj $(PREDEF)\pmpxout.c 
@@ -607,7 +614,7 @@ xetex-specimen: libmd5
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetex0.obj $(PREDEF)\xetex0.c
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-xetexini.obj $(PREDEF)\xetexini.c
   $(CC) $(XETEXSP_CFLAGS) -Fo$(TLBUILD)\xetex-sp-pool.obj $(PREDEF)\xetex-pool.c
-  link -nologo -dll -out:$(TLWORKS)\xetex.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
+  link -nologo -dll -out:$(TLWORKS)\xetex-sp.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
 
 BIBTEXX_ROOT=$(TLROOT)\texk\bibtex-x
 BIBTEXX_CFLAGS=-nologo -utf-8 -c -DHAVE_CONFIG_H -DWIN32 -DKPATHSEA -I$(PREDEF)\bibtex-x $(KPATHSEA_CFLAGS) -I$(TLROOT)/texk/kpathsea -DMAKE_KPSE_DLL

@@ -67,6 +67,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-lshiftc.obj $(ROOT)\mpn\generic\lshiftc.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-matrix22_mul.obj $(ROOT)\mpn\generic\matrix22_mul.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-matrix22_mul1_inverse_vector.obj $(ROOT)\mpn\generic\matrix22_mul1_inverse_vector.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-mod_1.obj $(ROOT)\mpn\generic\mod_1.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-mu_bdiv_q.obj $(ROOT)\mpn\generic\mu_bdiv_q.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-mu_div_q.obj $(ROOT)\mpn\generic\mu_div_q.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpn-generic-mu_div_qr.obj $(ROOT)\mpn\generic\mu_div_qr.c
@@ -140,6 +141,8 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-add_ui.obj $(ROOT)\mpz\add_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-aorsmul.obj $(ROOT)\mpz\aorsmul.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-aorsmul_i.obj $(ROOT)\mpz\aorsmul_i.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-cdiv_qr_ui.obj $(ROOT)\mpz\cdiv_qr_ui.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-cdiv_q_ui.obj $(ROOT)\mpz\cdiv_q_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-cfdiv_q_2exp.obj $(ROOT)\mpz\cfdiv_q_2exp.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-clear.obj $(ROOT)\mpz\clear.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-cmp.obj $(ROOT)\mpz\cmp.c
@@ -148,6 +151,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-divexact.obj $(ROOT)\mpz\divexact.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-fdiv_q.obj $(ROOT)\mpz\fdiv_q.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-fdiv_q_ui.obj $(ROOT)\mpz\fdiv_q_ui.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-fdiv_r_ui.obj $(ROOT)\mpz\fdiv_r_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-fdiv_qr.obj $(ROOT)\mpz\fdiv_qr.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-fits_slong.obj $(ROOT)\mpz\fits_slong.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-gcdext.obj $(ROOT)\mpz\gcdext.c
@@ -165,6 +169,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-mul_ui.obj $(ROOT)\mpz\mul_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-n_pow_ui.obj $(ROOT)\mpz\n_pow_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-neg.obj $(ROOT)\mpz\neg.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-pow_ui.obj $(ROOT)\mpz\pow_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-powm.obj $(ROOT)\mpz\powm.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-powm_ui.obj $(ROOT)\mpz\powm_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libgmp-mpz-realloc.obj $(ROOT)\mpz\realloc.c
