@@ -17,4 +17,3 @@
 #define ZZIP_ssize_t int
 #define ZZIP_restrict
 #define ZZIP_VERSION "0.13.72"
-

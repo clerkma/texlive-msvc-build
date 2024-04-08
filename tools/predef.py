@@ -345,6 +345,67 @@ mendex = """\
 
 #endif /* __C_AUTO_H__ */
 """
+ptexenc = """\
+#ifndef PTEXENC_C_AUTO_H
+#define PTEXENC_C_AUTO_H
+
+#define PTEXENCVERSION "ptexenc version @VERSION"
+
+#endif /* !PTEXENC_C_AUTO_H */
+"""
+ttf2pk2 = """\
+/* config.h for ttf2pk2 */
+#ifndef __CONFIG_H__
+#define __CONFIG_H__
+
+#define TL_VERSION "@TL_VERSION"
+#define PACKAGE_BUGREPORT "tex-k@tug.org"
+
+#endif /* __CONFIG_H__ */
+"""
+ttfdump = """\
+/* config.h of ttfdump */
+
+#define SIZEOF_INT 4
+#define VERSION "@VERSION"
+#define TL_VERSION "@TL_VERSION"
+#define PACKAGE_BUGREPORT "tex-k@tug.org"
+
+/* for _setmode */
+#include <io.h>
+#include <fcntl.h>
+"""
+upmendex = """\
+/* c-auto.h for upmendex */
+#ifndef __C_AUTO_H__
+#define __C_AUTO_H__
+
+#define PACKAGE_VERSION "@VERSION"
+#define TL_VERSION "@TL_VERSION"
+
+#endif /* __C_AUTO_H__ */
+"""
+zziplib = """\
+#define ZZIP_HAVE_STRING_H 1
+#define ZZIP_HAVE_SYS_STAT_H 1
+#define ZZIP_HAVE_SYS_TYPES_H 1
+#define ZZIP_HAVE_DIRECT_H 1
+#define ZZIP_HAVE_IO_H 1
+#define ZZIP_HAVE_WINDOWS_H 1
+#define ZZIP_HAVE_WINBASE_H 1
+#define ZZIP_HAVE_WINNT_H 1
+#define ZZIP_HAVE_ZLIB_H 1
+#define ZZIP_PACKAGE "zziplib-msvc"
+#define ZZIP_SIZEOF_INT 4
+#define ZZIP_SIZEOF_LONG 4
+#define ZZIP_SIZEOF_SHORT 2
+#define ZZIP_inline __inline
+#define ZZIP_off_t long
+#define ZZIP_off64_t __int64
+#define ZZIP_ssize_t int
+#define ZZIP_restrict
+#define ZZIP_VERSION "@VERSION"
+"""
 
 pat_ac = r"AC_INIT\(\[[^\]]*\],\s*\[(?P<VERSION>[^\]]*)\]"
 pat_m4 = r"m4_define\(\[[^\]]*\],\s*\[(?P<VERSION>[^\]]*)\]"
@@ -405,70 +466,139 @@ def copy(root, path, output, patch):
 
 root = os.getenv("TLROOT")
 
-make(root,
+make(
+    root,
     "texk/bibtex-x",
     bibtex_x_config,
     "predef/bibtex-x/config.h"
 )
-copy(root,
-     "libs/cairo/cairo-src/src/cairoint.h",
-     "predef/cairo/cairoint.h",
-     [(cairo_public_src, cairo_public_dst)]
+make(
+    root,
+    "texk/chktex",
+    chktex,
+    "predef/chktex/config.h"
 )
-make(root,
-     "texk/chktex",
-     chktex,
-     "predef/chktex/config.h"
+make(
+    root,
+    "texk/detex",
+    detex,
+    "predef/detex/c-auto.h"
 )
-make(root,
-     "texk/detex",
-     detex,
-     "predef/detex/c-auto.h"
+make(
+    root,
+    "texk/dtl",
+    dtl,
+    "predef/dtl/config.h"
 )
-make(root,
-     "texk/dtl",
-     dtl,
-     "predef/dtl/config.h"
+make(
+    root,
+    "texk/dvi2tty",
+    dvi2tty,
+    "predef/dvi2tty/c-auto.h"
 )
-make(root,
-     "texk/dvi2tty",
-     dvi2tty,
-     "predef/dvi2tty/c-auto.h"
-)
-make(root,
-     "texk/dvidvi",
-     dvidvi,
+make(
+    root,
+    "texk/dvidvi",
+    dvidvi,
     "predef/dvidvi/config.h"
 )
-make(root,
-     "texk/dvipdfm-x",
-     dvipdfmx,
+make(
+    root,
+    "texk/dvipdfm-x",
+    dvipdfmx,
     "predef/dvipdfmx/config.h"
 )
-make(root,
-     "texk/dvipng",
-     dvipng,
+make(
+    root,
+    "texk/dvipng",
+    dvipng,
     "predef/dvipng/config.h"
 )
-make(root,
-     "texk/dvipsk",
-     dvips,
+make(
+    root,
+    "texk/dvipsk",
+    dvips,
     "predef/dvips/c-auto.h"
 )
-make(root,
-     "texk/dvisvgm",
-     dvisvgm,
+make(
+    root,
+    "texk/dvisvgm",
+    dvisvgm,
     "predef/dvisvgm/version.hpp"
 )
-make(root,
-     "libs/gmp",
-     gmp,
+make(
+    root,
+    "texk/gregorio",
+    gregorio,
+    "predef/gregorio/config_.h"
+)
+make(
+    root,
+    "texk/kpathsea",
+    kpathsea,
+    "predef/kpathsea/c-auto.h"
+)
+make(
+    root,
+    "texk/lcdf-typetools",
+    lcdf,
+    "predef/lcdf-typetools/config.h"
+)
+make(
+    root,
+    "texk/makeindex",
+    makeindex,
+    "predef/makeindex/c-auto.h"
+)
+make(
+    root,
+    "texk/mendexk",
+    mendex,
+    "predef/mendex/c-auto.h"
+)
+make(
+    root,
+    "texk/ptexenc",
+    ptexenc,
+    "predef/ptexenc/c-auto.h"
+)
+make(
+    root,
+    "texk/ttf2pk2",
+    ttf2pk2,
+    "predef/ttf2pk2/config.h"
+)
+make(
+    root,
+    "texk/ttfdump",
+    ttfdump,
+    "predef/ttfdump/config.h"
+)
+make(
+    root,
+    "texk/upmendex",
+    upmendex,
+    "predef/upmendex/c-auto.h"
+)
+# libs
+copy(
+    root,
+    "libs/cairo/cairo-src/src/cairoint.h",
+    "predef/cairo/cairoint.h",
+    [(cairo_public_src, cairo_public_dst)]
+)
+# gd
+make(
+    root,
+    "libs/gmp",
+    gmp,
     "predef/gmp/config.h"
 )
-copy(root,
-     "libs/gmp/gmp-src/gmp-h.in",
-     "predef/gmp/gmp.h",
-     [
+copy(
+    root,
+    "libs/gmp/gmp-src/gmp-h.in",
+    "predef/gmp/gmp.h",
+    [
         ("@HAVE_HOST_CPU_FAMILY_power@", "0"),
         ("@HAVE_HOST_CPU_FAMILY_powerpc@", "0"),
         ("@GMP_LIMB_BITS@", "64"),
@@ -479,17 +609,12 @@ copy(root,
         ("@CFLAGS@", "-DNO_ASM"),
     ]
 )
-make(root,
-     "texk/gregorio",
-     gregorio,
-    "predef/gregorio/config_.h"
-)
-
 hb_version = version(root, "libs/harfbuzz/version.ac", pat_m4)
 if hb_version:
     major, minor, micro = hb_version.split(".")
-    copy(root,
-         "libs/harfbuzz/harfbuzz-src/src/hb-version.h.in",
+    copy(
+        root,
+        "libs/harfbuzz/harfbuzz-src/src/hb-version.h.in",
         "predef/harfbuzz/hb-version.h",
         [
             ("@HB_VERSION_MAJOR@", major),
@@ -498,27 +623,55 @@ if hb_version:
             ("@HB_VERSION@", hb_version)
         ]
     )
-make(root,
-     "texk/kpathsea",
-     kpathsea,
-    "predef/kpathsea/c-auto.h"
+make(
+    root,
+    "libs/mpfi",
+    "#define PACKAGE_VERSION \"@VERSION\"\n",
+    "predef/mpfi/mpfi_config.h"
 )
-make(root,
-     "texk/lcdf-typetools",
-     lcdf,
-    "predef/lcdf-typetools/config.h"
+# mpfr
+# otfcc
+pixman_version = version(root, "libs/pixman/version.ac", pat_m4)
+if pixman_version:
+    major, minor, micro = pixman_version.split(".")
+    copy(
+        root,
+        "libs/pixman/pixman-src/pixman/pixman-version.h.in",
+        "predef/pixman/pixman-version.h",
+        [
+            ("@PIXMAN_VERSION_MAJOR@", major),
+            ("@PIXMAN_VERSION_MINOR@", minor),
+            ("@PIXMAN_VERSION_MICRO@", micro),
+        ]
+    )
+copy(
+    root,
+    "libs/teckit/TECkit-src/source/Public-headers/TECkit_Common.h",
+    "predef/teckit/TECkit_Common.h", []
 )
-copy(root,
-     "libs/libpng/libpng-src/pnglibconf.h",
-     "predef/libpng/pnglibconf.h", []
+copy(
+    root,
+    "libs/teckit/TECkit-src/source/Public-headers/TECkit_Compiler.h",
+    "predef/teckit/TECkit_Compiler.h", []
 )
-make(root,
-     "texk/makeindex",
-     makeindex,
-    "predef/makeindex/c-auto.h"
+copy(
+    root,
+    "libs/teckit/TECkit-src/source/Public-headers/TECkit_Engine.h",
+    "predef/teckit/TECkit_Engine.h", []
 )
-make(root,
-     "texk/mendexk",
-     mendex,
-    "predef/mendex/c-auto.h"
+copy(
+    root,
+    "libs/libpng/libpng-src/pnglibconf.h",
+    "predef/libpng/pnglibconf.h", []
+)
+copy(
+    root,
+    "libs/zlib/zlib-src/zconf.h.in",
+    "predef/zlib/zconf.h", []
+)
+make(
+    root,
+    "libs/zziplib",
+    zziplib,
+    "predef/zziplib/zzip/_msvc.h"
 )
