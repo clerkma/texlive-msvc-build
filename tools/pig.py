@@ -3,9 +3,9 @@ import sys
 from collections import namedtuple
 
 
-cmd_a = namedtuple("SED_A", "s, a")
-cmd_s = namedtuple("SED_S", "s, r")
-cmd_t = namedtuple("SED_T", "s, p, a")
+cmd_a = namedtuple("SED_A", "s, a") # append
+cmd_s = namedtuple("SED_S", "s, r") # replace
+cmd_t = namedtuple("SED_T", "s, p, a") # conditional
 
 
 class convert:

@@ -95,28 +95,28 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 
 ## Supported Programs
 
-* bibtex-x (bibtex8, bibtexu)
-* chktex
-* cjkutils (bg5conv, cef5conv, cefconv, cefsconv, extconv, sjisconv, hbf2gf)
-* detex
-* dtl (dt2dv, dv2dt)
-* dvi2tty (disdvi, dvi2tty)
-* dvidvi
-* dvipdfmx (exported `dlldvipdfmxmain`)
-* dvipng
-* dvipos
-* dvips (afm2afm, dvips)
-* dvisvgm
-* gregorio
-* gsftopk
-* kpsetools (kpseaccess, kpsestat, kpsewhich)
-* lcd-typetools (cfftot1, mmafm, mmpfb, otftotfm, t1dotlessj, t1lint, t1rawafm, t1reencode, t1testpage, ttftotype42)
-* makejvf
-* makeindex
-* mendex
-* ttf2pk2 (ttf2pk, ttf2tfm)
-* ttfdump
-* upmendex
+* `bibtex-x` (bibtex8, bibtexu)
+* `chktex`
+* `cjkutils` (bg5conv, cef5conv, cefconv, cefsconv, extconv, sjisconv, hbf2gf)
+* `detex`
+* `dtl` (dt2dv, dv2dt)
+* `dvi2tty` (disdvi, dvi2tty)
+* `dvidvi`
+* `dvipdfmx` (exported `dlldvipdfmxmain`)
+* `dvipng`
+* `dvipos`
+* `dvips` (afm2afm, dvips)
+* `dvisvgm`
+* `gregorio`
+* `gsftopk`
+* `kpsetools` (kpseaccess, kpsestat, kpsewhich)
+* `lcdf-typetools` (cfftot1, mmafm, mmpfb, otftotfm, t1dotlessj, t1lint, t1rawafm, t1reencode, t1testpage, ttftotype42)
+* `makejvf`
+* `makeindex`
+* `mendex`
+* `ttf2pk2` (ttf2pk, ttf2tfm)
+* `ttfdump`
+* `upmendex`
 
 
 ```bat

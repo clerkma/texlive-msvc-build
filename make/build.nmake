@@ -1088,7 +1088,7 @@ gsftopk:
 
 GREGORIO_ROOT=$(TLROOT)\texk\gregorio
 GREGORIO_SRC=$(GREGORIO_ROOT)\gregorio-src\src
-GREGORIO_CFLAGS=-nologo -c -O2 -DUSE_KPSE $(KPATHSEA_CFLAGS) \
+GREGORIO_CFLAGS=-nologo -c -std:c11 -O2 -DUSE_KPSE $(KPATHSEA_CFLAGS) \
   -I$(GREGORIO_SRC) -I$(GREGORIO_SRC)\gabc -I$(GREGORIO_SRC)\dump -I$(GREGORIO_SRC)\gregoriotex -I$(PREDEF)\gregorio -I$(PREDEF)\luatex
 GREGORIO_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
 gregorio:
@@ -1249,7 +1249,7 @@ makeindex:
   link -nologo -out:$(TLWORKS)\makeindex.exe $(TLBUILD)\makeindex-*.obj $(MAKEINDEX_LDFLAGS)
 
 MENDEX_ROOT=$(TLROOT)\texk\mendexk
-MENDEX_CFLAGS=-nologo -c -I$(PREDEF)\mendex $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
+MENDEX_CFLAGS=-nologo -c -utf-8 -I$(PREDEF)\mendex $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS)
 MENDEX_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)
 mendex:
   $(CC) $(MENDEX_CFLAGS) -Fo$(TLBUILD)\mendex-convert.obj $(MENDEX_ROOT)\convert.c
