@@ -96,6 +96,17 @@ dvidvi = """\
 #endif /* __CONFIG_H__ */
 """
 
+dviout_util = """\
+/* c-auto.h for dviout-util */
+#ifndef __C_AUTO_H__
+#define __C_AUTO_H__
+
+#define VERSION "@VERSION"
+#define TL_VERSION "@TL_VERSION"
+
+#endif /* __C_AUTO_H__ */
+"""
+
 dvipdfmx = """\
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
@@ -501,6 +512,12 @@ make(
     "texk/dvidvi",
     dvidvi,
     "predef/dvidvi/config.h"
+)
+make(
+    root,
+    "texk/dviout-util",
+    dviout_util,
+    "predef/dviout-util/config.h"
 )
 make(
     root,

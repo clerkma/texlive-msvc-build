@@ -102,6 +102,7 @@ nmake -nologo -f make\luatex.nmake JIT=1 luajittex luajithbtex
 * `dtl` (dt2dv, dv2dt)
 * `dvi2tty` (disdvi, dvi2tty)
 * `dvidvi`
+* `dvioututil`
 * `dvipdfmx` (exported `dlldvipdfmxmain`)
 * `dvipng`
 * `dvipos`

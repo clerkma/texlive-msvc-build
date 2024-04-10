@@ -703,6 +703,15 @@ dvidvi:
   $(CC) $(DVIDVI_CFLAGS) -Fo$(TLBUILD)\dvidvi.obj $(DVIDVI_ROOT)\dvidvi.c
   link -nologo -out:$(TLWORKS)\dvidvi.exe $(TLBUILD)\dvidvi.obj $(DVI2TTY_LDFLAGS)
 
+DVIOUTUTIL_ROOT=$(TLROOT)\texk\dviout-util
+DVIOUTUTIL_CFLAGS=-c -nologo -utf-8 $(KPATHSEA_CFLAGS) $(PTEXENC_CFLAGS) -I$(PREDEF) -I$(PREDEF)\dviout-util -DWIN32 -DPTEXENC
+DVIOUTUTIL_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib libptexenc.lib $(RUNTIME_LIBS)
+dvioututil:
+  $(CC) $(DVIOUTUTIL_CFLAGS) -Fo$(TLBUILD)\dvispc.obj $(DVIOUTUTIL_ROOT)\dvispc.c
+  $(CC) $(DVIOUTUTIL_CFLAGS) -Fo$(TLBUILD)\chkdvifont.obj $(DVIOUTUTIL_ROOT)\chkdvifont.c
+  link -nologo -out:$(TLWORKS)\dvispc.exe $(TLBUILD)\dvispc.obj $(DVIOUTUTIL_LDFLAGS)
+  link -nologo -out:$(TLWORKS)\chkdvifont.exe $(TLBUILD)\chkdvifont.obj $(DVIOUTUTIL_LDFLAGS)
+
 DVIPDFMX_ROOT=$(TLROOT)\texk\dvipdfm-x
 DVIPDFMX_CFLAGS=-c -nologo $(KPATHSEA_CFLAGS) $(LIBPNG_CFLAGS) $(LIBPAPER_CFLAGS) $(ZLIB_CFLAGS) -I$(PREDEF)\dvipdfmx \
   -D_CRT_DECLARE_NONSTDC_NAMES=0 -DHAVE_CONFIG_H -DWIN32
