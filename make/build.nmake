@@ -470,24 +470,6 @@ libmd5:
 
 UPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-uptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS)
 UPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
-uptex:
-  set WEBINPUTS=.;$(WEB2CROOT)
-  cd $(PREDEF)
-  tie -m uptex.web tex.web tex.ch tracingstacklevels.ch partoken.ch zlib-fmt.ch
-  tie -c uptex.ch uptex.web ptexdir\ptex-base.ch uptexdir\uptex-m.ch synctexdir\synctex-def.ch0 synctexdir\synctex-p-mem.ch0 synctexdir\synctex-mem.ch0\
-    synctexdir\synctex-p-mem.ch1 synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-rec.ch2\
-    synctexdir\synctex-p-rec.ch1 tex-binpool.ch
-  tangle uptex.web uptex.ch
-  $(CONVERT) uptex
-  cd $(MAKEDIR)
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-uptex0.obj $(PREDEF)\uptex0.c
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-uptexini.obj $(PREDEF)\uptexini.c
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-pool.obj $(PREDEF)\uptex-pool.c
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-kanji.obj $(UPTEXROOT)\kanji.c
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-kanji_dump.obj $(UPTEXROOT)\kanji_dump.c
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-uptexextra.obj $(UPTEXROOT)\uptexextra.c
-  $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptex-synctex.obj $(SYNCTEXROOT)\synctex.c
-  link -nologo -dll -out:$(TLWORKS)\uptex.dll $(TLBUILD)\uptex-*.obj $(UPTEX_LDFLAGS)
 
 upbibtex:
   set WEBINPUTS=.;$(WEB2CROOT);$(UPTEXROOT)
@@ -1455,7 +1437,7 @@ program-all: bibtex-x chktex cjkutils detex dtl dvi2tty dvidvi dvipdfmx dvipng d
 engine-all: tangle weave ctangle cweave tie ctie ctwill ctwill-refsort ctwill-twinx twill\
   bibtex dvicopy dvitype gftodvi gftopk gftype mft patgen pktogf pktype pltotf pooltype tftopl vftovp vptovf odvicopy odvitype\
   ofm2opl opl2ofm ovf2ovp ovp2ovf aleph omfonts otp2ocp outocp tex mf\
-  eptex uptex upbibtex updvitype uppltotf uptftopl euptex\
+  upbibtex updvitype uppltotf uptftopl euptex\
   pdftex ttf2afm pdftosrc mpost pmpost upmpost
 
 all: engine-all
