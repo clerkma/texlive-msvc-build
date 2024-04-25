@@ -165,16 +165,48 @@ twill:
   $(CC) $(CFLAGS) -Fo$(TLBUILD)\$@.obj $(PREDEF)\$@.c
   link -nologo -out:$(TLWORKS)\$@.exe $(TLBUILD)\$@.obj $(RUNTIME_LDFLAGS)
 
+ALEPH_WEB_SRCS=tex.web\
+ alephdir\om16bit.ch\
+ alephdir\omstr.ch\
+ alephdir\omfont.ch\
+ alephdir\omchar.ch\
+ alephdir\omfi.ch\
+ alephdir\ompar.ch\
+ alephdir\omocp.ch\
+ alephdir\omfilter.ch\
+ alephdir\omtrans.ch\
+ alephdir\omdir.ch\
+ alephdir\eobase.ch\
+ alephdir\eofmt.ch\
+ alephdir\eomem.ch\
+ alephdir\eo16bit.ch\
+ alephdir\eoext.ch\
+ alephdir\eoeqtb.ch\
+ alephdir\eofix.ch\
+ alephdir\eocprt.ch\
+ alephdir\eonewdir.ch\
+ alephdir\eover.ch\
+ alephdir\eopage.ch\
+ alephdir\eochar.ch\
+ alephdir\latespecial.ch
+ALEPH_CH_SRCS=alephdir\com16bit.ch\
+ alephdir\comstr.ch\
+ alephdir\comfont.ch\
+ alephdir\comchar.ch\
+ alephdir\comfi.ch\
+ alephdir\compar.ch\
+ alephdir\comocp.ch\
+ alephdir\comfilter.ch\
+ alephdir\comtrans.ch\
+ alephdir\comdir.ch\
+ alephdir\comsrcspec.ch\
+ alephdir\ceostuff.ch
 ALEPH_CFLAGS=$(CFLAGS) -I$(ALEPHROOT)
 aleph:
   set WEBINPUTS=.;$(WEB2CROOT)
   cd $(PREDEF)
-  tie -m aleph.web tex.web alephdir\om16bit.ch alephdir\omstr.ch alephdir\omfont.ch alephdir\omchar.ch alephdir\omfi.ch alephdir\ompar.ch\
-    alephdir\omocp.ch alephdir\omfilter.ch alephdir\omtrans.ch alephdir\omdir.ch alephdir\eobase.ch alephdir\eofmt.ch alephdir\eomem.ch\
-    alephdir\eo16bit.ch alephdir\eoext.ch alephdir\eoeqtb.ch alephdir\eofix.ch alephdir\eocprt.ch alephdir\eonewdir.ch alephdir\eover.ch\
-    alephdir\eopage.ch alephdir\eochar.ch
-  tie -c aleph.ch aleph.web alephdir\com16bit.ch alephdir\comstr.ch alephdir\comfont.ch alephdir\comchar.ch alephdir\comfi.ch alephdir\compar.ch\
-    alephdir\comocp.ch alephdir\comfilter.ch alephdir\comtrans.ch alephdir\comdir.ch alephdir\comsrcspec.ch alephdir\ceostuff.ch
+  tie -m aleph.web $(ALEPH_WEB_SRCS)
+  tie -c aleph.ch aleph.web $(ALEPH_CH_SRCS)
   otangle aleph aleph
   $(CONVERT) aleph
   cd $(MAKEDIR)
@@ -218,18 +250,34 @@ outocp:
   $(CC) $(OTP2OCP_CFLAGS) -Fo$(TLBUILD)\outocp-outocp.obj $(OTP2OCPROOT)\outocp.c
   link -nologo -out:$(TLWORKS)\outocp.exe $(TLBUILD)\outocp-*.obj $(RUNTIME_LDFLAGS)
 
+TEX_CH_SYNCTEX=synctexdir\synctex-def.ch0\
+ synctexdir\synctex-mem.ch0\
+ synctexdir\synctex-mem.ch2\
+ synctexdir\synctex-rec.ch0\
+ synctexdir\synctex-rec.ch1\
+ synctexdir\synctex-rec.ch2
+TEX_CH_SRCS=tex.web\
+ tex.ch\
+ enctexdir\enctex1.ch\
+ enctexdir\enctex-tex.ch\
+ enctexdir\enctex2.ch\
+ $(TEX_CH_SYNCTEX)\
+ tex-binpool.ch
+TEX_CFLAGS=-D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-tex.h\" $(CFLAGS) $(ZLIB_CFLAGS)
+TEX_LDFLAGS=$(RUNTIME_LDFLAGS) libz.lib
 tex:
   set WEBINPUTS=.;$(WEB2CROOT)
   cd $(PREDEF)
-  tie -c tex-final.ch tex.web tex.ch enctexdir\enctex1.ch enctexdir\enctex-tex.ch enctexdir\enctex2.ch tex-binpool.ch
+  tie -c tex-final.ch $(TEX_CH_SRCS)
   tangle tex.web tex-final.ch
   $(CONVERT) tex
   cd $(MAKEDIR)
-  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-texextra.obj $(WEB2CROOT)\texextra.c
-  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-tex0.obj $(PREDEF)\tex0.c
-  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-texini.obj $(PREDEF)\texini.c
-  $(CC) $(CFLAGS) -Fo$(TLBUILD)\tex-pool.obj $(PREDEF)\tex-pool.c
-  link -nologo -dll -out:$(TLWORKS)\tex.dll $(TLBUILD)\tex-*.obj $(RUNTIME_LDFLAGS)
+  $(CC) $(TEX_CFLAGS) -Fo$(TLBUILD)\tex-synctex.obj $(SYNCTEXROOT)\synctex.c
+  $(CC) $(TEX_CFLAGS) -Fo$(TLBUILD)\tex-texextra.obj $(WEB2CROOT)\texextra.c
+  $(CC) $(TEX_CFLAGS) -Fo$(TLBUILD)\tex-tex0.obj $(PREDEF)\tex0.c
+  $(CC) $(TEX_CFLAGS) -Fo$(TLBUILD)\tex-texini.obj $(PREDEF)\texini.c
+  $(CC) $(TEX_CFLAGS) -Fo$(TLBUILD)\tex-pool.obj $(PREDEF)\tex-pool.c
+  link -nologo -dll -out:$(TLWORKS)\tex.dll $(TLBUILD)\tex-*.obj $(TEX_LDFLAGS)
 
 MF_CFLAGS=$(CFLAGS) -I$(WINDOWROOT) -I$(PREDEF)\w2c
 mf:
@@ -287,8 +335,8 @@ MFLUAJIT_CFLAGS=-nologo -c -I. -DMF_LUA -DJIT -DNO_MF_ASM -I$(WEB2CROOT) $(KPATH
 mfluajit: mf
   set WEBINPUTS=.;$(WEB2CROOT)
   cd $(PREDEF)
-  tie -m mfluajit.web mf.web mfluadir/mf-lua.ch mfluajitdir/mf-luajit.ch
-  tie -c mfluajit.ch mfluajit.web mf.ch mfluadir/mflua-m.ch mf-binpool.ch
+  tie -m mfluajit.web mf.web mfluadir\mf-lua.ch mfluajitdir\mf-luajit.ch
+  tie -c mfluajit.ch mfluajit.web mf.ch mfluadir\mflua-m.ch mf-binpool.ch
   tangle mfluajit mfluajit
   $(CONVERT) mfluajit
   cd $(MAKEDIR)
@@ -420,28 +468,6 @@ libmd5:
   $(CC) $(CFLAGS) -Fo$(TLBUILD)\libmd5-md5.obj $(MD5ROOT)\md5.c
   lib -nologo -out:$(TLBUILD)\libmd5.lib $(TLBUILD)\libmd5-md5.obj
 
-EPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-eptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS) -I$(MD5ROOT)
-EPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
-eptex: libmd5
-  set WEBINPUTS=.;$(WEB2CROOT)
-  cd $(PREDEF)
-  tie -m eptex.web tex.web etexdir\etex.ch etexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken.ch showstream.ch zlib-fmt.ch etexdir\tex.ech
-  tie -c eptex.ch eptex.web eptexdir\eptex-base.ch eptexdir\etex.ch0 ptexdir\ptex-base.ch eptexdir\eptex.ech eptexdir\etex.ch1 \
-    synctexdir\synctex-def.ch0 synctexdir\synctex-ep-mem.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0 synctexdir\synctex-ep-mem.ch1\
-    synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-ep-rec.ch0 synctexdir\synctex-e-rec.ch0\
-    synctexdir\synctex-p-rec.ch1 eptexdir\fam256.ch eptexdir\pdfutils.ch eptexdir\suppresserrors.ch eptexdir\char-warning-eptex.ch tex-binpool.ch
-  tangle eptex.web eptex.ch
-  $(CONVERT) eptex
-  cd $(MAKEDIR)
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-eptex0.obj $(PREDEF)\eptex0.c
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-eptexini.obj $(PREDEF)\eptexini.c
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-pool.obj $(PREDEF)\eptex-pool.c
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-kanji.obj $(PTEXROOT)\kanji.c
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-kanji_dump.obj $(PTEXROOT)\kanji_dump.c
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-eptexextra.obj $(EPTEXROOT)\eptexextra.c
-  $(CC) $(EPTEX_CFLAGS) -Fo$(TLBUILD)\eptex-synctex.obj $(SYNCTEXROOT)\synctex.c
-  link -nologo -dll -out:$(TLWORKS)\eptex.dll $(TLBUILD)\eptex-*.obj libmd5.lib $(EPTEX_LDFLAGS)
-
 UPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-uptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS)
 UPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
 uptex:
@@ -507,17 +533,46 @@ uptftopl:
   $(CC) $(UPTEX_CFLAGS) -Fo$(TLBUILD)\uptftopl-kanji.obj $(UPTEXROOT)\kanji.c
   link -nologo -out:$(TLWORKS)\uptftopl.exe $(TLBUILD)\uptftopl-*.obj $(UPTEX_LDFLAGS)
 
+EPUTEX_WEB_SRCS=tex.web\
+ etexdir\etex.ch\
+ etexdir\tex.ch0\
+ tex.ch\
+ tracingstacklevels.ch\
+ partoken.ch\
+ locnull-optimize.ch\
+ showstream.ch\
+ zlib-fmt.ch\
+ etexdir\tex.ech
+EUPTEX_CH_SYNCTEX=synctexdir\synctex-def.ch0\
+ synctexdir\synctex-ep-mem.ch0\
+ synctexdir\synctex-mem.ch0\
+ synctexdir\synctex-e-mem.ch0\
+ synctexdir\synctex-ep-mem.ch1\
+ synctexdir\synctex-p-rec.ch0\
+ synctexdir\synctex-rec.ch0\
+ synctexdir\synctex-rec.ch1\
+ synctexdir\synctex-ep-rec.ch0\
+ synctexdir\synctex-e-rec.ch0\
+ synctexdir\synctex-p-rec.ch1
+EUPTEX_CH_SRCS=euptexdir\etex.ch0\
+ uptexdir\ptex-base.ch\
+ uptexdir\uptex-m.ch\
+ euptexdir\eptex.ech\
+ euptexdir\etex.ch1\
+ $(EUPTEX_CH_SYNCTEX)\
+ euptexdir\fam256.ch\
+ euptexdir\pdfutils.ch\
+ euptexdir\suppresserrors.ch\
+ euptexdir\unbalanced-braces-eptex.ch\
+ euptexdir\char-warning-eptex.ch\
+ tex-binpool.ch
 EUPTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-euptex.h\" $(PTEXENC_CFLAGS) $(ZLIB_CFLAGS) -I$(MD5ROOT)
 EUPTEX_LDFLAGS=-libpath:$(TLBUILD) libruntimep.lib libptexenc.lib libkpathsea.lib libz.lib $(RUNTIME_LIBS)
 euptex: libmd5
   set WEBINPUTS=.;$(WEB2CROOT)
   cd $(PREDEF)
-  tie -m euptex.web tex.web etexdir\etex.ch etexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken.ch showstream.ch zlib-fmt.ch etexdir\tex.ech
-  tie -c euptex.ch euptex.web eptexdir\etex.ch0 ptexdir\ptex-base.ch uptexdir\uptex-m.ch euptexdir\euptex.ch0 eptexdir\eptex.ech eptexdir\etex.ch1\
-    euptexdir\euptex.ch1 synctexdir\synctex-def.ch0 synctexdir\synctex-ep-mem.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0\
-    synctexdir\synctex-ep-mem.ch1 synctexdir\synctex-p-rec.ch0 synctexdir\synctex-rec.ch0 synctexdir\synctex-rec.ch1 synctexdir\synctex-ep-rec.ch0\
-    synctexdir\synctex-e-rec.ch0 synctexdir\synctex-p-rec.ch1 eptexdir\fam256.ch euptexdir\pdfstrcmp-eup-pre.ch eptexdir\pdfutils.ch\
-    euptexdir\pdfstrcmp-eup-post.ch eptexdir\suppresserrors.ch eptexdir\char-warning-eptex.ch tex-binpool.ch
+  tie -m euptex.web $(EPUTEX_WEB_SRCS)
+  tie -c euptex.ch euptex.web $(EUPTEX_CH_SRCS)
   tangle euptex.web euptex.ch
   $(CONVERT) euptex
   cd $(MAKEDIR)
@@ -530,16 +585,38 @@ euptex: libmd5
   $(CC) $(EUPTEX_CFLAGS) -Fo$(TLBUILD)\euptex-synctex.obj $(SYNCTEXROOT)\synctex.c
   link -nologo -dll -out:$(TLWORKS)\euptex.dll $(TLBUILD)\euptex-*.obj libmd5.lib $(EUPTEX_LDFLAGS)
 
+PDFTEX_CH_SYNCTEX=synctexdir\synctex-def.ch0\
+ synctexdir\synctex-mem.ch0\
+ synctexdir\synctex-e-mem.ch0\
+ synctexdir\synctex-e-mem.ch1\
+ synctexdir\synctex-rec.ch0\
+ synctexdir\synctex-rec.ch1\
+ synctexdir\synctex-e-rec.ch0\
+ synctexdir\synctex-pdf-rec.ch2
+PDFTEX_CH_SRCS=pdftexdir\pdftex.web\
+ pdftexdir\tex.ch0\
+ tex.ch\
+ tracingstacklevels.ch\
+ partoken-102.ch\
+ partoken.ch\
+ locnull-optimize.ch\
+ showstream.ch\
+ zlib-fmt.ch\
+ enctexdir\enctex1.ch\
+ enctexdir\enctex-pdftex.ch\
+ enctexdir\enctex2.ch\
+ unbalanced-braces.ch\
+ $(PDFTEX_CH_SYNCTEX)\
+ pdftexdir\pdftex.ch\
+ pdftexdir\char-warning-pdftex.ch\
+ tex-binpool.ch
 PDFTEX_CFLAGS=$(CFLAGS) -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-pdftex.h\"\
   $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS) $(LIBXPDF_CFLAGS) -I$(PDFTEXROOT) -I$(PDFTEXROOT)\regex -I$(MD5ROOT)
 PDFTEX_LDFLAGS=$(RUNTIME_LDFLAGS) libpng.lib libxpdf.lib libz.lib libmd5.lib
 pdftex: libmd5
   set WEBINPUTS=.;$(WEB2CROOT);$(PDFTEXROOT)
   cd $(PREDEF)
-  tie -c pdftex-final.ch pdftexdir\pdftex.web pdftexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken-102.ch partoken.ch showstream.ch zlib-fmt.ch\
-    enctexdir\enctex1.ch enctexdir\enctex-pdftex.ch enctexdir\enctex2.ch\
-    synctexdir\synctex-def.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0 synctexdir\synctex-e-mem.ch1 synctexdir\synctex-rec.ch0\
-    synctexdir\synctex-rec.ch1 synctexdir\synctex-e-rec.ch0 synctexdir\synctex-pdf-rec.ch2 pdftexdir\pdftex.ch pdftexdir\char-warning-pdftex.ch tex-binpool.ch
+  tie -c pdftex-final.ch $(PDFTEX_CH_SRCS)
   tangle pdftex pdftex-final
   $(CONVERT) pdftex
   cd $(MAKEDIR)
@@ -577,6 +654,27 @@ ttf2afm:
 pdftosrc:
   $(CC) $(CFLAGS) $(LIBXPDF_CFLAGS) -Fo$(TLWORKS)\pdftosrc.exe $(PDFTEXROOT)\pdftosrc.cc
 
+XETEX_CH_SYNCTEX =synctexdir\synctex-xe-def.ch0\
+ synctexdir\synctex-mem.ch0\
+ synctexdir\synctex-e-mem.ch0\
+ synctexdir\synctex-e-mem.ch1\
+ synctexdir\synctex-rec.ch0\
+ synctexdir\synctex-e-rec.ch0
+XETEX_POST_CH_SYNCTEX=synctexdir\synctex-xe-rec.ch3
+XETEX_CH_SRCS=xetexdir/xetex.web\
+ xetexdir/tex.ch0\
+ tex.ch\
+ tracingstacklevels.ch\
+ partoken-102.ch\
+ partoken.ch\
+ locnull-optimize.ch\
+ unbalanced-braces.ch\
+ showstream.ch\
+ $(XETEX_CH_SYNCTEX)\
+ xetexdir/xetex.ch\
+ $(XETEX_POST_CH_SYNCTEX)\
+ xetexdir/char-warning-xetex.ch\
+ tex-binpool.ch
 XETEXSP_CFLAGS=-I$(XETEXSP) -I$(XETEXSPROOT) $(CFLAGS) -utf-8 -D__SyncTeX__ -DSYNCTEX_ENGINE_H=\"synctex-xetex.h\"\
   $(ZLIB_CFLAGS) $(LIBPNG_CFLAGS) $(LIBICU_CFLAGS) $(LIBGRAPHITE2_CFLAGS) $(LIBHARFBUZZ_CFLAGS)\
   $(LIBFREETYPE_CFLAGS) $(LIBPPLIB_CFLAGS) -DHAVE_CONFIG_H -DXETEX_SPEC -I$(MD5ROOT)\
@@ -586,9 +684,7 @@ XETEX_LDFLAGS=libicuuc.lib libicudata.lib libmd5.lib libpng.lib libpplib.lib \
 xetex-specimen: libmd5
   set WEBINPUTS=.;$(WEB2CROOT);$(XETEXSPROOT)
   cd $(PREDEF)
-  tie -c xetex-final.ch xetexdir\xetex.web xetexdir\tex.ch0 tex.ch tracingstacklevels.ch partoken-102.ch partoken.ch showstream.ch\
-    synctexdir\synctex-xe-def.ch0 synctexdir\synctex-mem.ch0 synctexdir\synctex-e-mem.ch0 synctexdir\synctex-e-mem.ch1 synctexdir\synctex-rec.ch0\
-    synctexdir\synctex-e-rec.ch0 xetexdir\xetex.ch synctexdir\synctex-xe-rec.ch3 xetexdir\char-warning-xetex.ch tex-binpool.ch
+  tie -c xetex-final.ch $(XETEX_CH_SRCS)
   otangle xetex xetex-final
   $(CONVERT) xetex
   cd $(MAKEDIR)
@@ -617,7 +713,7 @@ xetex-specimen: libmd5
   link -nologo -dll -out:$(TLWORKS)\xetex-sp.dll $(TLBUILD)\xetex-sp-*.obj $(XETEX_LDFLAGS)
 
 BIBTEXX_ROOT=$(TLROOT)\texk\bibtex-x
-BIBTEXX_CFLAGS=-nologo -utf-8 -c -DHAVE_CONFIG_H -DWIN32 -DKPATHSEA -I$(PREDEF)\bibtex-x $(KPATHSEA_CFLAGS) -I$(TLROOT)/texk/kpathsea -DMAKE_KPSE_DLL
+BIBTEXX_CFLAGS=-nologo -utf-8 -c -DHAVE_CONFIG_H -DWIN32 -DKPATHSEA -I$(PREDEF)\bibtex-x $(KPATHSEA_CFLAGS) -I$(TLROOT)\texk\kpathsea -DMAKE_KPSE_DLL
 BIBTEX8_CFLAGS=$(BIBTEXX_CFLAGS) -DSUPPORT_8BIT
 BIBTEX8_LDFLAGS=-libpath:$(TLBUILD) libkpathsea.lib $(RUNTIME_LIBS)
 BIBTEXU_CFLAGS=$(BIBTEXX_CFLAGS) -DUTF_8 $(LIBICU_CFLAGS) $(LIBICUIO_CFLAGS) $(LIBICUI18N_CFLAGS)
