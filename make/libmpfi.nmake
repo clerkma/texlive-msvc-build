@@ -87,9 +87,6 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mag.obj $(ROOT)\src\mag.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mid.obj $(ROOT)\src\mid.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mig.obj $(ROOT)\src\mig.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mpfi-impl.h $(ROOT)\src\mpfi-impl.h
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mpfi.h $(ROOT)\src\mpfi.h
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mpfi_io.h $(ROOT)\src\mpfi_io.h
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mul.obj $(ROOT)\src\mul.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mul_2exp.obj $(ROOT)\src\mul_2exp.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfi-mul_2si.obj $(ROOT)\src\mul_2si.c

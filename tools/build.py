@@ -538,6 +538,7 @@ task_libmpfr = {
         "src/init.c",
         "src/init2.c",
         "src/inits2.c",
+        "src/int_ceil_log2.c",
         "src/isinteger.c",
         "src/isnum.c",
         "src/isqrt.c",
@@ -572,8 +573,10 @@ task_libmpfr = {
         "src/set_prec.c",
         "src/set_q.c",
         "src/set_rnd.c",
+        "src/set_si.c",
         "src/set_si_2exp.c",
         "src/set_str.c",
+        "src/set_ui.c",
         "src/set_ui_2exp.c",
         "src/set_z.c",
         "src/set_z_2exp.c",
@@ -932,7 +935,7 @@ task_libicui18n = {
         'wintzimpl.cpp', 'zonemeta.cpp', 'zrule.cpp', 'ztrans.cpp'
     ],
     "out": "libicui18n.lib",
-    "prefix": "libicui8n-",
+    "prefix": "libicui18n-",
 }
 
 task_libicuio = {
@@ -1591,7 +1594,8 @@ def build(conf):
     if "postcmd" in conf:
         for x in conf["postcmd"]:
             cmd_list.append(x)
-    with open("%s.nmake" % conf["prefix"][:-1], "w") as out:
+    nmake_name = "%s.nmake" % conf["prefix"][:-1]
+    with open(nmake_name, "w") as out:
         if "cc" in conf:
             out.write("CC=%s\n" % conf["cc"])
         out.write("ROOT=%s\n" % conf["root"].replace("/", "\\"))

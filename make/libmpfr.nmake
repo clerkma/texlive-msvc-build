@@ -50,6 +50,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-init.obj $(ROOT)\src\init.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-init2.obj $(ROOT)\src\init2.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-inits2.obj $(ROOT)\src\inits2.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-int_ceil_log2.obj $(ROOT)\src\int_ceil_log2.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-isinteger.obj $(ROOT)\src\isinteger.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-isnum.obj $(ROOT)\src\isnum.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-isqrt.obj $(ROOT)\src\isqrt.c
@@ -84,8 +85,10 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_prec.obj $(ROOT)\src\set_prec.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_q.obj $(ROOT)\src\set_q.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_rnd.obj $(ROOT)\src\set_rnd.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_si.obj $(ROOT)\src\set_si.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_si_2exp.obj $(ROOT)\src\set_si_2exp.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_str.obj $(ROOT)\src\set_str.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_ui.obj $(ROOT)\src\set_ui.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_ui_2exp.obj $(ROOT)\src\set_ui_2exp.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_z.obj $(ROOT)\src\set_z.c
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libmpfr-set_z_2exp.obj $(ROOT)\src\set_z_2exp.c

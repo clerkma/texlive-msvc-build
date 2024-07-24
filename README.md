@@ -7,7 +7,7 @@ TeX Live with MSVC
 * Visual Studio (tested: 2019, 2022)
   * nmake
   * clang-cl (for libotfcc)
-* Python 3 (tested 3.10.4)
+* Python 3 (tested 3.12.1)
 
 ## Supported Targets
 
@@ -29,6 +29,12 @@ set TLARCH=x64
 @rem please make sure that directories existed
 set TLBUILD=%CD%\x64-build
 set TLWORKS=%CD%\bin\x64
+if not exist %TLBUILD% (
+    mkdir %TLBUILD%
+)
+if not exist %TLWORKS% (
+    mkdir %TLWORKS%
+)
 @rem build xetex-specimen
 set XETEXSP=your\path\to\xetex-specimen
 set XETEXSPROOT=%XETEXSP%\xetexdir
