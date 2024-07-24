@@ -1,4 +1,4 @@
-import os, re
+import os, re, sys
 
 texlive_version = "TeX Live 2025/dev"
 bibtex_x_config ="""\
@@ -476,6 +476,9 @@ def copy(root, path, output, patch):
             out.write(text)
 
 root = os.getenv("TLROOT")
+if not os.path.exists(root):
+    print("You need a workable $TLROOT.")
+    sys.exit()
 
 make(
     root,
