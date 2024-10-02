@@ -6,7 +6,6 @@ def read_src(a):
         data = src.read()
     return data
 
-
 if __name__ == "__main__":
     argc = len(sys.argv)
 

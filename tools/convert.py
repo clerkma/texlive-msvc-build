@@ -2,20 +2,17 @@ import fnmatch
 import os
 import sys
 
-
 def read_source(arg):
     data = b""
     with open(arg, "rb") as src:
         data = src.read()
     return data
 
-
 def combine_source(*args):
     source = []
     for x in args:
         source.append(read_source(x))
     return b"\n".join(source) + b"\n\n"
-
 
 def get_path(name, default):
     p = os.getenv(name, default=default)
@@ -95,7 +92,6 @@ def convert(base):
             out.write(f"makecpool {base} > {base}-pool.c")
     os.system(convert_bat)
 
-
 def make_pipe_line(pipe_line, output):
     used_pipe_line = []
     for x in pipe_line:
@@ -103,7 +99,6 @@ def make_pipe_line(pipe_line, output):
             used_pipe_line.append(x)
     used_pipe_line[-1] += output
     return " | ".join(used_pipe_line)
-
 
 if __name__ == "__main__":
     argc = len(sys.argv)

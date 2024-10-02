@@ -1,6 +1,5 @@
 import sys
 
-
 task_libkpathsea = {
     "cflags": [
         "-nologo", "-c", "-O2", "-Oy", "$(TLCFLAGS)",
@@ -1562,7 +1561,6 @@ task_otfcc = {
     }
 }
 
-
 def build(conf):
     cmd_list = []
     cflags = " ".join(conf["cflags"])
@@ -1610,13 +1608,11 @@ def run_build_icu():
     build(task_libicui18n)
     build(task_libicuio)
 
-
 def run_build_icu_data():
     with open("libicudata.nmake", "w") as out:
         out.write("all:\n")
         out.write("\t$(CC) -nologo -c -Fo$(TLBUILD)\\libicudata.obj $(TLBUILD)\\libicudata.c\n")
         out.write("\tlib -nologo -out:$(TLBUILD)\\libicudata.lib $(TLBUILD)\\libicudata.obj\n")
-
 
 task_map = {
     "cairo": task_libcairo,
@@ -1665,4 +1661,3 @@ if __name__ == "__main__":
                     run_build_icu()
                 elif one == "icudata":
                     run_build_icu_data()
-

@@ -3,7 +3,6 @@ import os
 import sys
 import re
 
-
 gmp_h = {
     "file": "$(TLROOT)/libs/gmp/gmp-src/gmp-h.in",
     "out": "$(PREDEF)/gmp/gmp.h",
@@ -19,7 +18,6 @@ gmp_h = {
     }
 }
 
-
 hb_version_h = {
     "file": "$(TLROOT)/libs/harfbuzz/harfbuzz-src/src/hb-version.h.in",
     "out": "$(PREDEF)/harfbuzz/hb-version.h",
@@ -31,7 +29,6 @@ hb_version_h = {
     }
 }
 
-
 pixman_version_h = {
     "file": "$(TLROOT)/libs/pixman/pixman-src/pixman/pixman-version.h.in",
     "out": "$(PREDEF)/pixman/pixman-version.h",
@@ -41,7 +38,6 @@ pixman_version_h = {
         "@PIXMAN_VERSION_MICRO@": "2",
     }
 }
-
 
 def run_build_icu_data():
     tlroot = os.getenv("TLROOT")
@@ -80,7 +76,6 @@ def run_build_icu_data():
                         out.write("\n")
                 out.write("}};")
 
-
 def run(task):
     tlroot = os.getenv("TLROOT")
     predef = os.getenv("PREDEF")
@@ -93,7 +88,6 @@ def run(task):
                 text = text.replace(k, v)
             with open(name_out, "w") as out:
                 out.write(text)
-
 
 if __name__ == "__main__":
     argc = len(sys.argv)

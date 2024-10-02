@@ -2,11 +2,9 @@ import re
 import sys
 from collections import namedtuple
 
-
 cmd_a = namedtuple("SED_A", "s, a") # append
 cmd_s = namedtuple("SED_S", "s, r") # replace
 cmd_t = namedtuple("SED_T", "s, p, a") # conditional
-
 
 class convert:
     def __init__(self):
@@ -16,11 +14,13 @@ class convert:
         self.out = []
         self.idx = 0
         self.len = 0
+
     def set_text(self, text):
         self.src = text
         self.out = []
         self.idx = 0
         self.len = len(text)
+
     def compile(self, cmd_list):
         self.cmd_list = []
         for x in cmd_list:
@@ -73,7 +73,6 @@ class convert:
                 self.idx += 1
         return "".join(self.out)
 
-
 def convert_bibtex():
     c = convert()
     cmd_list = [
@@ -95,7 +94,6 @@ def convert_bibtex():
     d = c.run(cmd_list, data)
     print(d)
 
-
 def convert_mf1():
     data = ""
     for line in sys.stdin:
@@ -104,7 +102,6 @@ def convert_mf1():
     d1, _ = re.subn(r"(\.hh|\.lh)", r"\1field", d0)
     print(d1)
 
-
 def convert_mf2():
     data = ""
     for line in sys.stdin:
@@ -112,7 +109,6 @@ def convert_mf2():
     d0, _ = re.subn(r"else write", "else\nwrite", data)
     d1, _ = re.subn(r" (maxcoef *[^( ]|b1|b2|b3)", r" l\1", d0)
     print(d1)
-
 
 def convert_pmp(src):
     cmd_list = [
@@ -136,7 +132,6 @@ def convert_pmp(src):
     out = "p" + src.split("\\")[-1]
     with open(out, "w") as out_file:
         out_file.write(ret)
-
 
 def read_data(name):
     data = ""
