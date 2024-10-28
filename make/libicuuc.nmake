@@ -46,6 +46,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-lsr.obj $(ROOT)\lsr.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-lstmbe.obj $(ROOT)\lstmbe.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-messagepattern.obj $(ROOT)\messagepattern.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-mlbe.obj $(ROOT)\mlbe.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-normalizer2.obj $(ROOT)\normalizer2.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-normalizer2impl.obj $(ROOT)\normalizer2impl.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-normlzr.obj $(ROOT)\normlzr.cpp
@@ -141,6 +142,8 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-uloc.obj $(ROOT)\uloc.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-uloc_keytype.obj $(ROOT)\uloc_keytype.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-uloc_tag.obj $(ROOT)\uloc_tag.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-ulocale.obj $(ROOT)\ulocale.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-ulocbuilder.obj $(ROOT)\ulocbuilder.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-umapfile.obj $(ROOT)\umapfile.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-umath.obj $(ROOT)\umath.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuuc-umutablecptrie.obj $(ROOT)\umutablecptrie.cpp

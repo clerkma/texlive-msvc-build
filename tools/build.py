@@ -1,4 +1,4 @@
-import sys
+import sys, os, pathlib
 
 task_libkpathsea = {
     "cflags": [
@@ -779,62 +779,6 @@ task_libicuuc = {
     ],
     "root": "$(TLROOT)/libs/icu/icu-src/source/common",
     "components": [
-        'appendable.cpp', 'bmpset.cpp', 'brkeng.cpp', 'brkiter.cpp',
-        'bytesinkutil.cpp', 'bytestream.cpp', 'bytestrie.cpp',
-        'bytestriebuilder.cpp', 'bytestrieiterator.cpp', 'caniter.cpp',
-        'characterproperties.cpp', 'chariter.cpp', 'charstr.cpp',
-        'cmemory.cpp', 'cstr.cpp', 'cstring.cpp', 'cwchar.cpp',
-        'dictbe.cpp', 'dictionarydata.cpp', 'dtintrv.cpp', 'edits.cpp',
-        'emojiprops.cpp', 'errorcode.cpp', 'filteredbrk.cpp',
-        'filterednormalizer2.cpp', 'icudataver.cpp', 'icuplug.cpp',
-        'loadednormalizer2impl.cpp', 'localebuilder.cpp',
-        'localematcher.cpp', 'localeprioritylist.cpp',
-        'locavailable.cpp', 'locbased.cpp', 'locdispnames.cpp',
-        'locdistance.cpp', 'locdspnm.cpp', 'locid.cpp', 'loclikely.cpp',
-        'loclikelysubtags.cpp', 'locmap.cpp', 'locresdata.cpp',
-        'locutil.cpp', 'lsr.cpp', 'lstmbe.cpp', 'messagepattern.cpp',
-        'normalizer2.cpp', 'normalizer2impl.cpp', 'normlzr.cpp',
-        'parsepos.cpp', 'patternprops.cpp', 'pluralmap.cpp', 'propname.cpp',
-        'propsvec.cpp', 'punycode.cpp', 'putil.cpp', 'rbbi.cpp',
-        'rbbi_cache.cpp', 'rbbidata.cpp', 'rbbinode.cpp', 'rbbirb.cpp',
-        'rbbiscan.cpp', 'rbbisetb.cpp', 'rbbistbl.cpp', 'rbbitblb.cpp',
-        'resbund.cpp', 'resbund_cnv.cpp', 'resource.cpp', 'restrace.cpp',
-        'ruleiter.cpp', 'schriter.cpp', 'serv.cpp', 'servlk.cpp',
-        'servlkf.cpp', 'servls.cpp', 'servnotf.cpp', 'servrbf.cpp',
-        'servslkf.cpp', 'sharedobject.cpp', 'simpleformatter.cpp',
-        'static_unicode_sets.cpp', 'stringpiece.cpp',
-        'stringtriebuilder.cpp', 'uarrsort.cpp', 'ubidi.cpp',
-        'ubidi_props.cpp', 'ubidiln.cpp', 'ubiditransform.cpp',
-        'ubidiwrt.cpp', 'ubrk.cpp', 'ucase.cpp', 'ucasemap.cpp',
-        'ucasemap_titlecase_brkiter.cpp', 'ucat.cpp', 'uchar.cpp',
-        'ucharstrie.cpp', 'ucharstriebuilder.cpp', 'ucharstrieiterator.cpp',
-        'uchriter.cpp', 'ucln_cmn.cpp', 'ucmndata.cpp', 'ucnv.cpp',
-        'ucnv2022.cpp', 'ucnv_bld.cpp', 'ucnv_cb.cpp', 'ucnv_cnv.cpp',
-        'ucnv_ct.cpp', 'ucnv_err.cpp', 'ucnv_ext.cpp', 'ucnv_io.cpp',
-        'ucnv_lmb.cpp', 'ucnv_set.cpp', 'ucnv_u16.cpp', 'ucnv_u32.cpp',
-        'ucnv_u7.cpp', 'ucnv_u8.cpp', 'ucnvbocu.cpp', 'ucnvdisp.cpp',
-        'ucnvhz.cpp', 'ucnvisci.cpp', 'ucnvlat1.cpp', 'ucnvmbcs.cpp',
-        'ucnvscsu.cpp', 'ucnvsel.cpp', 'ucol_swp.cpp', 'ucptrie.cpp',
-        'ucurr.cpp', 'udata.cpp', 'udatamem.cpp', 'udataswp.cpp',
-        'uenum.cpp', 'uhash.cpp', 'uhash_us.cpp', 'uidna.cpp', 'uinit.cpp',
-        'uinvchar.cpp', 'uiter.cpp', 'ulist.cpp', 'uloc.cpp',
-        'uloc_keytype.cpp', 'uloc_tag.cpp', 'umapfile.cpp', 'umath.cpp',
-        'umutablecptrie.cpp', 'umutex.cpp', 'unames.cpp', 'unifiedcache.cpp',
-        'unifilt.cpp', 'unifunct.cpp', 'uniset.cpp', 'uniset_closure.cpp',
-        'uniset_props.cpp', 'unisetspan.cpp', 'unistr.cpp', 'unistr_case.cpp',
-        'unistr_case_locale.cpp', 'unistr_cnv.cpp', 'unistr_props.cpp',
-        'unistr_titlecase_brkiter.cpp', 'unorm.cpp', 'unormcmp.cpp',
-        'uobject.cpp', 'uprops.cpp', 'ures_cnv.cpp', 'uresbund.cpp',
-        'uresdata.cpp', 'usc_impl.cpp', 'uscript.cpp', 'uscript_props.cpp',
-        'uset.cpp', 'uset_props.cpp', 'usetiter.cpp', 'ushape.cpp',
-        'usprep.cpp', 'ustack.cpp', 'ustr_cnv.cpp',
-        'ustr_titlecase_brkiter.cpp', 'ustr_wcs.cpp', 'ustrcase.cpp',
-        'ustrcase_locale.cpp', 'ustrenum.cpp', 'ustrfmt.cpp',
-        'ustring.cpp', 'ustrtrns.cpp', 'utext.cpp', 'utf_impl.cpp',
-        'util.cpp', 'util_props.cpp', 'utrace.cpp', 'utrie.cpp',
-        'utrie2.cpp', 'utrie2_builder.cpp', 'utrie_swap.cpp', 'uts46.cpp',
-        'utypes.cpp', 'uvector.cpp', 'uvectr32.cpp', 'uvectr64.cpp',
-        'wintz.cpp'
     ],
     "out": "libicuuc.lib",
     "prefix": "libicuuc-",
@@ -853,85 +797,6 @@ task_libicui18n = {
     ],
     "root": "$(TLROOT)/libs/icu/icu-src/source/i18n",
     "components": [
-        'alphaindex.cpp', 'anytrans.cpp', 'astro.cpp', 'basictz.cpp',
-        'bocsu.cpp', 'brktrans.cpp', 'buddhcal.cpp', 'calendar.cpp',
-        'casetrn.cpp', 'cecal.cpp', 'chnsecal.cpp', 'choicfmt.cpp',
-        'coleitr.cpp', 'coll.cpp', 'collation.cpp', 'collationbuilder.cpp',
-        'collationcompare.cpp', 'collationdata.cpp',
-        'collationdatabuilder.cpp', 'collationdatareader.cpp',
-        'collationdatawriter.cpp', 'collationfastlatin.cpp',
-        'collationfastlatinbuilder.cpp', 'collationfcd.cpp',
-        'collationiterator.cpp', 'collationkeys.cpp', 'collationroot.cpp',
-        'collationrootelements.cpp', 'collationruleparser.cpp',
-        'collationsets.cpp', 'collationsettings.cpp',
-        'collationtailoring.cpp', 'collationweights.cpp',
-        'compactdecimalformat.cpp', 'coptccal.cpp', 'cpdtrans.cpp',
-        'csdetect.cpp', 'csmatch.cpp', 'csr2022.cpp', 'csrecog.cpp',
-        'csrmbcs.cpp', 'csrsbcs.cpp', 'csrucode.cpp', 'csrutf8.cpp',
-        'curramt.cpp', 'currfmt.cpp', 'currpinf.cpp', 'currunit.cpp',
-        'dangical.cpp', 'datefmt.cpp', 'dayperiodrules.cpp',
-        'dcfmtsym.cpp', 'decContext.cpp', 'decNumber.cpp', 'decimfmt.cpp',
-        'double-conversion-bignum-dtoa.cpp', 'double-conversion-bignum.cpp',
-        'double-conversion-cached-powers.cpp',
-        'double-conversion-double-to-string.cpp',
-        'double-conversion-fast-dtoa.cpp',
-        'double-conversion-string-to-double.cpp',
-        'double-conversion-strtod.cpp', 'dtfmtsym.cpp',
-        'dtitvfmt.cpp', 'dtitvinf.cpp', 'dtptngen.cpp', 'dtrule.cpp',
-        'erarules.cpp', 'esctrn.cpp', 'ethpccal.cpp', 'fmtable.cpp',
-        'fmtable_cnv.cpp', 'format.cpp', 'formatted_string_builder.cpp',
-        'formattedval_iterimpl.cpp', 'formattedval_sbimpl.cpp',
-        'formattedvalue.cpp', 'fphdlimp.cpp', 'fpositer.cpp',
-        'funcrepl.cpp', 'gender.cpp', 'gregocal.cpp', 'gregoimp.cpp',
-        'hebrwcal.cpp', 'indiancal.cpp', 'inputext.cpp', 'islamcal.cpp',
-        'japancal.cpp', 'listformatter.cpp', 'measfmt.cpp', 'measunit.cpp',
-        'measunit_extra.cpp', 'measure.cpp', 'msgfmt.cpp', 'name2uni.cpp',
-        'nfrs.cpp', 'nfrule.cpp', 'nfsubs.cpp', 'nortrans.cpp',
-        'nultrans.cpp', 'number_affixutils.cpp', 'number_asformat.cpp',
-        'number_capi.cpp', 'number_compact.cpp', 'number_currencysymbols.cpp',
-        'number_decimalquantity.cpp', 'number_decimfmtprops.cpp',
-        'number_fluent.cpp', 'number_formatimpl.cpp', 'number_grouping.cpp',
-        'number_integerwidth.cpp', 'number_longnames.cpp',
-        'number_mapper.cpp', 'number_modifiers.cpp', 'number_multiplier.cpp',
-        'number_notation.cpp', 'number_output.cpp', 'number_padding.cpp',
-        'number_patternmodifier.cpp', 'number_patternstring.cpp',
-        'number_rounding.cpp', 'number_scientific.cpp',
-        'number_skeletons.cpp', 'number_symbolswrapper.cpp',
-        'number_usageprefs.cpp', 'number_utils.cpp', 'numfmt.cpp',
-        'numparse_affixes.cpp', 'numparse_compositions.cpp',
-        'numparse_currency.cpp', 'numparse_decimal.cpp',
-        'numparse_impl.cpp', 'numparse_parsednumber.cpp',
-        'numparse_scientific.cpp', 'numparse_symbols.cpp',
-        'numparse_validators.cpp', 'numrange_capi.cpp',
-        'numrange_fluent.cpp', 'numrange_impl.cpp', 'numsys.cpp',
-        'olsontz.cpp', 'persncal.cpp', 'pluralranges.cpp', 'plurfmt.cpp',
-        'plurrule.cpp', 'quant.cpp', 'quantityformatter.cpp', 'rbnf.cpp',
-        'rbt.cpp', 'rbt_data.cpp', 'rbt_pars.cpp', 'rbt_rule.cpp',
-        'rbt_set.cpp', 'rbtz.cpp', 'regexcmp.cpp', 'regeximp.cpp',
-        'regexst.cpp', 'regextxt.cpp', 'region.cpp', 'reldatefmt.cpp',
-        'reldtfmt.cpp', 'rematch.cpp', 'remtrans.cpp', 'repattrn.cpp',
-        'rulebasedcollator.cpp', 'scientificnumberformatter.cpp',
-        'scriptset.cpp', 'search.cpp', 'selfmt.cpp',
-        'sharedbreakiterator.cpp', 'simpletz.cpp', 'smpdtfmt.cpp',
-        'smpdtfst.cpp', 'sortkey.cpp', 'standardplural.cpp',
-        'string_segment.cpp', 'strmatch.cpp', 'strrepl.cpp',
-        'stsearch.cpp', 'taiwncal.cpp', 'timezone.cpp', 'titletrn.cpp',
-        'tmunit.cpp', 'tmutamt.cpp', 'tmutfmt.cpp', 'tolowtrn.cpp',
-        'toupptrn.cpp', 'translit.cpp', 'transreg.cpp', 'tridpars.cpp',
-        'tzfmt.cpp', 'tzgnames.cpp', 'tznames.cpp', 'tznames_impl.cpp',
-        'tzrule.cpp', 'tztrans.cpp', 'ucal.cpp', 'ucln_in.cpp',
-        'ucol.cpp', 'ucol_res.cpp', 'ucol_sit.cpp', 'ucoleitr.cpp',
-        'ucsdet.cpp', 'udat.cpp', 'udateintervalformat.cpp',
-        'udatpg.cpp', 'ufieldpositer.cpp', 'uitercollationiterator.cpp',
-        'ulistformatter.cpp', 'ulocdata.cpp', 'umsg.cpp', 'unesctrn.cpp',
-        'uni2name.cpp', 'units_data.cpp', 'units_complexconverter.cpp',
-        'units_converter.cpp', 'units_router.cpp', 'unum.cpp',
-        'unumsys.cpp', 'upluralrules.cpp', 'uregex.cpp', 'uregexc.cpp',
-        'uregion.cpp', 'usearch.cpp', 'uspoof.cpp', 'uspoof_build.cpp',
-        'uspoof_conf.cpp', 'uspoof_impl.cpp', 'utf16collationiterator.cpp',
-        'utf8collationiterator.cpp', 'utmscale.cpp', 'utrans.cpp',
-        'vtzone.cpp', 'vzone.cpp', 'windtfmt.cpp', 'winnmfmt.cpp',
-        'wintzimpl.cpp', 'zonemeta.cpp', 'zrule.cpp', 'ztrans.cpp'
     ],
     "out": "libicui18n.lib",
     "prefix": "libicui18n-",
@@ -948,9 +813,6 @@ task_libicuio = {
     ],
     "root": "$(TLROOT)/libs/icu/icu-src/source/io",
     "components": [
-        'locbund.cpp', 'sprintf.cpp', 'sscanf.cpp', 'ucln_io.cpp',
-        'ufile.cpp', 'ufmt_cmn.cpp', 'uprintf.cpp', 'uprntf_p.cpp',
-        'uscanf.cpp', 'uscanf_p.cpp', 'ustdio.cpp', 'ustream.cpp'
     ],
     "out": "libicuio.lib",
     "prefix": "libicuio-",
@@ -1602,11 +1464,21 @@ def build(conf):
         out.write("\n".join(["\t%s" % x for x in cmd_list]))
         out.write("\n")
 
+def update_icu(src):
+    r0 = os.getenv("TLROOT")
+    r1 = src["root"].replace("$(TLROOT)", r0)
+    r2 = pathlib.Path(r1).glob("*.cpp")
+    files = []
+    for x in r2:
+        files.append(x.name)
+    src["components"] = sorted(files)
+    return src
+
 def run_build_icu():
-    build(task_libicudata)
-    build(task_libicuuc)
-    build(task_libicui18n)
-    build(task_libicuio)
+    # build(task_libicudata)
+    build(update_icu(task_libicuuc))
+    build(update_icu(task_libicui18n))
+    build(update_icu(task_libicuio))
 
 def run_build_icu_data():
     with open("libicudata.nmake", "w") as out:

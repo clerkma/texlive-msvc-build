@@ -56,6 +56,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-decContext.obj $(ROOT)\decContext.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-decNumber.obj $(ROOT)\decNumber.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-decimfmt.obj $(ROOT)\decimfmt.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-displayoptions.obj $(ROOT)\displayoptions.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-double-conversion-bignum-dtoa.obj $(ROOT)\double-conversion-bignum-dtoa.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-double-conversion-bignum.obj $(ROOT)\double-conversion-bignum.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-double-conversion-cached-powers.obj $(ROOT)\double-conversion-cached-powers.cpp
@@ -88,12 +89,24 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-indiancal.obj $(ROOT)\indiancal.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-inputext.obj $(ROOT)\inputext.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-islamcal.obj $(ROOT)\islamcal.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-iso8601cal.obj $(ROOT)\iso8601cal.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-japancal.obj $(ROOT)\japancal.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-listformatter.obj $(ROOT)\listformatter.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-measfmt.obj $(ROOT)\measfmt.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-measunit.obj $(ROOT)\measunit.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-measunit_extra.obj $(ROOT)\measunit_extra.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-measure.obj $(ROOT)\measure.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2.obj $(ROOT)\messageformat2.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_arguments.obj $(ROOT)\messageformat2_arguments.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_checker.obj $(ROOT)\messageformat2_checker.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_data_model.obj $(ROOT)\messageformat2_data_model.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_errors.obj $(ROOT)\messageformat2_errors.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_evaluation.obj $(ROOT)\messageformat2_evaluation.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_formattable.obj $(ROOT)\messageformat2_formattable.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_formatter.obj $(ROOT)\messageformat2_formatter.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_function_registry.obj $(ROOT)\messageformat2_function_registry.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_parser.obj $(ROOT)\messageformat2_parser.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-messageformat2_serializer.obj $(ROOT)\messageformat2_serializer.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-msgfmt.obj $(ROOT)\msgfmt.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-name2uni.obj $(ROOT)\name2uni.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-nfrs.obj $(ROOT)\nfrs.cpp
@@ -123,6 +136,7 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_patternstring.obj $(ROOT)\number_patternstring.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_rounding.obj $(ROOT)\number_rounding.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_scientific.obj $(ROOT)\number_scientific.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_simple.obj $(ROOT)\number_simple.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_skeletons.obj $(ROOT)\number_skeletons.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_symbolswrapper.obj $(ROOT)\number_symbolswrapper.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-number_usageprefs.obj $(ROOT)\number_usageprefs.cpp
@@ -214,9 +228,9 @@ all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-umsg.obj $(ROOT)\umsg.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-unesctrn.obj $(ROOT)\unesctrn.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-uni2name.obj $(ROOT)\uni2name.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-units_data.obj $(ROOT)\units_data.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-units_complexconverter.obj $(ROOT)\units_complexconverter.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-units_converter.obj $(ROOT)\units_converter.cpp
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-units_data.obj $(ROOT)\units_data.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-units_router.obj $(ROOT)\units_router.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-unum.obj $(ROOT)\unum.cpp
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicui18n-unumsys.obj $(ROOT)\unumsys.cpp
