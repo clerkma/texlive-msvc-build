@@ -1,43 +1,6 @@
 
 import os
-import sys
 import re
-
-gmp_h = {
-    "file": "$(TLROOT)/libs/gmp/gmp-src/gmp-h.in",
-    "out": "$(PREDEF)/gmp/gmp.h",
-    "subs": {
-        "@HAVE_HOST_CPU_FAMILY_power@": "0",
-        "@HAVE_HOST_CPU_FAMILY_powerpc@": "0",
-        "@GMP_LIMB_BITS@": "64",
-        "@GMP_NAIL_BITS@": "0",
-        "@DEFN_LONG_LONG_LIMB@": "#define _LONG_LONG_LIMB 1",
-        "@LIBGMP_DLL@": "0",
-        "@CC@": "cl",
-        "@CFLAGS@": "-DNO_ASM",
-    }
-}
-
-hb_version_h = {
-    "file": "$(TLROOT)/libs/harfbuzz/harfbuzz-src/src/hb-version.h.in",
-    "out": "$(PREDEF)/harfbuzz/hb-version.h",
-    "subs": {
-        "@HB_VERSION_MAJOR@": "5",
-        "@HB_VERSION_MINOR@": "3",
-        "@HB_VERSION_MICRO@": "1",
-        "@HB_VERSION@": "5.3.1",
-    }
-}
-
-pixman_version_h = {
-    "file": "$(TLROOT)/libs/pixman/pixman-src/pixman/pixman-version.h.in",
-    "out": "$(PREDEF)/pixman/pixman-version.h",
-    "subs": {
-        "@PIXMAN_VERSION_MAJOR@": "0",
-        "@PIXMAN_VERSION_MINOR@": "42",
-        "@PIXMAN_VERSION_MICRO@": "2",
-    }
-}
 
 def run_build_icu_data():
     tlroot = os.getenv("TLROOT")
@@ -90,13 +53,5 @@ def run(task):
                 out.write(text)
 
 if __name__ == "__main__":
-    argc = len(sys.argv)
-    if argc < 2:
-        print("Usage: py <task>")
-    else:
-        if sys.argv[1] == "icudata":
-            run_build_icu_data()
-        elif sys.argv[1] == "header":
-            task_list = [gmp_h, hb_version_h, pixman_version_h]
-            for one in task_list:
-                run(one)
+    print("Generating ICU DATA ...")
+    run_build_icu_data()

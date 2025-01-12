@@ -476,7 +476,7 @@ def copy(root, path, output, patch):
             out.write(text)
 
 root = os.getenv("TLROOT")
-if not os.path.exists(root):
+if not root or not os.path.exists(root):
     print("You need a workable $TLROOT.")
     sys.exit()
 
