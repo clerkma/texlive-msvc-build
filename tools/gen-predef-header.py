@@ -1,6 +1,6 @@
 import os, re, sys
 
-texlive_version = "TeX Live 2025/dev"
+texlive_version = "TeX Live 2025"
 bibtex_x_config ="""\
 /* config.h for bibtex-x */
 #ifndef __CONFIG_H__
