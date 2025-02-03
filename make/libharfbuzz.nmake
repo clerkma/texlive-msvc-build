@@ -1,5 +1,5 @@
 ROOT=$(TLROOT)\libs\harfbuzz\harfbuzz-src\src
-CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCXXFLAGS) -I$(TLROOT)\libs\harfbuzz\harfbuzz-src\src-I$(TLROOT)\libs\freetype2\freetype2-src\include -I$(PREDEF)\harfbuzz -I$(TLROOT)\libs\graphite2\graphite2-src\include -DGRAPHITE2_STATIC -DHAVE_GRAPHITE2
+CFLAGS=-nologo -utf-8 -c -O2 -Oy -std:c++17 $(TLCXXFLAGS) -I$(TLROOT)\libs\harfbuzz\harfbuzz-src\src-I$(TLROOT)\libs\freetype2\freetype2-src\include -I$(PREDEF)\harfbuzz -I$(TLROOT)\libs\graphite2\graphite2-src\include -DGRAPHITE2_STATIC -DHAVE_GRAPHITE2
 all:
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-blob.obj $(ROOT)\hb-blob.cc
 	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libharfbuzz-hb-buffer-serialize.obj $(ROOT)\hb-buffer-serialize.cc
