@@ -1,13 +1,14 @@
 ROOT=$(TLROOT)\libs\zziplib\zziplib-src\zzip
 CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\libs\zziplib\zziplib-src -I$(TLROOT)\libs\zlib\zlib-src -I$(PREDEF)\zziplib -I$(PREDEF)\zlib
+PREFIX=$(TLBUILD)\libzzip
 all:
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-dir.obj $(ROOT)\dir.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-err.obj $(ROOT)\err.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-fetch.obj $(ROOT)\fetch.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-file.obj $(ROOT)\file.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-info.obj $(ROOT)\info.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-plugin.obj $(ROOT)\plugin.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-stat.obj $(ROOT)\stat.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-write.obj $(ROOT)\write.c
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libzzip-zip.obj $(ROOT)\zip.c
-	lib -nologo -out:$(TLBUILD)\libzzip.lib $(TLBUILD)\libzzip-*.obj
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-dir.obj $(ROOT)\dir.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-err.obj $(ROOT)\err.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-fetch.obj $(ROOT)\fetch.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-file.obj $(ROOT)\file.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-info.obj $(ROOT)\info.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-plugin.obj $(ROOT)\plugin.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-stat.obj $(ROOT)\stat.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-write.obj $(ROOT)\write.c
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-zip.obj $(ROOT)\zip.c
+	lib -nologo -out:$(PREFIX).lib $(PREFIX)-*.obj

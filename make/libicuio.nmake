@@ -1,16 +1,17 @@
 ROOT=$(TLROOT)\libs\icu\icu-src\source\io
 CFLAGS=-nologo -utf-8 -c -O2 -Oy -EHsc -std:c++17 $(TLCXXFLAGS) -DU_IMPORT= -DU_EXPORT= -DU_IO_IMPLEMENTATION -I$(TLROOT)\libs\icu\icu-src\source\common -I$(TLROOT)\libs\icu\icu-src\source\i18n -I$(TLROOT)\libs\icu\icu-src\source\io
+PREFIX=$(TLBUILD)\libicuio
 all:
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-locbund.obj $(ROOT)\locbund.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-sprintf.obj $(ROOT)\sprintf.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-sscanf.obj $(ROOT)\sscanf.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-ucln_io.obj $(ROOT)\ucln_io.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-ufile.obj $(ROOT)\ufile.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-ufmt_cmn.obj $(ROOT)\ufmt_cmn.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-uprintf.obj $(ROOT)\uprintf.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-uprntf_p.obj $(ROOT)\uprntf_p.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-uscanf.obj $(ROOT)\uscanf.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-uscanf_p.obj $(ROOT)\uscanf_p.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-ustdio.obj $(ROOT)\ustdio.cpp
-	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libicuio-ustream.obj $(ROOT)\ustream.cpp
-	lib -nologo -out:$(TLBUILD)\libicuio.lib $(TLBUILD)\libicuio-*.obj
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-locbund.obj $(ROOT)\locbund.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-sprintf.obj $(ROOT)\sprintf.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-sscanf.obj $(ROOT)\sscanf.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-ucln_io.obj $(ROOT)\ucln_io.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-ufile.obj $(ROOT)\ufile.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-ufmt_cmn.obj $(ROOT)\ufmt_cmn.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-uprintf.obj $(ROOT)\uprintf.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-uprntf_p.obj $(ROOT)\uprntf_p.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-uscanf.obj $(ROOT)\uscanf.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-uscanf_p.obj $(ROOT)\uscanf_p.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-ustdio.obj $(ROOT)\ustdio.cpp
+	$(CC) $(CFLAGS) -Fo$(PREFIX)-ustream.obj $(ROOT)\ustream.cpp
+	lib -nologo -out:$(PREFIX).lib $(PREFIX)-*.obj
