@@ -3,6 +3,6 @@
 #define __C_AUTO_H__
 
 #define VERSION "20240427"
-#define TL_VERSION "TeX Live 2025/dev"
+#define TL_VERSION "TeX Live 2025"
 
 #endif /* __C_AUTO_H__ */

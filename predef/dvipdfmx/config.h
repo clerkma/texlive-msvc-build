@@ -13,6 +13,6 @@
 #define HAVE_ZLIB_COMPRESS2 1
 #define HAVE_LIBPAPER 1
 
-#define VERSION "20250202"
+#define VERSION "20250205"
 
 #endif /* __CONFIG_H__ */

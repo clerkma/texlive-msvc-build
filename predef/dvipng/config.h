@@ -15,8 +15,8 @@
 #define HAVE_GDIMAGECREATEFROMPNGPTR 1
 
 #define PACKAGE_NAME "dvipng"
-#define PACKAGE_VERSION "1.17"
-#define PACKAGE_STRING "dvipng 1.17"
+#define PACKAGE_VERSION "1.18"
+#define PACKAGE_STRING "dvipng 1.18"
 
 #define GS_PATH "rungs"
 #define HAVE_TEXLIVE_GS_INIT 1

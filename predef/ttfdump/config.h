@@ -2,7 +2,7 @@
 
 #define SIZEOF_INT 4
 #define VERSION "0.5.5"
-#define TL_VERSION "TeX Live 2025/dev"
+#define TL_VERSION "TeX Live 2025"
 #define PACKAGE_BUGREPORT "tex-k@tug.org"
 
 /* for _setmode */
