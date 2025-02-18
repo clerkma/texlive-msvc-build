@@ -9,7 +9,7 @@
 #define HAVE_STDINT_H 1
 #define ALIGNOF_UINT32_T __alignof(uint32_t)
 
-#define VERSION "6.0.0"
+#define VERSION "6.1.0-beta1"
 #define PACKAGE_URL "http://gregorio-project.github.io/"
 
 #endif /* __CONFIG_H__ */
