@@ -1,9 +1,8 @@
 ROOT=$(TLROOT)\texk\ptexenc
 CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -DWIN32 -DNO_KPSE_DLL -DNO_PTENC_DLL -I$(PREDEF) -I$(TLROOT)\texk -I$(TLROOT)\texk\ptexenc
-PREFIX=$(TLBUILD)\libptexenc
 all:
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-kanjicnv.obj $(ROOT)\kanjicnv.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-ptexenc.obj $(ROOT)\ptexenc.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-unicode.obj $(ROOT)\unicode.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-unicode-jp.obj $(ROOT)\unicode-jp.c
-	lib -nologo -out:$(PREFIX).lib $(PREFIX)-*.obj
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libptexenc-kanjicnv.obj $(ROOT)\kanjicnv.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libptexenc-ptexenc.obj $(ROOT)\ptexenc.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libptexenc-unicode.obj $(ROOT)\unicode.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libptexenc-unicode-jp.obj $(ROOT)\unicode-jp.c
+	lib -nologo -out:$(TLBUILD)\libptexenc.lib $(TLBUILD)\libptexenc-*.obj

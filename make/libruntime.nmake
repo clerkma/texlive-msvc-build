@@ -1,20 +1,19 @@
 ROOT=$(TLROOT)\texk\web2c\lib
 CFLAGS=-nologo -utf-8 -c -O2 -Oy $(TLCFLAGS) -I$(TLROOT)\texk\web2c -I$(TLROOT)\texk\web2c\lib -I$(PREDEF) -I$(TLROOT)\texk
-PREFIX=$(TLBUILD)\libruntime
 all:
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-basechsuffix.obj $(ROOT)\basechsuffix.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-chartostring.obj $(ROOT)\chartostring.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-coredump.obj $(ROOT)\coredump.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-eofeoln.obj $(ROOT)\eofeoln.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-fprintreal.obj $(ROOT)\fprintreal.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-inputint.obj $(ROOT)\inputint.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-input2int.obj $(ROOT)\input2int.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-main.obj $(ROOT)\main.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-openclose.obj $(ROOT)\openclose.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-printversion.obj $(ROOT)\printversion.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-setupvar.obj $(ROOT)\setupvar.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-uexit.obj $(ROOT)\uexit.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-usage.obj $(ROOT)\usage.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-version.obj $(ROOT)\version.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-zround.obj $(ROOT)\zround.c
-	lib -nologo -out:$(PREFIX).lib $(PREFIX)-*.obj
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-basechsuffix.obj $(ROOT)\basechsuffix.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-chartostring.obj $(ROOT)\chartostring.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-coredump.obj $(ROOT)\coredump.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-eofeoln.obj $(ROOT)\eofeoln.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-fprintreal.obj $(ROOT)\fprintreal.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-inputint.obj $(ROOT)\inputint.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-input2int.obj $(ROOT)\input2int.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-main.obj $(ROOT)\main.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-openclose.obj $(ROOT)\openclose.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-printversion.obj $(ROOT)\printversion.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-setupvar.obj $(ROOT)\setupvar.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-uexit.obj $(ROOT)\uexit.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-usage.obj $(ROOT)\usage.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-version.obj $(ROOT)\version.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libruntime-zround.obj $(ROOT)\zround.c
+	lib -nologo -out:$(TLBUILD)\libruntime.lib $(TLBUILD)\libruntime-*.obj

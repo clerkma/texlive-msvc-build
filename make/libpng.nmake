@@ -1,20 +1,19 @@
 ROOT=$(TLROOT)\libs\libpng\libpng-src
 CFLAGS=-nologo -c -O2 -Oy $(TLCFLAGS) -I$(PREDEF)\zlib -I$(TLROOT)\libs\zlib\zlib-src -I$(TLROOT)\libs\libpng\libpng-src -I$(PREDEF)\libpng
-PREFIX=$(TLBUILD)\libpng
 all:
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-png.obj $(ROOT)\png.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngerror.obj $(ROOT)\pngerror.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngget.obj $(ROOT)\pngget.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngmem.obj $(ROOT)\pngmem.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngpread.obj $(ROOT)\pngpread.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngread.obj $(ROOT)\pngread.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngrio.obj $(ROOT)\pngrio.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngrtran.obj $(ROOT)\pngrtran.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngrutil.obj $(ROOT)\pngrutil.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngset.obj $(ROOT)\pngset.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngtrans.obj $(ROOT)\pngtrans.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngwio.obj $(ROOT)\pngwio.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngwrite.obj $(ROOT)\pngwrite.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngwtran.obj $(ROOT)\pngwtran.c
-	$(CC) $(CFLAGS) -Fo$(PREFIX)-pngwutil.obj $(ROOT)\pngwutil.c
-	lib -nologo -out:$(PREFIX).lib $(PREFIX)-*.obj
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-png.obj $(ROOT)\png.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngerror.obj $(ROOT)\pngerror.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngget.obj $(ROOT)\pngget.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngmem.obj $(ROOT)\pngmem.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngpread.obj $(ROOT)\pngpread.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngread.obj $(ROOT)\pngread.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngrio.obj $(ROOT)\pngrio.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngrtran.obj $(ROOT)\pngrtran.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngrutil.obj $(ROOT)\pngrutil.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngset.obj $(ROOT)\pngset.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngtrans.obj $(ROOT)\pngtrans.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwio.obj $(ROOT)\pngwio.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwrite.obj $(ROOT)\pngwrite.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwtran.obj $(ROOT)\pngwtran.c
+	$(CC) $(CFLAGS) -Fo$(TLBUILD)\libpng-pngwutil.obj $(ROOT)\pngwutil.c
+	lib -nologo -out:$(TLBUILD)\libpng.lib $(TLBUILD)\libpng-*.obj
